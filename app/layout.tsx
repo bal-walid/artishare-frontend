@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { playfair, inter } from "./ui/fonts";
 
 
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased`}
+        className={`${playfair.variable} ${inter.variable} ${inter.className} antialiased`}
       >
         {children}
       </body>

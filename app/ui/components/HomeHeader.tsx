@@ -6,7 +6,7 @@ const HomeHeader = () => {
       <div className="flex items-center ml-auto text-xl gap-6">
         <a href="">Sign In</a>
         <a href="">About</a>
-        <a className="bg-main text-white rounded-full py-2 px-4 text-2xl font-secondary" href="">
+        <a className="bg-main text-white rounded-full py-2 px-4 text-2xl font-display-secondary" href="">
           Get Started
         </a>
       </div>

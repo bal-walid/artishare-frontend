@@ -9,7 +9,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['var(--font-playfair)', 'serif'],
+        display: ['var(--font-playfair-sc)', 'serif'],
+        'display-secondary': ['var(--font-playfair)', 'sans-serif'],
         sans: ['var(--font-inter)', 'sans-serif']
       },
       colors: {

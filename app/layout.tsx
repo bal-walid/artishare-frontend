@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { playfair, inter } from "./ui/fonts";
-
-
+import { playfairSC, playfair, inter } from "./ui/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${inter.variable} ${inter.className} antialiased`}
+        className={`${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh`}
       >
         {children}
       </body>

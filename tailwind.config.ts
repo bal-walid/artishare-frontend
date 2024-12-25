@@ -14,7 +14,7 @@ export default {
       },
       colors: {
         main: '#B22C46',
-        heroBg: 'F7F4ED',
+        'hero-bg': '#F7F4ED',
       }
     },
   },

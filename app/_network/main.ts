@@ -8,26 +8,21 @@ import {
 } from "@/app/_errors/main";
 import { serverAddress } from "@/app/_config/main";
 
-//this is will be used as the main function to fetch data from the server
 export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
   if (!init) init = {};
 
-  // Ensure headers are defined and add necessary headers
   if (!init.headers) {
     init.headers = {};
   }
 
-  // Add required Laravel Sanctum headers
   init.headers = {
     ...init.headers,
-    Accept: "application/json", // Required by Sanctum
+    Accept: "application/json",
   };
 
-  // Include cookies for authentication
   init.credentials = "include";
 
-  // Add Bearer token if user is authenticated
-  const token = localStorage.getItem("authToken"); // Replace with your token retrieval logic
+  const token = localStorage.getItem("authToken");
   if (token) {
     init.headers = {
       ...init.headers,
@@ -36,7 +31,7 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
   }
 
   try {
-    const response = await fetch(serverAddress + input, init);
+    const response = await fetch(serverAddress + "/api" + input, init);
 
     if (response.status === 204 && init.method === "DELETE") {
       return true;
@@ -45,7 +40,6 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
     if (response.ok) {
       return response.json() as Promise<T>;
     } else {
-      // Handle error responses
       const errorBody = await response.json();
       const errorMessage = errorBody.error;
       switch (response.status) {

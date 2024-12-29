@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { playfairSC, playfair, inter } from "./_ui/fonts";
-import HomeHeader from "./_ui/components/HomeHeader";
 
 export const metadata: Metadata = {
   title: "Home Page",
@@ -16,9 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh flex flex-col `}
+        className={`${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh flex flex-col overflow-hidden`}
       >
-        <HomeHeader />
         {children}
       </body>
     </html>

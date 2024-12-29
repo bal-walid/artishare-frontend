@@ -9,7 +9,8 @@ interface SubSectionProps {
     | "left-to-right"
     | "none"
     | "stay"
-    | "right-to-left";
+    | "right-to-left"
+    | "bottom-to-top";
   observeOnce?: boolean;
   className?: string;
 }
@@ -46,6 +47,11 @@ const SubSection = ({
       case "right-to-left":
         return {
           transform: isVisible ? "translateX(0)" : "translateX(100px)",
+          opacity: isVisible ? 1 : 0,
+        };
+      case "bottom-to-top":
+        return {
+          transform: isVisible ? "translateY(0)" : "translateY(100px)",
           opacity: isVisible ? 1 : 0,
         };
       case "none":

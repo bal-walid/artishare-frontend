@@ -18,6 +18,7 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
   init.headers = {
     ...init.headers,
     Accept: "application/json",
+    "content-type": "application/json",
   };
 
   init.credentials = "include";

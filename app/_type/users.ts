@@ -1,7 +1,7 @@
 export type User = {
   id: number;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   createdAt: string;
@@ -9,15 +9,15 @@ export type User = {
 };
 
 export type CreateUser = {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 };
 
 export type UpdateUser = {
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
   password?: string;
   emailVerifiedAt?: string | null;

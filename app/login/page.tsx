@@ -9,19 +9,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import loginFields from "../_form/forms/login";
 import { validationSchemaLogin } from "../_form/validation/login";
 import { login } from "../_type/auth";
-
+import Input from "../_ui/components/Input";
+import { useAuth } from "../_hooks/useAuth";
+const fields = loginFields;
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAuth();
   const formOptions = {
     resolver: yupResolver(validationSchemaLogin),
   };
@@ -31,18 +32,14 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<login>(formOptions);
- 
- 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
-
-    // Add your authentication logic here
+  async function onSubmit(data: login) {
+    try {
+      console.log(data);
+      await login(data.email, data.password);
+    } catch (error) {
+      setError((error as Error).message);
+    }
   }
 
   return (
@@ -54,33 +51,29 @@ export default function LoginPage() {
             Enter your email and password to login to your account
           </CardDescription>
         </CardHeader>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {error && <div className="text-sm text-red-500 ml-5">{error}</div>}
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            {fields.map((field) => (
               <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                disabled={isLoading}
+                key={field.name}
+                name={field.name}
+                htmlFor={field.labelFor}
+                type={field.type}
+                placeholder={field.placeholder}
+                required={field.required}
+                disabled={isSubmitting}
+                register={register}
+                labelText={field.labelText}
+                error={errors[field.name]?.message}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                placeholder="******"
-                disabled={isLoading}
-              />
-            </div>
-            {error && <div className="text-sm text-red-500">{error}</div>}
+            ))}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Login
             </Button>
             <div className="text-sm text-center text-muted-foreground">

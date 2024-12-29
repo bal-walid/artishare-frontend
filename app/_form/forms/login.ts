@@ -5,7 +5,7 @@ type LoginFields = Base<login>;
 
 const loginFields: LoginFields[] = [
   {
-    labelText: "Your email",
+    labelText: "Email",
     labelFor: "email",
     id: "email",
     name: "email",
@@ -13,7 +13,7 @@ const loginFields: LoginFields[] = [
     placeholder: "Entre your email",
   },
   {
-    labelText: "Your password",
+    labelText: "Password",
     labelFor: "password",
     id: "password",
     name: "password",

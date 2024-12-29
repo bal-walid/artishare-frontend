@@ -1,12 +1,17 @@
-import { Label } from "@radix-ui/react-label";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 import { Input as InputShadcn } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 interface InputProps {
   htmlFor: string;
   type: string;
+  name: string;
   placeholder: string;
   required?: boolean;
+  labelText?: string;
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>;
@@ -16,6 +21,7 @@ interface InputProps {
   classNameContainer?: string;
   [x: string]: unknown;
 }
+
 const Input = ({
   htmlFor,
   type,
@@ -27,24 +33,51 @@ const Input = ({
   classNameLabel,
   classNameInput,
   classNameContainer,
+  name,
+  labelText,
   ...rest
 }: InputProps) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+
   return (
-    <div className={"space-y-2 marker:" + classNameContainer}>
-      <Label htmlFor={htmlFor} className={classNameLabel}>
-        {placeholder}
-      </Label>
-      <InputShadcn
-        id={htmlFor}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        disabled={disabled}
-        {...register(htmlFor)}
-        className={classNameInput}
-        {...rest}
-      />
-      {error && <span className="text-red-500">{error}</span>}
+    <div className={"space-y-2 " + classNameContainer}>
+      {labelText && (
+        <Label htmlFor={htmlFor} className={classNameLabel}>
+          {labelText}
+        </Label>
+      )}
+      <div className="relative">
+        <InputShadcn
+          id={htmlFor}
+          type={showPassword && type === "password" ? "text" : type}
+          placeholder={placeholder}
+          required={required}
+          disabled={disabled}
+          {...register(htmlFor)}
+          name={name}
+          className={classNameInput}
+          {...rest}
+        />
+        {type === "password" && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <Eye className="h-4 w-4 text-muted-foreground" />
+            )}
+            <span className="sr-only">
+              {showPassword ? "Hide password" : "Show password"}
+            </span>
+          </Button>
+        )}
+      </div>
+      {error && <div className="text-sm text-red-500">{error}</div>}
     </div>
   );
 };

@@ -31,11 +31,20 @@ export const logout = async (): Promise<boolean> => {
 
 // Register
 export const register = async (
+  first_name: string,
+  last_name: string,
   email: string,
-  password: string
+  password: string,
+  password_confirmation: string
 ): Promise<AuthUser> => {
   return (await fetchData<AuthUser>("/register", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      first_name,
+      last_name,
+      email,
+      password,
+      password_confirmation,
+    }),
   })) as AuthUser;
 };

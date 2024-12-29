@@ -3,10 +3,9 @@ export interface login {
   password: string;
 }
 export interface signUp {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   password_confirmation: string;
-  imageUrl: string;
 }

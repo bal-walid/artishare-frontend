@@ -1,11 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,22 +9,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import Input from "../_ui/components/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ArrowRight, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import signUpFields from "../_form/forms/signup";
+import { validationSchemaSignUp } from "../_form/validation/signup";
+import { useAuth } from "../_hooks/useAuth";
+import { signUp } from "../_type/auth";
+const fields = signUpFields;
+const firstlast_name = fields.filter(
+  (field) => field.name === "first_name" || field.name === "last_name"
+);
+const otherFields = fields.filter(
+  (field) => field.name !== "first_name" && field.name !== "last_name"
+);
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { signup } = useAuth();
+  const formOptions = {
+    resolver: yupResolver(validationSchemaSignUp),
+  };
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    // watch,
+  } = useForm<signUp>(formOptions);
 
-    // Add your registration logic here
+  async function onSubmit(data: signUp) {
+    try {
+      console.log(data);
+      await signup(data);
+    } catch (error) {
+      setError((error as Error).message);
+    }
   }
-
+  // // Use watch to monitor form values
+  // const formValues = watch(); // Returns all form field values
+  // console.log("Form Values:", formValues);
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-main">
       <Card className="w-full min-h-[65vh] space-y-3 bg-hero-bg max-w-lg">
@@ -41,63 +62,45 @@ export default function SignUpPage() {
             Enter your information to create a new account
           </CardDescription>
         </CardHeader>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {error && <div className="text-sm text-red-500 ml-5">{error}</div>}
           <CardContent className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="first-name">First name</Label>
+              {firstlast_name.map((field) => (
                 <Input
-                  id="first-name"
-                  placeholder="John"
+                  key={field.id}
+                  htmlFor={field.labelFor}
+                  type={field.type}
+                  placeholder={field.placeholder}
                   required
-                  disabled={isLoading}
+                  disabled={isSubmitting}
+                  labelText={field.labelText}
+                  register={register}
+                  name={field.name}
+                  error={errors[field.name]?.message}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <Input
-                  id="last-name"
-                  placeholder="Doe"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+              ))}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            {otherFields.map((field) => (
               <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
+                key={field.name}
+                name={field.name}
+                htmlFor={field.labelFor}
+                type={field.type}
+                placeholder={field.placeholder}
                 required
-                disabled={isLoading}
+                disabled={isSubmitting}
+                labelText={field.labelText}
+                register={register}
+                error={errors[field.name]?.message}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="********"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                placeholder="********"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            {error && <div className="text-sm text-red-500">{error}</div>}
+            ))}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-4">
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Create account
             </Button>
             <div className="text-sm text-center text-muted-foreground">

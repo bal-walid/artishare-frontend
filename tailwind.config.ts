@@ -14,7 +14,7 @@ export default {
         sans: ['var(--font-inter)', 'sans-serif']
       },
       colors: {
-        main: '#B22C46',
+        main: '#d3506a',
         'hero-bg': '#F7F4ED',
       }
     },

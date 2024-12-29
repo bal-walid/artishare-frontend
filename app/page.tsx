@@ -1,11 +1,10 @@
-import HomeHeader from "./ui/components/HomeHeader";
-import Hero from "./ui/components/Hero";
+import Hero from "./_ui/components/Hero";
+import SubSection from "./_ui/components/subSectionLayout";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-full">
-      <HomeHeader/>
-      <Hero/>
-    </div>
+    <SubSection animationType="top-to-bottom" className="flex-1 flex flex-col">
+      <Hero />
+    </SubSection>
   );
 }

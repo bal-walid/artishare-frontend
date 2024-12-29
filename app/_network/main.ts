@@ -9,7 +9,7 @@ import {
 import { serverAddress } from "@/app/_config/main";
 
 //this is will be used as the main function to fetch data from the server
-export async function fetchData(input: RequestInfo, init?: RequestInit) {
+export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
   if (!init) init = {};
 
   // Ensure headers are defined and add necessary headers
@@ -38,14 +38,12 @@ export async function fetchData(input: RequestInfo, init?: RequestInit) {
   try {
     const response = await fetch(serverAddress + input, init);
 
-    if (response.status === 204) {
-      return JSON.stringify({
-        message: "Deleted Successfully",
-      });
+    if (response.status === 204 && init.method === "DELETE") {
+      return true;
     }
 
     if (response.ok) {
-      return response.json();
+      return response.json() as Promise<T>;
     } else {
       // Handle error responses
       const errorBody = await response.json();

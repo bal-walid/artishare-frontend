@@ -1,5 +1,11 @@
 import { fetchData } from "./main";
 
+//Loged in user
+export const getLoggedInUser = async (): Promise<void> => {
+  await fetchData<void>("/user");
+};
+
+
 // Login
 export const login = async (email: string, password: string): Promise<void> => {
   await fetchData<void>("/login", {

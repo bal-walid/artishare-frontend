@@ -44,7 +44,8 @@ export const deleteComment = async (
   blogId: number,
   commentId: number
 ): Promise<boolean> => {
-  return await fetchData<boolean>(`/blogs/${blogId}/comments/${commentId}`, {
+  await fetchData(`/blogs/${blogId}/comments/${commentId}`, {
     method: "DELETE",
   });
+  return true;
 };

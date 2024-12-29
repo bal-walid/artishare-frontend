@@ -30,7 +30,8 @@ export const deleteLike = async (
   blogId: number,
   likeId: number
 ): Promise<boolean> => {
-  return await fetchData<boolean>(`/blogs/${blogId}/likes/${likeId}`, {
+  await fetchData(`/blogs/${blogId}/likes/${likeId}`, {
     method: "DELETE",
   });
+  return true;
 };

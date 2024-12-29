@@ -26,3 +26,7 @@ export type UpdateUser = {
 export type DeleteUser = {
   id: number;
 };
+export type AuthUser = {
+  user: User;
+  token: string;
+};

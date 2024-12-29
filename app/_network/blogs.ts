@@ -32,7 +32,8 @@ export const updateBlog = async (
 
 // Delete a blog
 export const deleteBlog = async (id: number): Promise<boolean> => {
-  return await fetchData<boolean>(`/blogs/${id}`, {
+  await fetchData(`/blogs/${id}`, {
     method: "DELETE",
   });
+  return true;
 };

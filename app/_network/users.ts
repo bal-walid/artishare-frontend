@@ -1,4 +1,4 @@
-import { User, CreateUser, UpdateUser } from "@/app/_type/users";
+import { User, UpdateUser } from "@/app/_type/users";
 import { fetchData } from "./main";
 
 // Fetch all users
@@ -15,14 +15,6 @@ export const fetchUser = async (id: number): Promise<User> => {
   })) as User;
 };
 
-// Create a new user
-export const createUser = async (data: CreateUser): Promise<User> => {
-  return (await fetchData<User>("/users", {
-    method: "POST",
-    body: JSON.stringify(data),
-  })) as User;
-};
-
 // Update a user
 export const updateUser = async (
   id: number,
@@ -35,10 +27,9 @@ export const updateUser = async (
 };
 
 // Delete a user
-export const deleteUser = async (
-  id: number
-): Promise<boolean> => {
-  return await fetchData<boolean>(`/users/${id}`, {
+export const deleteUser = async (id: number): Promise<boolean> => {
+  await fetchData<boolean>(`/users/${id}`, {
     method: "DELETE",
   });
+  return true;
 };

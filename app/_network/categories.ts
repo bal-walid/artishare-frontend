@@ -38,7 +38,8 @@ export const updateCategory = async (
 
 // Delete a category
 export const deleteCategory = async (id: number): Promise<boolean> => {
-  return await fetchData<boolean>(`/categories/${id}`, {
+  await fetchData(`/categories/${id}`, {
     method: "DELETE",
   });
+  return true;
 };

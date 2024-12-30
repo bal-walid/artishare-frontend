@@ -9,9 +9,9 @@
   .mainStroke {
     -webkit-text-stroke: 0.4px white;
   }
-  * {
+  /* * {
     transition: all 0.3s ease-in-out;
-  }
+  } */
   .section {
     min-height: 720px;
     width: 100%;

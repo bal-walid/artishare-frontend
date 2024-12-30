@@ -1,11 +1,5 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { playfairSC, playfair, inter } from "./_ui/fonts";
-
-export const metadata: Metadata = {
-  title: "Home Page",
-  description: "This is the home page",
-};
 
 export default function RootLayout({
   children,

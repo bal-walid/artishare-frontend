@@ -15,7 +15,7 @@ export default {
         sans: ["var(--font-inter)", "sans-serif"],
       },
       colors: {
-        main: "#d3506a",
+        main: "#B22C46",
         "hero-bg": "#F7F4ED",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

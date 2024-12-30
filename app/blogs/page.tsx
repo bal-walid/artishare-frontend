@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import MainHeader from "../_ui/components/MainHeader";
 
 export const metadata: Metadata = {
   title: "ArtiShare",
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function Blogs() {
-  return <></>;
+  return (
+    <>
+      <MainHeader/>
+    </>
+  );
 }

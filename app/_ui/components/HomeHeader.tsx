@@ -1,10 +1,10 @@
+import Logo from "./Logo";
+
 const HomeHeader = () => {
   return (
     <nav className="flex items-center pr-12 gap-10 border-b border-black">
       {/* Logo */}
-      <div className="font-display bg-main text-white text-6xl py-4 px-8">
-        ArtiShare
-      </div>
+      <Logo className={"py-4 px-8 text-white bg-main text-6xl"}/>
       <a
         href=" "
         className="text-xl border-b-2 border-transparent  hover:border-main text-main/80 hover:text-main"

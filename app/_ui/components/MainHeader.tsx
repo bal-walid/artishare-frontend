@@ -1,11 +1,16 @@
+"use client";
+
 import { Edit, Search } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Logo from "./Logo";
+import { useAuth } from "@/app/_hooks/useAuth";
 
 export default function MainHeader() {
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated);
   return (
     <header className="flex items-center justify-between border-b py-2 px-4 md:px-6">
       <div className="flex items-center gap-4">
@@ -26,10 +31,14 @@ export default function MainHeader() {
           <Edit strokeWidth={1} className="!w-5 !h-5" />
           <span className="ml-1">Write</span>
         </Button>
-        <Button className="rounded-full font-normal shadow-none text-xs">
-          Sign Up
-        </Button>
-        <Button variant={"mediumLike"}>Sign in</Button>
+        {!isAuthenticated && (
+          <>
+            <Button className="rounded-full font-normal shadow-none text-xs">
+              Sign Up
+            </Button>
+            <Button variant={"mediumLike"}>Sign in</Button>
+          </>
+        )}
         <Button variant={"ghost"} size="icon" className="rounded-full">
           <Avatar className="border border-secondary">
             <AvatarImage src="/avatar_placeholder.png" alt="Profile picture" />

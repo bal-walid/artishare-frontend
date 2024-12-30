@@ -21,7 +21,7 @@ export default function MainHeader() {
         <Link href="/" className="flex items-center">
           <Logo className={"text-main bg-white text-3xl"} />
         </Link>
-        <div className="hidden md:flex relative max-w-md">
+        <div className="flex">
           <Input
             type="search"
             placeholder="Search"

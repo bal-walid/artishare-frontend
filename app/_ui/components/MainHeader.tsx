@@ -1,9 +1,8 @@
-import { Bell, Edit, Search } from "lucide-react";
-import Image from "next/image";
+import { Edit, Search } from "lucide-react";
 import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Logo from "./Logo";
 
 export default function MainHeader() {
@@ -23,21 +22,18 @@ export default function MainHeader() {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="hidden md:flex">
-          <Edit className="h-5 w-5" />
-          <span className="ml-2">Write</span>
+        <Button variant={"mediumLike"} className="font-normal">
+          <Edit strokeWidth={1} className="!w-5 !h-5" />
+          <span className="ml-1">Write</span>
         </Button>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Bell className="h-5 w-5" />
+        <Button className="rounded-full font-normal shadow-none text-xs">
+          Sign Up
         </Button>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Image
-            src="/placeholder.svg"
-            alt="Profile"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-full"
-          />
+        <Button variant={"mediumLike"}>Sign in</Button>
+        <Button variant={"ghost"} size="icon" className="rounded-full">
+          <Avatar className="border border-secondary">
+            <AvatarImage src="/avatar_placeholder.png" alt="Profile picture" />
+          </Avatar>
         </Button>
       </div>
     </header>

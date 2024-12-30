@@ -6,6 +6,7 @@ import { login as loginApi, register } from "../_network/auth";
 import { signUp } from "../_type/auth";
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export const useAuth = () => {
         setIsAuthenticated(true);
         setUser(user);
       }
+      setLoading(false);
     }
     checkUser();
   }, []);
@@ -48,6 +50,7 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
+    loading,
     user,
     login,
     signup,

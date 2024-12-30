@@ -9,10 +9,14 @@ import Logo from "./Logo";
 import { useAuth } from "@/app/_hooks/useAuth";
 
 export default function MainHeader() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   console.log(isAuthenticated);
+  if (loading) {
+    // Temporary measure - #TODO figure out how to load more elegantly?
+    return <header className="h-16 py-2 border-b"></header>;
+  }
   return (
-    <header className="flex items-center justify-between border-b py-2 px-4 md:px-6">
+    <header className="h-16 flex items-center justify-between border-b py-2 px-4 md:px-6">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center">
           <Logo className={"text-main bg-white text-3xl"} />

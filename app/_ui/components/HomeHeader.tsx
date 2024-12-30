@@ -1,7 +1,5 @@
 import Logo from "./Logo";
 
-import Logo from "./Logo";
-
 const HomeHeader = () => {
   return (
     <nav className="flex items-center pr-12 gap-10 border-b border-black">

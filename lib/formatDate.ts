@@ -2,16 +2,16 @@ export default function formatDate(dateString : string) {
   const date = new Date(dateString);
   const now = new Date();
 
-  // Get year, month, and day
-  const year = date.getFullYear();
-  const month = date.toLocaleString('default', { month: 'short' });
-  const day = date.getDate();
+  const options = { month: 'short', day: 'numeric' };
+
+  // Use 'en-US' locale to ensure consistent formatting
+  const formattedDate = date.toLocaleDateString('en-US', options);
 
   // Check if the year is the same as the current year
-  if (year === now.getFullYear()) {
-      return `${month} ${day}`;
+  if (date.getFullYear() === now.getFullYear()) {
+      return formattedDate;
   }
 
-  // Return full format with the year
-  return `${month} ${day},${year}`;
+  // Add the year if different
+  return `${formattedDate} ${date.getFullYear()}`;
 }

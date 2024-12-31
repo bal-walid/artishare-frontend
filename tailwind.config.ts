@@ -17,6 +17,7 @@ export default {
       colors: {
         main: "#B22C46",
         "hero-bg": "#F7F4ED",
+        "medium-gray": "var(--medium-gray)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

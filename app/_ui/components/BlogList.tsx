@@ -12,7 +12,10 @@ const BlogList = () => {
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">
       {blogs.map((blog, index) => (
-        <Card key={index} className="border-0 border-b rounded-none shadow-none">
+        <Card
+          key={index}
+          className="border-0 border-b rounded-none shadow-none"
+        >
           <CardHeader className="py-4 px-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -33,17 +36,23 @@ const BlogList = () => {
                   {blog.title}
                 </h2>
                 <p className="text-muted-foreground">{blog.description}</p>
-                <div className="flex items-center gap-3 text-sm text-medium-gray">
+                <div className="flex items-center gap-3 text-xs text-medium-gray">
                   <span>{formatDate(blog.date)}</span>
                   <span className="inline-flex gap-1 items-center">
-
-                      <MessageCircleIcon strokeWidth={0} fill="#6B6B6B" className="h-4 w-4"/>
+                    <MessageCircleIcon
+                      strokeWidth={0}
+                      fill="#6B6B6B"
+                      className="h-4 w-4"
+                    />
 
                     <span>{blog.commentCount}</span>
                   </span>
                   <span className="inline-flex gap-1 items-center">
-
-                      <HeartIcon strokeWidth={0} fill="#6B6B6B"  className="h-4 w-4"/>
+                    <HeartIcon
+                      strokeWidth={0}
+                      fill="#6B6B6B"
+                      className="h-4 w-4"
+                    />
 
                     <span>{blog.likeCount}</span>
                   </span>
@@ -55,7 +64,7 @@ const BlogList = () => {
               <img
                 src="/placeholder.svg"
                 alt=""
-                className="h-24 w-32 object-cover rounded-sm ml-16" 
+                className="h-24 w-32 object-cover rounded-sm ml-16"
               />
             </div>
           </CardContent>

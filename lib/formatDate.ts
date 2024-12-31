@@ -13,5 +13,5 @@ export default function formatDate(dateString : string) {
   }
 
   // Add the year if different
-  return `${formattedDate} ${date.getFullYear()}`;
+  return `${formattedDate}, ${date.getFullYear()}`;
 }

@@ -11,6 +11,15 @@ export const fetchBlog = async (id: number): Promise<Blog> => {
   return (await fetchData<Blog>(`/blogs/${id}`)) as Blog;
 };
 
+//Search for blogs
+export const searchBlogs = async (
+  query: string,
+  currentPage: string
+): Promise<Blog[]> => {
+  return (await fetchData<Blog[]>(
+    `/blogs?query=${query}&currentPage=${currentPage}`
+  )) as Blog[];
+};
 // Create a new blog
 export const createBlog = async (data: CreateBlog): Promise<Blog> => {
   return (await fetchData<Blog>("/blogs", {

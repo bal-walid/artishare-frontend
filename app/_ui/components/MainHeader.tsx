@@ -13,7 +13,9 @@ export default function MainHeader() {
   console.log(isAuthenticated);
   if (loading) {
     // Temporary measure - #TODO figure out how to load more elegantly?
-    return <header className="h-16 py-2 border-b"></header>;
+    return <header className="h-16 py-2 border-b">
+      <span className="invisible">Placeholder</span>
+    </header>;
   }
   return (
     <header className="h-16 flex items-center justify-between border-b py-2 px-4 md:px-6">
@@ -21,7 +23,7 @@ export default function MainHeader() {
         <Link href="/" className="flex items-center">
           <Logo className={"text-main bg-white text-3xl"} />
         </Link>
-        <div className="flex">
+        <div className="flex relative">
           <Input
             type="search"
             placeholder="Search"

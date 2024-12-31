@@ -11,12 +11,15 @@ export const useAuth = () => {
 
   useEffect(() => {
     async function checkUser() {
-      const user = await getLoggedInUser();
-      if (user) {
-        setIsAuthenticated(true);
-        setUser(user);
+      try {
+        const user = await getLoggedInUser();
+        if (user) {
+          setIsAuthenticated(true);
+          setUser(user);
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     checkUser();
   }, []);

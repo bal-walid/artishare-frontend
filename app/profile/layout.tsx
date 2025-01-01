@@ -69,8 +69,8 @@ export default function ProfileLayout({
             </SidebarGroup>
           </SidebarContent>
         </Sidebar>
-        <main className="flex-1 overflow-auto">
-          <div className="container mx-auto py-6 px-4">{children}</div>
+        <main className="flex-1 overflow-auto flex flex-col">
+          <div className="flex-1 ">{children}</div>
         </main>
       </div>
     </SidebarProvider>

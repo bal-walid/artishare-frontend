@@ -1,4 +1,8 @@
-#simplemde-editor-wrapper .editor-toolbar {
+#simple-editor-wrapper {
+
+}
+
+.editor-toolbar {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -11,4 +15,64 @@
 #simplemde-editor-wrapper .CodeMirror {
   border: none;
   padding: 0;
+  font-size: 21px;
+}
+
+#simplemde-editor-wrapper .cm-formatting-list-ul::before {
+  content: '•';
+  display: inline-block;
+  color: inherit;
+  font-size: initial;
+  margin-left: 0.6em;
+  margin-right: 0.2em;
+}
+
+#simplemde-editor-wrapper .cm-formatting-list-ul {
+  font-size: 0;
+}
+
+#simplemde-editor-wrapper .cm-formatting-list-ol {
+  margin-left: 0.6em;
+  margin-right: 0.2em;
+}
+
+#simplemde-editor-wrapper .CodeMirror-line .cm-formatting-list-ul + span {
+  padding-left: 0.2em;
+}
+
+.cm-header {
+  font-family: var(--font-playfair-sc);
+}
+
+#simplemde-editor-wrapper .line-header1 {
+  padding-top: 24px;
+  padding-bottom: 12px;
+}
+
+#simplemde-editor-wrapper .line-header2 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+#simplemde-editor-wrapper .CodeMirror-line:has(.cm-quote) {
+  border-left: 2px solid #434343;
+  background-color: #ced4da;
+}
+
+/*
+#simplemde-editor-wrapper .line-header1 + .line-paragraph,
+#simplemde-editor-wrapper .line-header2 + .line-paragraph,
+#simplemde-editor-wrapper .line-header3 + .line-paragraph,
+#simplemde-editor-wrapper .line-header4 + .line-paragraph,
+#simplemde-editor-wrapper .line-header5 + .line-paragraph,
+#simplemde-editor-wrapper .line-header6 + .line-paragraph {
+  margin-top: 0.5rem; 
+} */
+
+/* #simplemde-editor-wrapper .line-paragraph {
+  padding-bottom: 2rem;
+} */
+
+#simplemde-editor-wrapper .CodeMirror-line:has(.cm-quote) span {
+  color: black;
 }

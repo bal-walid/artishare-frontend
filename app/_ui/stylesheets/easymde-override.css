@@ -1,0 +1,14 @@
+#simplemde-editor-wrapper .editor-toolbar {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  transform: translateX(calc(-100% + (-16px)));
+  border-bottom: 1px solid #ced4da;
+  border-radius: 4px  ;
+}
+
+#simplemde-editor-wrapper .CodeMirror {
+  border: none;
+  padding: 0;
+}

@@ -3,6 +3,7 @@ import { EditorProvider, UseEditorOptions } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import BubbleMenuWrapper from './tiptap/BubbleMenu/BubbleMenu';
 import { HTMLAttributes } from 'react';
+import "@/app/_ui/stylesheets/editor.scss";
 
 const extensions = [StarterKit];
 

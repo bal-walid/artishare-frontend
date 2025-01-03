@@ -1,0 +1,170 @@
+.tiptap-editor {
+  --title-font: Georgia, Cambria, "Times New Roman", Times, serif;
+  --serif-font: Georgia, Cambria, "Times New Roman", Times, serif;
+  --sans-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva,
+    Arial, sans-serif;
+  font-family: var(--serif-font);
+  font-size: 21px;
+  line-height: 1.58;
+  color: #292929;
+  padding: 0 20px;
+  max-width: 740px;
+  width: 100%;
+  margin: 0 auto;
+
+  :focus {
+    outline: none;
+  }
+
+  p,
+  ol,
+  ul,
+  blockquote {
+    margin-top: 29px;
+    line-height: 1.58;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--sans-font);
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 34px;
+    margin-top: 56px;
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: 26px;
+    margin-top: 30px;
+    line-height: 1.22;
+  }
+
+  blockquote {
+    font-style: italic;
+    color: #6a737d;
+    border-left: 4px solid #dfe2e5;
+    padding-left: 16px;
+  }
+
+
+
+  ul, ol {
+    li {
+      margin-left: 30px;
+      margin-bottom: 14px;
+      p {
+        margin: 0;
+      }
+    }
+    li:before {
+      padding-top: 4px;
+      padding-right: 15px;
+      content: '\2022';
+      position: absolute;
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 78px;
+      margin-left: -78px;
+      text-align: right;
+      font-size: 16.8px;
+    }
+  }
+
+  ol {
+    counter-reset: list-count;
+    li:before {
+      font-size: 21px;
+      padding: 0;
+      font-feature-settings: "liga" on,"lnum" on;
+      -moz-font-feature-settings: "liga" on,"lnum" on;
+      -webkit-font-feature-settings: "liga" on,"lnum" on;
+      padding-right: 12px;
+      counter-increment: list-count;
+      content: counter(list-count) ".";
+    }
+  }
+
+  a {
+    color: #1a73e8;
+    text-decoration: underline;
+
+    &:hover {
+      color: #174ea6;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+  }
+
+  h1 + p,
+  h1 + ol,
+  h1 + ul,
+  h1 + blockquote {
+    margin-top: 8px;
+  }
+
+  h2 + p,
+  h2 + ol,
+  h2 + ul,
+  h2 + blockquote {
+    margin-top: 8px;
+  }
+
+  h1 + h1 {
+    margin-top: 53px;
+  }
+
+  h2 + h2 {
+    margin-top: 39px;
+  }
+
+  h2 + h1,
+  h1 + h2 {
+    margin-top: 31px;
+  }
+
+  .tiptap.ProseMirror {
+    h1:first-child {
+      font-size: 42px;
+      font-weight: 400;
+      font-family: var(--serif-font);
+      line-height: 1.25;
+      + h2 {
+        font-size: 28px;
+        font-weight: 300;
+        color: rgba(0, 0, 0, 0.54);
+        margin-top: 5px;
+        margin-bottom: 22px;
+        + h1 {
+          margin-top: 45px;
+        }
+        + blockquote,
+        + p,
+        + ol,
+        + ul {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  // pre {
+  //   background-color: #f6f8fa;
+  //   padding: 16px;
+  //   border-radius: 6px;
+  //   overflow-x: auto;
+
+  //   code {
+  //     font-family: 'Courier New', Courier, monospace;
+  //     font-size: 0.95em;
+  //   }
+  // }
+}

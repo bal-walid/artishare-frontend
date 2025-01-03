@@ -3,7 +3,7 @@ import Editor from "../_ui/components/Editor";
 
 export default function EditPage() {
   return (
-    <div className="h-full flex flex-col gap-8">
+    <div className="h-full flex flex-col">
       <EditHeader/>
       <Editor/>
     </div>

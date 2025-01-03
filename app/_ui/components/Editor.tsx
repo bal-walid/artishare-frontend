@@ -3,7 +3,8 @@ import { EditorProvider, UseEditorOptions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Document from "@tiptap/extension-document"
-import BubbleMenuWrapper from "./tiptap/BubbleMenu/BubbleMenu";
+import BubbleMenu from "./tiptap/BubbleMenu/BubbleMenu";
+import FloatingMenu from "./tiptap/FloatingMenu/FloatingMenu";
 import { HTMLAttributes } from "react";
 import "@/app/_ui/stylesheets/editor.scss";
 
@@ -37,7 +38,8 @@ const Tiptap = () => {
       editorContainerProps={editorContainerProps}
       extensions={extensions}
     >
-      <BubbleMenuWrapper></BubbleMenuWrapper>
+      <BubbleMenu></BubbleMenu>
+      <FloatingMenu></FloatingMenu>
     </EditorProvider>
   );
 };

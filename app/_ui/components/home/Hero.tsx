@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SubSection from "./subSectionLayout";
+import SubSection from "../subSectionLayout";
 const Hero = () => {
   return (
     <div className="flex-1 bg-hero-bg grid grid-cols-2 overflow-hidden w-dvw">

@@ -15,9 +15,13 @@ const HeadingButton = ({ editor, level, children }: HeadingButtonProps) => {
     (chain: ChainedCommands) => chain.toggleHeading({ level }),
     []
   );
-  const isActiveParams = {name: "heading", attributes: {level}};
+  const isActiveParams = { name: "heading", attributes: { level } };
   return (
-    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton
+      editor={editor}
+      command={command}
+      isActiveParams={isActiveParams}
+    >
       {children}
     </CommandButton>
   );

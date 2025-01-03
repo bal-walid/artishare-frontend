@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookmarkIcon, HeartIcon, MessageCircleIcon } from "lucide-react";
 import formatDate from "@/lib/formatDate";
+import Image from "next/image";
 
 const BlogList = () => {
-  const [blogs, setBlogs] = useState(defaultBlogs);
+  const [blogs] = useState(defaultBlogs);
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">
       {blogs.map((blog, index) => (
@@ -61,9 +62,9 @@ const BlogList = () => {
                   </Button>
                 </div>
               </div>
-              <img
+              <Image
                 src="/placeholder.svg"
-                alt=""
+                alt="Blog cover image"
                 className="h-24 w-32 object-cover rounded-sm ml-16"
               />
             </div>

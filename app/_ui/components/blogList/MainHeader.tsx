@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import { useAuth } from "@/app/_hooks/useAuth";
 
 export default function MainHeader() {

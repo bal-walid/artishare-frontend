@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import { Button } from "@/components/ui/button";
 import { HelpCircleIcon } from "lucide-react";
 

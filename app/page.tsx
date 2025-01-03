@@ -1,5 +1,5 @@
-import Hero from "./_ui/components/Hero";
-import HomeHeader from "./_ui/components/HomeHeader";
+import Hero from "./_ui/components/home/Hero";
+import HomeHeader from "./_ui/components/home/HomeHeader";
 import SubSection from "./_ui/components/subSectionLayout";
 import { Metadata } from "next";
 

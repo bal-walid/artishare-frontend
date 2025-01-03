@@ -1,0 +1,18 @@
+.bubble-menu {
+  display: flex;
+  background: linear-gradient(to bottom, rgba(49, 49, 47, 0.99), #262625);
+  color: white;
+  padding: 12px;
+  gap: 8px;
+}
+
+.bubble-btn.is-active {
+  color: red !important;
+}
+.separator {
+  width: 2px;
+  height: 28px; /* Adjust height as needed */
+  background-color: #ccc; /* Adjust color as needed */
+  margin: 0 8px; /* Adjust spacing as needed */
+  display: inline-block;
+}

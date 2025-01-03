@@ -1,5 +1,5 @@
 import { ChainedCommands, Editor } from "@tiptap/react";
-import BubbleCommandButton from "./BubbleCommandButton";
+import CommandButton from "./CommandButton";
 import { useCallback } from "react";
 
 interface ButtonBlockquoteProps {
@@ -7,7 +7,7 @@ interface ButtonBlockquoteProps {
   children: React.ReactNode;
 }
 
-const BubbleBlockquoteButton = ({ editor, children }: ButtonBlockquoteProps) => {
+const BlockquoteButton = ({ editor, children }: ButtonBlockquoteProps) => {
   const command = useCallback(
     (chain: ChainedCommands) => chain.toggleBlockquote(),
     []
@@ -16,10 +16,10 @@ const BubbleBlockquoteButton = ({ editor, children }: ButtonBlockquoteProps) => 
   const isActiveParams = { name: "blockquote" };
 
   return (
-    <BubbleCommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
       {children}
-    </BubbleCommandButton>
+    </CommandButton>
   );
 };
 
-export default BubbleBlockquoteButton;
+export default BlockquoteButton;

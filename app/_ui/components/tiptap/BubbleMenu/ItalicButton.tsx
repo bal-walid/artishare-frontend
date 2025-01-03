@@ -1,5 +1,5 @@
 import { ChainedCommands, Editor } from "@tiptap/react";
-import BubbleCommandButton from "./BubbleCommandButton";
+import CommandButton from "./CommandButton";
 import { useCallback } from "react";
 
 interface ButtonItalicProps {
@@ -7,7 +7,7 @@ interface ButtonItalicProps {
   children: React.ReactNode;
 }
 
-const BubbleItalicButton = ({ editor, children }: ButtonItalicProps) => {
+const ItalicButton = ({ editor, children }: ButtonItalicProps) => {
   const command = useCallback(
     (chain: ChainedCommands) => chain.toggleItalic(),
     []
@@ -16,10 +16,10 @@ const BubbleItalicButton = ({ editor, children }: ButtonItalicProps) => {
   const isActiveParams = { name: "italic" }; 
 
   return (
-    <BubbleCommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
       {children}
-    </BubbleCommandButton>
+    </CommandButton>
   );
 };
 
-export default BubbleItalicButton;
+export default ItalicButton;

@@ -1,5 +1,5 @@
 import { ChainedCommands, Editor } from "@tiptap/react";
-import BubbleCommandButton from "./BubbleCommandButton";
+import CommandButton from "./CommandButton";
 import { useCallback } from "react";
 
 interface ButtonBulletListProps {
@@ -7,7 +7,7 @@ interface ButtonBulletListProps {
   children: React.ReactNode;
 }
 
-const BubbleBulletListButton = ({ editor, children }: ButtonBulletListProps) => {
+const BulletListButton = ({ editor, children }: ButtonBulletListProps) => {
   const command = useCallback(
     (chain: ChainedCommands) => chain.toggleBulletList(),
     []
@@ -16,10 +16,10 @@ const BubbleBulletListButton = ({ editor, children }: ButtonBulletListProps) => 
   const isActiveParams = { name: "bulletList" };
 
   return (
-    <BubbleCommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
       {children}
-    </BubbleCommandButton>
+    </CommandButton>
   );
 };
 
-export default BubbleBulletListButton;
+export default BulletListButton;

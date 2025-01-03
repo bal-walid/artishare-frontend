@@ -3,4 +3,9 @@
   background: linear-gradient(to bottom,rgba(49,49,47,.99),#262625);
   color: white;
   padding: 12px;
+  gap: 8px;
+}
+
+.bubble-btn.is-active {
+  color: red !important;
 }

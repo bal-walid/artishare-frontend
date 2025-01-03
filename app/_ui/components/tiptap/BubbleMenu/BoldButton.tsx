@@ -1,5 +1,5 @@
 import { ChainedCommands, Editor } from "@tiptap/react";
-import BubbleCommandButton from "./BubbleCommandButton";
+import CommandButton from "./CommandButton";
 import { useCallback } from "react";
 
 interface ButtonBoldProps {
@@ -7,7 +7,7 @@ interface ButtonBoldProps {
   children: React.ReactNode;
 }
 
-const BubbleBoldButton = ({ editor, children }: ButtonBoldProps) => {
+const BoldButton = ({ editor, children }: ButtonBoldProps) => {
   const command = useCallback(
     (chain: ChainedCommands) => chain.toggleBold(),
     []
@@ -16,10 +16,10 @@ const BubbleBoldButton = ({ editor, children }: ButtonBoldProps) => {
   const isActiveParams = { name: "bold" }; 
 
   return (
-    <BubbleCommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
       {children}
-    </BubbleCommandButton>
+    </CommandButton>
   );
 };
 
-export default BubbleBoldButton;
+export default BoldButton;

@@ -1,5 +1,5 @@
 import { ChainedCommands, Editor } from "@tiptap/react";
-import BubbleCommandButton from "./BubbleCommandButton";
+import CommandButton from "./CommandButton";
 import { useCallback } from "react";
 
 interface ButtonOrderedListProps {
@@ -7,7 +7,7 @@ interface ButtonOrderedListProps {
   children: React.ReactNode;
 }
 
-const BubbleOrderedListButton = ({ editor, children }: ButtonOrderedListProps) => {
+const OrderedListButton = ({ editor, children }: ButtonOrderedListProps) => {
   const command = useCallback(
     (chain: ChainedCommands) => chain.toggleOrderedList(),
     []
@@ -16,10 +16,10 @@ const BubbleOrderedListButton = ({ editor, children }: ButtonOrderedListProps) =
   const isActiveParams = { name: "orderedList" };
 
   return (
-    <BubbleCommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
+    <CommandButton editor={editor} command={command} isActiveParams={isActiveParams}>
       {children}
-    </BubbleCommandButton>
+    </CommandButton>
   );
 };
 
-export default BubbleOrderedListButton;
+export default OrderedListButton;

@@ -2,19 +2,19 @@ import { Editor, ChainedCommands } from "@tiptap/react";
 import BubbleButton from "./BubbleButton";
 import React, {useCallback} from "react";
 
-interface BubbleCommandButtonProps {
+interface CommandButtonProps {
   editor: Editor;
   command: (chain: ChainedCommands ) => ChainedCommands;
   children: React.ReactNode;
   isActiveParams: {name: string, attributes?: {}}
 }
 
-const BubbleCommandButton = ({
+const CommandButton = ({
   editor,
   command,
   children,
   isActiveParams
-}: BubbleCommandButtonProps) => {
+}: CommandButtonProps) => {
   const onClick = useCallback(() => {
     if (editor) {
       command(editor.chain().focus()).run();
@@ -28,4 +28,4 @@ const BubbleCommandButton = ({
     </BubbleButton>
   );
 };
-export default BubbleCommandButton;
+export default CommandButton;

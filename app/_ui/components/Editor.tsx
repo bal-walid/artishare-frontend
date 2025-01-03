@@ -1,7 +1,7 @@
 'use client'
 import { EditorProvider } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import BubbleMenuWrapper from './BubbleMenu';
+import BubbleMenuWrapper from './tiptap/BubbleMenu/BubbleMenu';
 
 const extensions = [StarterKit];
 

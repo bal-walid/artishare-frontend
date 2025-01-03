@@ -49,9 +49,8 @@
     padding-left: 16px;
   }
 
-
-
-  ul, ol {
+  ul,
+  ol {
     li {
       margin-left: 30px;
       margin-bottom: 14px;
@@ -62,7 +61,7 @@
     li:before {
       padding-top: 4px;
       padding-right: 15px;
-      content: '\2022';
+      content: "\2022";
       position: absolute;
       display: inline-block;
       -webkit-box-sizing: border-box;
@@ -79,9 +78,9 @@
     li:before {
       font-size: 21px;
       padding: 0;
-      font-feature-settings: "liga" on,"lnum" on;
-      -moz-font-feature-settings: "liga" on,"lnum" on;
-      -webkit-font-feature-settings: "liga" on,"lnum" on;
+      font-feature-settings: "liga" on, "lnum" on;
+      -moz-font-feature-settings: "liga" on, "lnum" on;
+      -webkit-font-feature-settings: "liga" on, "lnum" on;
       padding-right: 12px;
       counter-increment: list-count;
       content: counter(list-count) ".";
@@ -131,6 +130,12 @@
     margin-top: 31px;
   }
 
+  a {
+    z-index: 100;
+    position: relative;
+    cursor: pointer;
+  }
+
   .tiptap.ProseMirror {
     h1:first-child {
       font-size: 42px;
@@ -156,17 +161,16 @@
     }
   }
 
-
   h1.is-editor-empty:first-child::before {
-      color: #adb5bd;
-      font-size: 42px;
-      font-weight: 400;
-      font-family: var(--serif-font);
-      line-height: 1.25;
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
+    color: #adb5bd;
+    font-size: 42px;
+    font-weight: 400;
+    font-family: var(--serif-font);
+    line-height: 1.25;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 
   p.is-empty:first-of-type::before {

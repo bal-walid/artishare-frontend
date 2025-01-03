@@ -4,6 +4,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Document from "@tiptap/extension-document";
 import BubbleMenu from "./BubbleMenu/BubbleMenu";
+import Link from "@tiptap/extension-link";
+
 import FloatingMenu from "./FloatingMenu/FloatingMenu";
 import { HTMLAttributes } from "react";
 import "@/app/_ui/stylesheets/editor.scss";
@@ -22,6 +24,12 @@ const extensions = [
       }
       return "Tell your story";
     },
+  }),
+  Link.configure({
+    openOnClick: true,
+    autolink: true,
+    defaultProtocol: "https",
+    protocols: ["http", "https"],
   }),
 ];
 

@@ -6,6 +6,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorProvider, UseEditorOptions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import BubbleMenu from "./BubbleMenu/BubbleMenu";
+import Youtube from "@tiptap/extension-youtube";
 
 import "@/app/_ui/stylesheets/editor.scss";
 import { HTMLAttributes } from "react";
@@ -33,6 +34,15 @@ const extensions = [
     protocols: ["http", "https"],
   }),
   Image,
+  Youtube.configure({
+    inline: true,
+    width: 640,
+    height: 360,
+    controls: false,
+    HTMLAttributes: {
+      class: " block  mx-auto w-[80%] ",
+    },
+  }),
 ];
 
 const editorProps: UseEditorOptions = {

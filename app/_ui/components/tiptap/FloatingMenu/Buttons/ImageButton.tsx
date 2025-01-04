@@ -1,9 +1,9 @@
 "use client";
+import { saveImage } from "@/app/_network/blogs";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { Image } from "lucide-react";
-
 
 interface ImageButtonProps {
   hideMenu: () => void;
@@ -12,18 +12,25 @@ interface ImageButtonProps {
 const ImageButton = ({ hideMenu }: ImageButtonProps) => {
   const { editor } = useCurrentEditor();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    const form = new FormData();
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
+      form.append("blog_image", file);
+      try {
+        // Save the image to the database and get the URL
+        const imageUrl = await saveImage(form);
+
+        // Update the editor with the image URL
         if (editor) {
-          editor.chain().focus().setImage({ src: result }).run();
+          editor.chain().focus().setImage({ src: imageUrl }).run();
         }
-      };
-      reader.readAsDataURL(file);
-      hideMenu();
+
+        // Hide the menu
+        hideMenu();
+      } catch (error) {
+        console.error("Error saving image:", error);
+      }
     }
   };
 

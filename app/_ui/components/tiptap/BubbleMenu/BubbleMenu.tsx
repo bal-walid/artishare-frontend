@@ -1,4 +1,5 @@
-import { BubbleMenu, useCurrentEditor } from "@tiptap/react";
+import { BubbleMenu, Editor, useCurrentEditor } from "@tiptap/react";
+import { BubbleMenuPluginProps } from "@tiptap/extension-bubble-menu"
 import "@/app/_ui/stylesheets/bubbleMenu.css";
 import HeadingButton from "./Buttons/HeadingButton";
 import BoldButton from "./Buttons/BoldButton";
@@ -7,11 +8,21 @@ import BlockquoteButton from "./Buttons/BlockquoteButton";
 import LinkButton from "./Buttons/LinkButton";
 import { Link } from "lucide-react";
 
+// TODO: figure out a better way to declare the type here
+const shouldShow = (props: any) => {
+  const {editor, from, to} = props;
+  if (editor.isActive('image') || (from == to)) {
+    return false;
+  }
+  return true;
+}
+
+
 const BubbleMenuWrapper = ({}) => {
   const { editor } = useCurrentEditor();
   if (!editor) return null;
   return (
-    <BubbleMenu editor={editor} className="bubble-menu">
+    <BubbleMenu shouldShow={shouldShow} editor={editor} className="bubble-menu">
       <BoldButton editor={editor}>
         <span className="font-bold text-2xl"> B</span>
       </BoldButton>

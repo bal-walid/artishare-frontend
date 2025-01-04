@@ -19,6 +19,27 @@ const validationSchemaSignUp = Yup.object().shape({
   password_confirmation: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Password confirmation is required"),
+
+  profile_image: Yup.mixed<FileList>()
+    .required("Profile Image is required")
+    .test(
+      "fileSize",
+      "File size must be less than or equal to 10Mb",
+      (value) => {
+        if (value && value[0]) {
+          console.log(`File size: ${value[0].size} bytes`);
+          return value[0].size <= 10 * 1024 * 1024; // 4MB size limit
+        }
+        return false;
+      }
+    )
+    .test("fileFormat", "Unsupported file format", (value) => {
+      if (value && value?.length > 0) {
+        const supportedFormats = ["image/jpeg", "image/png", "image/jpg"];
+        return supportedFormats.includes(value[0]?.type);
+      }
+      return false;
+    }),
 });
 
 export { validationSchemaSignUp };

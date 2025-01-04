@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FloatingMenu, useCurrentEditor } from "@tiptap/react";
 import { PlusCircle } from "lucide-react";
-import { useCallback, useState } from "react";
-import CancelButton from "./Buttons/CancelButton";
+import {  useState } from "react";
 import CodeButton from "./Buttons/CodeButton";
 import ImageButton from "./Buttons/ImageButton";
 import QuoteButton from "./Buttons/QuoteButton";

@@ -17,6 +17,8 @@ export const useAuth = () => {
           setIsAuthenticated(true);
           setUser(user);
         }
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -32,13 +34,16 @@ export const useAuth = () => {
     return user.user;
   };
   const signup = async (user: signUp): Promise<User> => {
-    const newUser = await register(
-      user.first_name,
-      user.last_name,
-      user.email,
-      user.password,
-      user.password_confirmation
-    );
+    const formData = new FormData();
+    formData.append("first_name", user.first_name);
+    formData.append("last_name", user.last_name);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("password_confirmation", user.password_confirmation);
+    if (user?.profile_image && user.profile_image.length > 0) {
+      formData.append("profile_image", user.profile_image[0]);
+    }
+    const newUser = await register(formData);
     setIsAuthenticated(true);
     setUser(newUser.user);
     localStorage.setItem("authToken", newUser.token);

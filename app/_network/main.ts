@@ -15,11 +15,19 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
     init.headers = {};
   }
 
+  // Set default headers
   init.headers = {
     ...init.headers,
     Accept: "application/json",
-    "content-type": "application/json",
   };
+
+  // Only set Content-Type to application/json if the body is not FormData
+  if (!(init.body instanceof FormData)) {
+    init.headers = {
+      ...init.headers,
+      "Content-Type": "application/json",
+    };
+  }
 
   init.credentials = "include";
 

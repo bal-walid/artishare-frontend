@@ -8,4 +8,5 @@ export interface signUp {
   email: string;
   password: string;
   password_confirmation: string;
+  profile_image: FileList;
 }

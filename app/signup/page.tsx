@@ -20,11 +20,15 @@ import { validationSchemaSignUp } from "../_form/validation/signup";
 import { useAuth } from "../_hooks/useAuth";
 import { signUp } from "../_type/auth";
 const fields = signUpFields;
+const imageField = fields.find((field) => field.name === "profile_image");
 const firstlast_name = fields.filter(
   (field) => field.name === "first_name" || field.name === "last_name"
 );
 const otherFields = fields.filter(
-  (field) => field.name !== "first_name" && field.name !== "last_name"
+  (field) =>
+    field.name !== "first_name" &&
+    field.name !== "last_name" &&
+    field.name !== "profile_image"
 );
 export default function SignUpPage() {
   const [error, setError] = useState("");
@@ -43,18 +47,19 @@ export default function SignUpPage() {
   async function onSubmit(data: signUp) {
     try {
       console.log(data);
-      await signup(data);
+      console.log(await signup(data));
     } catch (error) {
       setError((error as Error).message);
     }
   }
+  if (!imageField) return null;
   // // Use watch to monitor form values
   // const formValues = watch(); // Returns all form field values
   // console.log("Form Values:", formValues);
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-main">
       <Card className="w-full min-h-[65vh] space-y-3 bg-hero-bg max-w-lg">
-        <CardHeader className="space-y-3 pt-10 ">
+        <CardHeader className="space-y-3 pt-10">
           <CardTitle className="text-2xl font-bold">
             Create an account
           </CardTitle>
@@ -65,6 +70,18 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           {error && <div className="text-sm text-red-500 ml-5">{error}</div>}
           <CardContent className="space-y-5">
+            <Input
+              key={imageField?.id}
+              htmlFor={imageField?.labelFor}
+              type={imageField?.type}
+              placeholder={imageField?.placeholder}
+              required
+              disabled={isSubmitting}
+              labelText={imageField?.labelText}
+              register={register}
+              name={imageField?.name}
+              error={errors[imageField?.name]?.message}
+            />
             <div className="grid grid-cols-2 gap-4">
               {firstlast_name.map((field) => (
                 <Input

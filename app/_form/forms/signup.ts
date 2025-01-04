@@ -43,6 +43,14 @@ const signUpFields: SignUpFields[] = [
     type: "password",
     placeholder: "Entre your password",
   },
+  {
+    labelText: "Profile Image",
+    labelFor: "profile_image",
+    id: "profile_image",
+    name: "profile_image",
+    type: "file",
+    placeholder: "Entre your profile image",
+  }
 ];
 
 export default signUpFields;

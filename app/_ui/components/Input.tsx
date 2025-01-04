@@ -4,6 +4,7 @@ import { Input as InputShadcn } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import InputFile from "./InputFile";
 
 interface InputProps {
   htmlFor: string;
@@ -37,6 +38,59 @@ const Input = ({
   labelText,
   ...rest
 }: InputProps) => {
+  return type !== "file" ? (
+    <InputBasic
+      {...{
+        htmlFor,
+        type,
+        placeholder,
+        required,
+        disabled,
+        register,
+        error,
+        classNameLabel,
+        classNameInput,
+        classNameContainer,
+        name,
+        labelText,
+        ...rest,
+      }}
+    />
+  ) : (
+    <InputFile
+      {...{
+        htmlFor,
+        type,
+        placeholder,
+        required,
+        disabled,
+        register,
+        error,
+        classNameLabel,
+        classNameInput,
+        classNameContainer,
+        name,
+        labelText,
+        ...rest,
+      }}
+    />
+  );
+};
+const InputBasic = ({
+  htmlFor,
+  type,
+  placeholder,
+  required,
+  disabled,
+  register,
+  error,
+  classNameLabel,
+  classNameInput,
+  classNameContainer,
+  name,
+  labelText,
+  ...rest
+}: InputProps) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
@@ -53,8 +107,7 @@ const Input = ({
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          {...register(htmlFor)}
-          name={name}
+          {...register(name)}
           className={classNameInput}
           {...rest}
         />

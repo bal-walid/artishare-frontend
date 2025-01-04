@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FloatingMenu, useCurrentEditor } from "@tiptap/react";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CancelButton from "./Buttons/CancelButton";
 import CodeButton from "./Buttons/CodeButton";
 import ImageButton from "./Buttons/ImageButton";
@@ -13,7 +13,7 @@ import OrderedListButton from "./Buttons/OrderedListButton";
 const FloatingMenuWrapper = () => {
   const { editor } = useCurrentEditor();
   const [showMenu, setShowMenu] = useState(false);
-
+  const hideMenu = () => setShowMenu(false);
   if (!editor) return null;
 
   return (
@@ -33,12 +33,12 @@ const FloatingMenuWrapper = () => {
 
         {showMenu && (
           <div className="absolute left-full ml-2 flex items-center gap-1 rounded-full border bg-background p-1 shadow-lg">
-            <ImageButton/>
-            <VideoButton hideMenu={() => setShowMenu(false)} />
-            <UnorderedListButton/>
-            <OrderedListButton/>
-            <QuoteButton />
-            <CodeButton/>
+            <ImageButton hideMenu={hideMenu}/>
+            <VideoButton hideMenu={hideMenu} />
+            <UnorderedListButton hideMenu={hideMenu} />
+            <OrderedListButton hideMenu={hideMenu} />
+            <QuoteButton hideMenu={hideMenu} />
+            <CodeButton hideMenu={hideMenu} />
           </div>
         )}
       </div>

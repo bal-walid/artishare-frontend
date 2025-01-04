@@ -3,12 +3,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ListOrdered } from "lucide-react";
 
+interface OrderedListButtonProps {
+  hideMenu: () => void;
+}
 
-const OrderedListButton = () => {
+const OrderedListButton = ({ hideMenu }: OrderedListButtonProps) => {
   const {editor} = useCurrentEditor();
   function onClick() {
     if (editor) {
       editor.chain().focus().toggleOrderedList().run();
+      hideMenu();
     }
   }
   return (

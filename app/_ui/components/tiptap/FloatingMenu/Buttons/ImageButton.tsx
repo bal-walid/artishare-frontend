@@ -5,7 +5,11 @@ import { useCurrentEditor } from "@tiptap/react";
 import { Image } from "lucide-react";
 
 
-const ImageButton = () => {
+interface ImageButtonProps {
+  hideMenu: () => void;
+}
+
+const ImageButton = ({ hideMenu }: ImageButtonProps) => {
   const { editor } = useCurrentEditor();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +23,7 @@ const ImageButton = () => {
         }
       };
       reader.readAsDataURL(file);
+      hideMenu();
     }
   };
 

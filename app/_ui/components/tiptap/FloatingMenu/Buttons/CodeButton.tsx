@@ -3,11 +3,16 @@ import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { Code2 } from "lucide-react";
 
-const CodeButton = () => {
+interface CodeButtonProps {
+  hideMenu: () => void;
+}
+
+const CodeButton = ({ hideMenu }: CodeButtonProps) => {
   const {editor} = useCurrentEditor();
   function onClick() {
     if (editor) {
       editor.chain().focus().toggleCodeBlock().run();
+      hideMenu();
     }
   }
   return (

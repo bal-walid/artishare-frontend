@@ -3,12 +3,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { List } from "lucide-react";
 
+interface UnorderedListButtonProps {
+  hideMenu: () => void;
+}
 
-const UnorderedListButton = () => {
+const UnorderedListButton = ({ hideMenu }: UnorderedListButtonProps) => {
   const {editor} = useCurrentEditor();
   function onClick() {
     if (editor) {
       editor.chain().focus().toggleBulletList().run();
+      hideMenu();
     }
   }
   return (

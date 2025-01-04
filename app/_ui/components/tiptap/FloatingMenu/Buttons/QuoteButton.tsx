@@ -4,11 +4,16 @@ import { Quote } from "lucide-react";
 import CommandButton from "../../BubbleMenu/Buttons/CommandButton";
 import { useCurrentEditor } from "@tiptap/react";
 
-const QuoteButton = () => {
+interface QuoteButtonProps {
+  hideMenu: () => void;
+}
+
+const QuoteButton = ({ hideMenu }: QuoteButtonProps) => {
   const {editor} = useCurrentEditor();
   function onClick() {
     if (editor) {
       editor.chain().focus().toggleBlockquote().run();
+      hideMenu();
     }
   }
   return (

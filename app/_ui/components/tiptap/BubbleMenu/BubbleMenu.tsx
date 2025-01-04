@@ -28,9 +28,6 @@ const BubbleMenuWrapper = ({}) => {
       <HeadingButton level={2} editor={editor}>
         <h2 className="text-lg">h2</h2>
       </HeadingButton>
-      <HeadingButton level={3} editor={editor}>
-        <h2 className="text-md">h3</h2>
-      </HeadingButton>
       <div className="separator" />
       <BlockquoteButton editor={editor}>&gt;</BlockquoteButton>
     </BubbleMenu>

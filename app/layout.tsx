@@ -1,5 +1,6 @@
 import "./globals.css";
-import { playfairSC, playfair, inter } from "./_ui/fonts";
+import { playfairSC, playfair, inter, ibmPlexMono } from "./_ui/fonts";
+import { JetBrains_Mono } from "next/font/google";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh flex flex-col overflow-y-auto overflow-x-hidden`}
+        className={`${ibmPlexMono.variable} ${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh flex flex-col overflow-y-auto overflow-x-hidden`}
       >
         {children}
       </body>

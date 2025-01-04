@@ -1,14 +1,15 @@
 "use client";
+import Document from "@tiptap/extension-document";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 import { EditorProvider, UseEditorOptions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import Document from "@tiptap/extension-document";
 import BubbleMenu from "./BubbleMenu/BubbleMenu";
-import Link from "@tiptap/extension-link";
 
-import FloatingMenu from "./FloatingMenu/FloatingMenu";
-import { HTMLAttributes } from "react";
 import "@/app/_ui/stylesheets/editor.scss";
+import { HTMLAttributes } from "react";
+import FloatingMenu from "./FloatingMenu/FloatingMenu";
 
 const HeadingFirstDocument = Document.extend({
   content: "heading block*",
@@ -31,6 +32,7 @@ const extensions = [
     defaultProtocol: "https",
     protocols: ["http", "https"],
   }),
+  Image,
 ];
 
 const editorProps: UseEditorOptions = {
@@ -43,14 +45,16 @@ const editorContainerProps: HTMLAttributes<HTMLDivElement> = {
 
 const Tiptap = () => {
   return (
-    <EditorProvider
-      {...editorProps}
-      editorContainerProps={editorContainerProps}
-      extensions={extensions}
-    >
-      <BubbleMenu></BubbleMenu>
-      <FloatingMenu></FloatingMenu>
-    </EditorProvider>
+    <div className=" pb-24">
+      <EditorProvider
+        {...editorProps}
+        editorContainerProps={editorContainerProps}
+        extensions={extensions}
+      >
+        <BubbleMenu></BubbleMenu>
+        <FloatingMenu></FloatingMenu>
+      </EditorProvider>
+    </div>
   );
 };
 

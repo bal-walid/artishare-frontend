@@ -7,6 +7,8 @@ import CodeButton from "./Buttons/CodeButton";
 import ImageButton from "./Buttons/ImageButton";
 import QuoteButton from "./Buttons/QuoteButton";
 import VideoButton from "./Buttons/VideoButton";
+import UnorderedListButton from "./Buttons/UnorderedListButton";
+import OrderedListButton from "./Buttons/OrderedListButton";
 
 const FloatingMenuWrapper = () => {
   const { editor } = useCurrentEditor();
@@ -24,17 +26,19 @@ const FloatingMenuWrapper = () => {
         <Button
           variant={"mediumLike"}
           className="p-0"
-          onClick={() => setShowMenu(!showMenu)}
+          onClick={() => {setShowMenu(!showMenu)}}
         >
           <PlusCircle className="!h-9 !w-9 transition-transform" transform={showMenu ? "rotate(45)" : "rotate(0)"} strokeWidth={0.5} />
         </Button>
 
         {showMenu && (
           <div className="absolute left-full ml-2 flex items-center gap-1 rounded-full border bg-background p-1 shadow-lg">
-            <VideoButton hideMenu={() => setShowMenu(false)} />
             <ImageButton/>
+            <VideoButton hideMenu={() => setShowMenu(false)} />
+            <UnorderedListButton/>
+            <OrderedListButton/>
             <QuoteButton />
-            <CodeButton hideMenu={() => setShowMenu(false)} />
+            <CodeButton/>
           </div>
         )}
       </div>

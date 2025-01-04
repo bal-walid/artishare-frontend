@@ -4,11 +4,8 @@ import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { Image } from "lucide-react";
 
-interface CancelButtonProps {
-  hideMenu: () => void;
-}
 
-const ImageButton = ({ hideMenu }: CancelButtonProps) => {
+const ImageButton = () => {
   const { editor } = useCurrentEditor();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +16,6 @@ const ImageButton = ({ hideMenu }: CancelButtonProps) => {
         const result = reader.result as string;
         if (editor) {
           editor.chain().focus().setImage({ src: result }).run();
-          hideMenu();
         }
       };
       reader.readAsDataURL(file);

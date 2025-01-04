@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useCurrentEditor } from "@tiptap/react";
 import { Code2 } from "lucide-react";
-interface CancelButtonProps {
-  hideMenu: () => void;
-}
-const CodeButton = ({ hideMenu }: CancelButtonProps) => {
+
+const CodeButton = () => {
+  const {editor} = useCurrentEditor();
   function onClick() {
-    hideMenu();
+    if (editor) {
+      editor.chain().focus().toggleCodeBlock().run();
+    }
   }
   return (
     <Button

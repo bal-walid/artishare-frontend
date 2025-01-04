@@ -26,15 +26,14 @@ const FloatingMenuWrapper = () => {
           className="p-0"
           onClick={() => setShowMenu(!showMenu)}
         >
-          <PlusCircle className="!h-9 !w-9" strokeWidth={0.5} />
+          <PlusCircle className="!h-9 !w-9 transition-transform" transform={showMenu ? "rotate(45)" : "rotate(0)"} strokeWidth={0.5} />
         </Button>
 
         {showMenu && (
           <div className="absolute left-full ml-2 flex items-center gap-1 rounded-full border bg-background p-1 shadow-lg">
-            <CancelButton hideMenu={() => setShowMenu(false)} />
             <VideoButton hideMenu={() => setShowMenu(false)} />
-            <ImageButton hideMenu={() => setShowMenu(false)} />
-            <QuoteButton hideMenu={() => setShowMenu(false)} />
+            <ImageButton/>
+            <QuoteButton />
             <CodeButton hideMenu={() => setShowMenu(false)} />
           </div>
         )}

@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Quote } from "lucide-react";
-interface CancelButtonProps {
-  hideMenu: () => void;
-}
-const QuoteButton = ({ hideMenu }: CancelButtonProps) => {
+import CommandButton from "../../BubbleMenu/Buttons/CommandButton";
+import { useCurrentEditor } from "@tiptap/react";
+
+const QuoteButton = () => {
+  const {editor} = useCurrentEditor();
   function onClick() {
-    hideMenu();
+    if (editor) {
+      editor.chain().focus().toggleBlockquote().run();
+    }
   }
   return (
     <Button

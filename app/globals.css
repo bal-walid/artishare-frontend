@@ -16,6 +16,16 @@
     min-height: 720px;
     width: 100%;
   }
+  @keyframes rotate-in {
+    from {
+      transform: rotate(90deg);
+      opacity: 0;
+    }
+    to {
+      transform: rotate(0deg);
+      opacity: 1;
+    }
+  }
 }
 
 @layer base {
@@ -33,7 +43,7 @@
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 348 13% 63%;
-    --medium-gray: #6B6B6B;
+    --medium-gray: #6b6b6b;
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;

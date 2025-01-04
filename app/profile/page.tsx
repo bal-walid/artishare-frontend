@@ -117,8 +117,9 @@ import { EmptyState } from "../_ui/components/profile/emptyState";
 export default function ProfileView() {
   const { user } = useAuth();
   if (!user) return null;
+  const profile_image = user.profile_image;
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-background">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-background pb-24">
       <div className="relative">
         {/* Background image section */}
         <div className="relative h-[350px] w-full">
@@ -133,9 +134,9 @@ export default function ProfileView() {
         </div>
 
         {/* Profile content */}
-        <div className="relative z-10 px-4 -mt-32 space-y-8 max-w-[1200px] mx-auto">
+        <div className="relative z-10 px-4 -mt-32 space-y-8 max-w-[1200px] mx-auto ">
           <div className="flex flex-col items-center">
-            <ProfileImageUpload />
+            <ProfileImageUpload initialImage={profile_image} />
             <div className="mt-4 text-center">
               <h1 className="text-3xl font-bold text-slate-800">
                 {user.first_name} {user.last_name}

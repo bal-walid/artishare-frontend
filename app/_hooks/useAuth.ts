@@ -49,6 +49,7 @@ export const useAuth = () => {
     localStorage.setItem("authToken", newUser.token);
     return newUser.user;
   };
+  console.log(user);
 
   const logout = () => {
     localStorage.removeItem("authToken");

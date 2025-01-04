@@ -28,13 +28,20 @@ export const createBlog = async (data: CreateBlog): Promise<Blog> => {
   })) as Blog;
 };
 // save image to the server
-export const saveImage = async (data: FormData): Promise<string> => {
-  return (await fetchData<string>("/blogs/upload", {
+export const saveImage = async (
+  data: FormData
+): Promise<{
+  url: string;
+}> => {
+  return (await fetchData<{
+    url: string;
+  }>("/blogs/upload", {
     method: "POST",
     body: data,
-  })) as string;
+  })) as {
+    url: string;
+  };
 };
-
 
 // Update an existing blog
 export const updateBlog = async (

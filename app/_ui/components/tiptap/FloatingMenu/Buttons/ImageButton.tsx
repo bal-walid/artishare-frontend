@@ -20,10 +20,10 @@ const ImageButton = ({ hideMenu }: ImageButtonProps) => {
       try {
         // Save the image to the database and get the URL
         const imageUrl = await saveImage(form);
-
+        const imageFullPath = "http://localhost:8000" + imageUrl.url;
         // Update the editor with the image URL
         if (editor) {
-          editor.chain().focus().setImage({ src: imageUrl }).run();
+          editor.chain().focus().setImage({ src: imageFullPath }).run();
         }
 
         // Hide the menu

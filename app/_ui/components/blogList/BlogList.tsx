@@ -65,7 +65,9 @@ const BlogList = () => {
               <Image
                 src="/placeholder.svg"
                 alt="Blog cover image"
-                className="h-24 w-32 object-cover rounded-sm ml-16"
+                width={128}
+                height={96}
+                className=" object-cover rounded-sm ml-16"
               />
             </div>
           </CardContent>

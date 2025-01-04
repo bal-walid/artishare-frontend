@@ -8,7 +8,7 @@
   line-height: 1.58;
   color: #292929;
   padding: 0 20px;
-  max-width: 740px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
 
@@ -88,7 +88,6 @@
   }
 
   a {
-
     text-decoration: underline;
 
     &:hover {
@@ -183,15 +182,15 @@
   }
 
   pre {
-    background-color: #F9F9F9;
-    border: 1px solid #E5E5E5;
+    background-color: #f9f9f9;
+    border: 1px solid #e5e5e5;
     padding: 32px;
     margin-top: 43px;
     border-radius: 6px;
     overflow-x: auto;
 
     code {
-      font-family: var(--font-mono) ,'Courier New', Courier, monospace;
+      font-family: var(--font-mono), "Courier New", Courier, monospace;
       font-size: 14px;
       font-weight: 400;
     }

@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { ChainedCommands, Editor } from "@tiptap/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommandButton from "./CommandButton";
 
 interface ButtonItalicProps {
@@ -37,6 +37,16 @@ const LinkButton = ({ editor, children }: ButtonItalicProps) => {
   };
 
   const isActiveParams = { name: "link" };
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      if (!editor.isActive("link")) {
+        setShowInput(false);
+      }
+    };
+
+    editor.on("update", handleUpdate);
+  }, [editor]);
 
   return (
     <div className="relative flex justify-center items-center">

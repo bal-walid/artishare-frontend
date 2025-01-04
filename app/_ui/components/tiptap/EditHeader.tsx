@@ -6,7 +6,7 @@ import { HelpCircleIcon } from "lucide-react";
 const EditHeader = () => {
   return (
     <nav className="flex justify-center px-5 pt-4 fixed w-full z-10 bg-white bg-opacity-95">
-      <div className="w-full max-w-[1024px] flex justify-between">
+      <div className="w-full max-w-[1400px] flex justify-between">
         <Logo className={"text-main bg-white text-4xl"}></Logo>
         <div className="flex items-center gap-6">
           <Button

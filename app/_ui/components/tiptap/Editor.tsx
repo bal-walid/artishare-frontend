@@ -45,7 +45,7 @@ const editorContainerProps: HTMLAttributes<HTMLDivElement> = {
 
 const Tiptap = () => {
   return (
-    <div className=" pb-24">
+    <div className=" pb-24 mt-24">
       <EditorProvider
         {...editorProps}
         editorContainerProps={editorContainerProps}

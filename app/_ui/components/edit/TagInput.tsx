@@ -2,10 +2,15 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import React, { useRef, useState } from "react";
 
-const TagInput = () => {
+interface TagInputProps {
+  tags : string[];
+  addTag: (tag: string) => void;
+  deleteTag : (tag: string) => void;
+}
+
+const TagInput = ({tags, addTag, deleteTag} : TagInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
   const refocusInput = () => {
     inputRef.current?.focus();
   };
@@ -13,7 +18,7 @@ const TagInput = () => {
     if (e.key === "Backspace") {
       if (!inputValue) {
         if (tags.length) {
-          setTags(tags.slice(0, -1));
+          deleteTag(tags[tags.length - 1]);
         }
       }
     }
@@ -22,12 +27,9 @@ const TagInput = () => {
         setInputValue("");
         return;
       }
-      setTags((tags) => [...tags, inputValue.trim()]);
+      addTag(inputValue);
       setInputValue("");
     }
-  };
-  const deleteTag = (tagName: string) => {
-    setTags((tags) => tags.filter((tag) => tag !== tagName));
   };
   return (
     <div

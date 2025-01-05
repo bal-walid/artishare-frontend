@@ -3,6 +3,8 @@ import { useState } from "react";
 
 interface ImagePickerProps {
   images: string[];
+  selectedImage: string;
+  setSelectedImage: (image : string) => void;
   onPickingImage: () => void;
   pickingImage: boolean;
 }
@@ -11,10 +13,10 @@ const ImagePicker = ({
   images,
   onPickingImage,
   pickingImage,
+  selectedImage,
+  setSelectedImage
 }: ImagePickerProps) => {
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    images.length ? images[0] : undefined
-  );
+
   if (!images.length) {
     return (
       <div className="w-full bg-[#FAFAFA] h-[200px] flex items-center justify-center text-center">

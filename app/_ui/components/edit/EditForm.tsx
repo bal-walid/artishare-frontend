@@ -1,9 +1,11 @@
+import parseArticleHtml from "@/lib/parseArticleHtml";
+
 interface EditFormProps {
-  htmlContent : string | undefined;
+  htmlContent : string;
 }
 
 const EditForm = ({htmlContent} : EditFormProps) => {
-  console.log(htmlContent);
+  console.log(parseArticleHtml(htmlContent));
   return (
     <div></div>
   );

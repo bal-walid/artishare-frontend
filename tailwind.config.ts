@@ -21,7 +21,9 @@ export default {
   			sans: [
   				'var(--font-inter)',
   				'sans-serif'
-  			]
+  			],
+				'medium-title': [ 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif'],
+				'medium-subtitle': ["Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "Geneva"],
   		},
   		colors: {
   			main: '#B22C46',

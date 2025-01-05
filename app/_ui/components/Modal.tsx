@@ -25,7 +25,6 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div
       className="fixed inset-0 z-[10000] flex bg-white"
-      onClick={(e) =>( e.currentTarget === e.target) && onClose()}
       role="dialog"
       aria-modal="true"
     >

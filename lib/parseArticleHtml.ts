@@ -19,8 +19,8 @@ function parseArticleHtml(html: string) {
   }));
 
   return {
-    firstH1,
-    firstH2AfterH1,
+    title: firstH1,
+    subtitle: firstH2AfterH1,
     images
   };
 }

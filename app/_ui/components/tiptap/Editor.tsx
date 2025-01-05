@@ -3,13 +3,13 @@ import Document from "@tiptap/extension-document";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { EditorProvider, UseEditorOptions } from "@tiptap/react";
+import { Editor, EditorProvider, UseEditorOptions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import BubbleMenu from "./BubbleMenu/BubbleMenu";
 import Youtube from "@tiptap/extension-youtube";
 
 import "@/app/_ui/stylesheets/editor.scss";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, MutableRefObject, RefObject } from "react";
 import FloatingMenu from "./FloatingMenu/FloatingMenu";
 
 const HeadingFirstDocument = Document.extend({
@@ -53,13 +53,18 @@ const editorContainerProps: HTMLAttributes<HTMLDivElement> = {
   className: "tiptap-editor",
 };
 
-const Tiptap = () => {
+interface TiptapProps {
+  editorRef: RefObject<Editor | null>
+}
+
+const Tiptap = ({editorRef} : TiptapProps) => {
   return (
     <div className=" pb-24 mt-24">
       <EditorProvider
         {...editorProps}
         editorContainerProps={editorContainerProps}
         extensions={extensions}
+        onCreate={({editor}) => editorRef.current = editor}
       >
         <BubbleMenu></BubbleMenu>
         <FloatingMenu></FloatingMenu>

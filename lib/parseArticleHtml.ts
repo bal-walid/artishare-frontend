@@ -13,10 +13,7 @@ function parseArticleHtml(html: string) {
     firstElement.nextElementSibling.textContent : null;
 
   // Find all images
-  const images = Array.from(doc.querySelectorAll('img')).map(img => ({
-    src: img.getAttribute('src'),
-    alt: img.getAttribute('alt'),
-  }));
+  const images = Array.from(doc.querySelectorAll('img')).map(img => img.src);
 
   return {
     title: firstH1,

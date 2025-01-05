@@ -29,7 +29,11 @@ export type UpdateUser = {
   email?: string;
   profile_image?: FileList;
 };
-
+export type UpdatePassword = {
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+};
 export type DeleteUser = {
   id: number;
 };

@@ -3,7 +3,7 @@ import Logo from "../Logo";
 import { Button } from "@/components/ui/button";
 import { HelpCircleIcon } from "lucide-react";
 
-const EditHeader = () => {
+const EditHeader = ({onBtnClick} : {onBtnClick: () => void}) => {
   return (
     <nav className="flex justify-center px-5 pt-4 fixed w-full z-10 bg-white bg-opacity-95">
       <div className="w-full max-w-[1032px] flex justify-between">
@@ -12,6 +12,7 @@ const EditHeader = () => {
           <Button
             className="p-0 rounded-full py-1 px-3 text-sm h-auto font-normal"
             variant={"success"}
+            onClick={onBtnClick}
           >
             Publish
           </Button>

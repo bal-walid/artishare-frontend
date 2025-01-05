@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ModalProps {
   isOpen: boolean;
@@ -28,7 +29,12 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="max-w-[1040px] m-auto py-24 px-1">{children}</div>
+      <div className="max-w-[1040px] m-auto py-24 px-1 relative">
+        <Button onClick={onClose} className="absolute top-0 right-0 p-0" variant={"mediumLike"}>
+          <X className="!h-8 !w-8" />
+        </Button>
+        {children}
+      </div>
     </div>
   );
 }

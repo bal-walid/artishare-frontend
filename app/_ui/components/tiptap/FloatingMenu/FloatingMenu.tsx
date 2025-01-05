@@ -49,12 +49,7 @@ const FloatingMenuWrapper = () => {
             strokeWidth={0.5}
           />
         </Button>
-        <div
-          className="w-[1px] h-[36px] ml-2"
-          style={{
-            background: "rgba(49, 49, 47, 0.7)",
-          }}
-        />
+
 
         {showMenu && (
           <div className="absolute left-full ml-2 flex items-center gap-1 p-1 shadow-lg bg-background/80 backdrop-blur-sm rounded-lg">
@@ -63,7 +58,7 @@ const FloatingMenuWrapper = () => {
                 key={index}
                 className="opacity-0"
                 style={{
-                  animation: `rotate-in 1s ${
+                  animation: `rotate-in 200ms ${
                     delay * ANIMATION_DELAY
                   }ms ease-out forwards`,
                 }}

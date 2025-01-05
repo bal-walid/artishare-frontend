@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import React, { useRef, useState } from "react";
 
 const TagInput = () => {
@@ -7,21 +9,11 @@ const TagInput = () => {
   const refocusInput = () => {
     inputRef.current?.focus();
   };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInputValue(inputValue ? e.target.value : e.target.value.slice(-1));
-  }
-  const focusAtStart = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (!inputValue) {
-      e.target.setSelectionRange(0, 0);
-    }
-   };
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
       if (!inputValue) {
-        e.preventDefault();
         if (tags.length) {
-          setTags(tags.slice(0,-1))
+          setTags(tags.slice(0, -1));
         }
       }
     }
@@ -40,12 +32,17 @@ const TagInput = () => {
       className="bg-[#fafafa] mt-2 pl-6 py-4 border border-black border-opacity-15 text-sm"
     >
       {tags.map((tag) => (
-        <span className="border border-opacity-10 mr-2 py-2 pl-2 pr-5 bg-white">{tag}</span>
+        <span key={tag} className="inline-flex items-center border border-opacity-10 mr-2 py-2 pl-2 pr-5 bg-white">
+          {tag}{" "}
+          <Button variant={"mediumLike"}>
+            <X className="!h-4 !w-4" />
+          </Button>{" "}
+        </span>
       ))}
       <input
-        value={inputValue || "Add a topic..."}
-        onChange={handleInputChange}
-        onFocus={focusAtStart}
+        value={inputValue}
+        placeholder="Add a topic..."
+        onChange={(e) => setInputValue(e.target.value)}
         ref={inputRef}
         className={
           "outline-none bg-transparent text-black text-opacity-80" +

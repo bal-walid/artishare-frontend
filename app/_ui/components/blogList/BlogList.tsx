@@ -36,11 +36,16 @@ const BlogList = ({
   useEffect(() => {
     connect();
   }, [hasMore]);
+
   return (
     <div className="max-w-[728px] w-full p-4">
-      {blogs.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} />
-      ))}
+      {blogs.length === 0 ? (
+        <div className="text-center text-muted-foreground">
+          No blogs available.
+        </div>
+      ) : (
+        blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
+      )}
 
       {/* Render skeletons while data is loading, but stop when hasMore is false */}
       {hasMore && (

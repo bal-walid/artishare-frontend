@@ -1,8 +1,13 @@
-export type Comment = {
+import { Blog } from "./blogs";
+import { User } from "./users";
+
+export type Comt = {
   id: number;
   content: string;
   userId: number;
+  user: User;
   blogId: number;
+  blog?: Blog;
   createdAt: string;
   updatedAt: string;
 };

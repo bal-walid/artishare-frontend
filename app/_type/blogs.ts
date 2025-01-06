@@ -1,4 +1,5 @@
 import { Category } from "./categories";
+import { Comt } from "./comments";
 import { Like } from "./likes";
 import { User } from "./users";
 
@@ -9,7 +10,7 @@ export type Blog = {
     body: string;
     creatorId: number;
     creator: User;
-    comments: Comment[];
+    comments: Comt[];
     likes: Like[];
     categories: Category[];
     createdAt: string;

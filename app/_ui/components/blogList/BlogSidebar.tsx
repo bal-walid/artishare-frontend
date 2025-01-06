@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
+import { fetchCategories } from "@/app/_network/categories";
+import { Category } from "@/app/_type/categories";
 
 const defaultTags = [
   "Self-Improvement",
@@ -16,13 +18,13 @@ const defaultTags = [
 ];
 
 const BlogSideBar = () => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<Category[]>([]);
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
   useEffect(() => {
-    setTimeout(() => {
-      setTags(defaultTags);
+    fetchCategories().then((categories) => {
+      setTags(categories);
       setLoadingTags(false);
-    }, 2000);
+    });
   }, []);
   return (
     <div className="sticky top-0 border-l p-4 max-w-[368px] min-w-[368px]">
@@ -43,8 +45,9 @@ const BlogSideBar = () => {
             <Button
               className="text-sm font-normal rounded-full"
               variant={"secondary"}
+              key={tag.id}
             >
-              {tag}
+              {tag.name}
             </Button>
           ))}
         </div>

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Input from "../Input";
+
 import { useEffect } from "react";
 const fields = userUpdateFields;
 const firstlast_name = fields.filter(
@@ -50,7 +51,6 @@ export default function PersonalInfoForm() {
       email: user?.email || "",
     });
   }, [reset, user]);
-  if (!user) return null;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Card>

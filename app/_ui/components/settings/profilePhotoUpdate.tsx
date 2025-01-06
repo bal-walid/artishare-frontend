@@ -34,8 +34,6 @@ export default function ProfilePhotoForm() {
     }
   }, [user]);
 
-  if (!user) return null;
-
   return (
     <Card>
       <CardContent className="p-6">
@@ -43,12 +41,28 @@ export default function ProfilePhotoForm() {
           <h2 className="text-xl font-semibold">Profile Photo</h2>
           <div className="flex items-center gap-8">
             <div className="relative h-24 w-24">
-              <Image
-                src={preview || "/default-profile.png"} // Provide a default fallback image
-                alt="Profile"
-                fill
-                className="rounded-full object-cover"
-              />
+              {
+                // Show the image preview
+                preview && (
+                  <Image
+                    src={preview}
+                    alt="Profile"
+                    fill
+                    className="rounded-full object-cover"
+                  />
+                )
+              }
+              {
+                // Show a default image if no image is uploaded
+                !preview && (
+                  <Image
+                    src="/hero.png"
+                    alt="Profile"
+                    fill
+                    className="rounded-full object-cover"
+                  />
+                )
+              }
             </div>
             <div className="space-y-2">
               <Button

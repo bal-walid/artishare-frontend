@@ -17,7 +17,7 @@ export default function Home() {
   //   router.push("/blogs");
   // }
   return (
-    <div className="flex-1 flex flex-col ">
+    <div className="h-full flex flex-col ">
       <SubSection animationType="top-to-bottom">
         <HomeHeader />
       </SubSection>

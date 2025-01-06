@@ -4,9 +4,9 @@ interface LoadingProps {
   className?: string;
 }
 
-const Loading = ({ className }: LoadingProps) => {
+const Loading = ({ className = "" }: LoadingProps) => {
   return (
-    <div>
+    <div className="w-full h-full flex items-center justify-center">
       <span className={"spinner " + className}></span>
     </div>
   );

@@ -24,17 +24,12 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex bg-white"
-      onClick={onClose}
+      className="fixed inset-0 z-[10000] flex bg-white"
       role="dialog"
       aria-modal="true"
     >
-      <div className="max-w-[1040px] m-auto py-24 px-1 relative">
-        <Button
-          onClick={onClose}
-          className="absolute top-0 right-0 p-0"
-          variant={"mediumLike"}
-        >
+      <div className="max-w-[1040px] w-full m-auto py-24 px-1 relative">
+        <Button onClick={onClose} className="absolute top-0 right-0 p-0" variant={"mediumLike"}>
           <X className="!h-8 !w-8" />
         </Button>
         {children}

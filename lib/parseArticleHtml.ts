@@ -5,22 +5,19 @@ function parseArticleHtml(html: string) {
 
   // Check if first element is h1
   const firstElement = body.firstElementChild;
-  const firstH1 = firstElement?.tagName === 'H1' ? (firstElement.textContent || null) : null;
+  const firstH1 = firstElement?.tagName === 'H1' ? (firstElement.textContent || '') : '';
 
   // Check if next element is h2
   const firstH2AfterH1 = firstH1 && 
     firstElement?.nextElementSibling?.tagName === 'H2' ? 
-    firstElement.nextElementSibling.textContent : null;
+    (firstElement.nextElementSibling.textContent || '') : '';
 
   // Find all images
-  const images = Array.from(doc.querySelectorAll('img')).map(img => ({
-    src: img.getAttribute('src'),
-    alt: img.getAttribute('alt'),
-  }));
+  const images = Array.from(doc.querySelectorAll('img')).map(img => img.src);
 
   return {
-    firstH1,
-    firstH2AfterH1,
+    title: firstH1,
+    subtitle: firstH2AfterH1,
     images
   };
 }

@@ -1,10 +1,32 @@
-import { Blog, CreateBlog, UpdateBlog } from "@/app/_type/blogs";
+import { Blog, CreateBlog, DisplayBlog, UpdateBlog } from "@/app/_type/blogs";
 import { fetchData } from "./main";
+import { serverAddress } from "../_config/main";
 
 // Fetch all blogs
-export const fetchBlogs = async (): Promise<Blog[]> => {
-  return (await fetchData<Blog[]>("/blogs")) as Blog[];
+export const fetchBlogs = async (page = 1): Promise<{ blogs: DisplayBlog[]; hasMore: boolean }> => {
+  try {
+    const response = await fetchData(`/blogs?page=${page}`);
+    const blogs = response.blog.data.map((blog: any) => ({
+      id: blog.id,
+      title: blog.title,
+      creator: `${blog.user.first_name} ${blog.user.last_name}`,
+      creatorPicture: serverAddress + blog.user.profile_image,
+      description: blog.description,
+      preview: serverAddress + blog.preview,
+      categories: blog.categories.map((category: any) => category.name),
+      likeCount: blog.likes_count,
+      commentCount: blog.comments_count,
+      date: blog.created_at,
+    }));
+    const hasMore = response.blog.next_page_url !== null;
+
+    return { blogs, hasMore };
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return { blogs: [], hasMore: false };
+  }
 };
+
 
 // Fetch a single blog
 export const fetchBlog = async (id: number): Promise<Blog> => {

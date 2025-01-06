@@ -51,7 +51,9 @@ const ImagePicker = ({
                   ? 'ring-2 ring-green-500 ring-offset-2' 
                   : 'hover:ring-2 hover:ring-green-400 hover:ring-offset-2'
                 }`}
-              onClick={() => setSelectedImage(image)}
+              onClick={() =>{
+                setSelectedImage(image.replace('http://localhost:8000', ''))
+              }}
             >
               <Image
                 alt="preview"

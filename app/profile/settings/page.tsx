@@ -21,7 +21,6 @@ export default function SettingsView() {
           <Suspense fallback={<LoadingSpinner />}>
             <PersonalInfoForm />
           </Suspense>
-
           <PassowrdUpdate />
         </div>
       </div>

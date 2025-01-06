@@ -1,11 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Blog } from "@/app/_type/blogs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Pen, Mail, ThumbsUp, MessageSquare, PenSquare } from "lucide-react";
 import ProfileImageUpload from "@/app/_ui/components/profile/profileImageUpload";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -13,113 +10,121 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useAuth } from "../_hooks/useAuth";
+import { Mail, MessageSquare, PenSquare, ThumbsUp } from "lucide-react";
+import Image from "next/image";
+import { BlogModal } from "../_ui/components/profile/blogModal";
 import { EmptyState } from "../_ui/components/profile/emptyState";
+import { useAuthContext } from "../contexts/AuthContext";
+import { User } from "../_type/users";
 
-// // Mock data for demonstration
-// const mockUser: User = {
-//   id: 1,
-//   first_name: "John",
-//   last_name: "Doe",
-//   email: "john@example.com",
-//   password: "******",
-//   createdAt: "2024-01-01",
-//   updatedAt: "2024-01-01",
-// };
+// Mock data for demonstration
+const mockUser: User = {
+  id: 1,
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@example.com",
+  password: "******",
+  createdAt: "2024-01-01",
+  updatedAt: "2024-01-01",
+  blogs: [],
+  likes: [],
+  comments: [],
+  profile_image: "/profile.jpg",
+};
 
-// const mockBlogs: Blog[] = [
-//   {
-//     id: 1,
-//     title: "First Blog",
-//     description: "This is my first blog",
-//     body: "Content here...",
-//     creatorId: 1,
-//     creator: mockUser,
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-//   {
-//     id: 4,
-//     title: "Second Blog",
-//     description: "This is my second blog",
-//     body: "Content here...",
-//     creatorId: 1,
-//     creator: mockUser,
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-// ];
+const mockBlogs: Blog[] = [
+  {
+    id: 1,
+    title: "First Blog",
+    description: "This is my first blog",
+    body: "Content here...",
+    creatorId: 1,
+    creator: mockUser,
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+  {
+    id: 4,
+    title: "Second Blog",
+    description: "This is my second blog",
+    body: "Content here...",
+    creatorId: 1,
+    creator: mockUser,
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+];
 
-// const mockLikedBlogs: Blog[] = [
-//   {
-//     id: 2,
-//     title: "Liked Blog",
-//     description: "This is a blog I liked",
-//     body: "Content here...",
-//     creatorId: 2,
-//     creator: { ...mockUser, id: 2 },
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-//   {
-//     id: 5,
-//     title: "Another Liked Blog",
-//     description: "This is another blog I liked",
-//     body: "Content here...",
-//     creatorId: 2,
-//     creator: { ...mockUser, id: 2 },
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-// ];
+const mockLikedBlogs: Blog[] = [
+  {
+    id: 2,
+    title: "Liked Blog",
+    description: "This is a blog I liked",
+    body: "Content here...",
+    creatorId: 2,
+    creator: { ...mockUser, id: 2 },
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+  {
+    id: 5,
+    title: "Another Liked Blog",
+    description: "This is another blog I liked",
+    body: "Content here...",
+    creatorId: 2,
+    creator: { ...mockUser, id: 2 },
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+];
 
-// const mockCommentedBlogs: Blog[] = [
-//   {
-//     id: 3,
-//     title: "Commented Blog",
-//     description: "This is a blog I commented on",
-//     body: "Content here...",
-//     creatorId: 3,
-//     creator: { ...mockUser, id: 3 },
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-//   {
-//     id: 6,
-//     title: "Another Commented Blog",
-//     description: "This is another blog I commented on",
-//     body: "Content here...",
-//     creatorId: 3,
-//     creator: { ...mockUser, id: 3 },
-//     comments: [],
-//     likes: [],
-//     categories: [],
-//     createdAt: "2024-01-01",
-//     updatedAt: "2024-01-01",
-//   },
-// ];
+const mockCommentedBlogs: Blog[] = [
+  {
+    id: 3,
+    title: "Commented Blog",
+    description: "This is a blog I commented on",
+    body: "Content here...",
+    creatorId: 3,
+    creator: { ...mockUser, id: 3 },
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+  {
+    id: 6,
+    title: "Another Commented Blog",
+    description: "This is another blog I commented on",
+    body: "Content here...",
+    creatorId: 3,
+    creator: { ...mockUser, id: 3 },
+    comments: [],
+    likes: [],
+    categories: [],
+    createdAt: "2024-01-01",
+    updatedAt: "2024-01-01",
+  },
+];
 
 export default function ProfileView() {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   if (!user) return null;
   const profile_image = user.profile_image;
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-background pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-background pb-24 overflow-x-hidden">
       <div className="relative">
         {/* Background image section */}
         <div className="relative h-[350px] w-full">
@@ -135,7 +140,7 @@ export default function ProfileView() {
 
         {/* Profile content */}
         <div className="relative z-10 px-4 -mt-32 space-y-8 max-w-[1200px] mx-auto ">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center translate-y-5">
             <ProfileImageUpload initialImage={profile_image} />
             <div className="mt-4 text-center">
               <h1 className="text-3xl font-bold text-slate-800">
@@ -148,9 +153,9 @@ export default function ProfileView() {
             </div>
           </div>
 
-          <Card className="w-full backdrop-blur-sm bg-white/95 border-primary/10 shadow-lg shadow-primary/5">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="w-full backdrop-blur-sm   border-primary/10 shadow-lg shadow-primary/5">
+            <CardContent className="p-6 ">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-hero-bg">
                 <StatsCard
                   icon={<ThumbsUp className="h-5 w-5" />}
                   title="Liked Blogs"
@@ -172,8 +177,8 @@ export default function ProfileView() {
 
           <section>
             <h2 className="text-2xl font-bold mb-4">Your Blogs</h2>
-            {user.blogs.length > 0 ? (
-              <BlogCarousel blogs={user.blogs} showUpdateButton />
+            {mockBlogs.length > 0 ? (
+              <BlogCarousel blogs={mockBlogs} showUpdateButton />
             ) : (
               <EmptyState
                 icon={PenSquare}
@@ -185,8 +190,8 @@ export default function ProfileView() {
 
           <section>
             <h2 className="text-2xl font-bold mb-4">Blogs You Liked</h2>
-            {user.likes.length > 0 ? (
-              <BlogCarousel blogs={user.blogs} showUpdateButton />
+            {user.blogs.length > 0 ? (
+              <BlogCarousel blogs={mockLikedBlogs} showUpdateButton />
             ) : (
               <EmptyState
                 icon={ThumbsUp}
@@ -198,8 +203,8 @@ export default function ProfileView() {
 
           <section>
             <h2 className="text-2xl font-bold mb-4">Blogs You Commented On</h2>
-            {user.comments.length > 0 ? (
-              <BlogCarousel blogs={user.blogs} showUpdateButton />
+            {mockCommentedBlogs.length > 0 ? (
+              <BlogCarousel blogs={mockCommentedBlogs} showUpdateButton />
             ) : (
               <EmptyState
                 icon={MessageSquare}
@@ -234,7 +239,6 @@ function StatsCard({
   );
 }
 
-// Keep BlogCarousel and BlogCard components as they are
 function BlogCarousel({
   blogs,
   showUpdateButton = false,
@@ -248,13 +252,13 @@ function BlogCarousel({
         align: "start",
         loop: true,
       }}
-      className="w-full"
+      className="w-full mt-4 "
     >
-      <CarouselContent className="ml-2 md:ml-4">
+      <CarouselContent className="ml-2 md:ml-4 ">
         {blogs.map((blog) => (
           <CarouselItem
             key={blog.id}
-            className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/4"
+            className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 "
           >
             <BlogCard blog={blog} showUpdateButton={showUpdateButton} />
           </CarouselItem>
@@ -267,7 +271,6 @@ function BlogCarousel({
     </Carousel>
   );
 }
-
 function BlogCard({
   blog,
   showUpdateButton = false,
@@ -276,19 +279,27 @@ function BlogCard({
   showUpdateButton?: boolean;
 }) {
   return (
-    <Card className="h-full max-w-xs">
+    <Card className="h-full max-w-xs ">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-2xl capitalize ">{blog.title}</CardTitle>
           {showUpdateButton && (
-            <Button variant="outline" size="icon">
-              <Pen className="h-4 w-4" />
-            </Button>
+            <BlogModal
+              blog={blog}
+              onDelete={(id) => {
+                // Implement your delete logic here
+                console.log("Deleting blog:", id);
+              }}
+              onUpdate={(blog) => {
+                // Implement your update logic here
+                console.log("Updating blog:", blog);
+              }}
+            />
           )}
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-foreground/70 line-clamp-2">{blog.description}</p>
+        <p className="text-foreground/70 line-clamp-2 ">{blog.description}</p>
         <div className="mt-4 flex flex-col flex-wrap gap-2 text-sm text-muted-foreground">
           <div className="flex gap-2">
             <p>{blog.comments.length} comments</p>

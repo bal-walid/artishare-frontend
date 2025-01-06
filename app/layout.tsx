@@ -1,6 +1,6 @@
 import "./globals.css";
 import { playfairSC, playfair, inter, sourceCodePro } from "./_ui/fonts";
-import { JetBrains_Mono } from "next/font/google";
+import { AuthGuard } from "./contexts/AuthContext";
 
 export default function RootLayout({
   children,
@@ -12,7 +12,7 @@ export default function RootLayout({
       <body
         className={`${sourceCodePro.variable} ${playfairSC.variable} ${playfair.variable} ${inter.variable} ${inter.className} antialiased h-dvh flex flex-col overflow-y-auto overflow-x-hidden`}
       >
-        {children}
+        <AuthGuard requireAuth={false}>{children}</AuthGuard>
       </body>
     </html>
   );

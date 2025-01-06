@@ -18,11 +18,11 @@ import loginFields from "../_form/forms/login";
 import { validationSchemaLogin } from "../_form/validation/login";
 import { login } from "../_type/auth";
 import Input from "../_ui/components/Input";
-import { useAuth } from "../_hooks/useAuth";
+import { useAuthContext } from "../contexts/AuthContext";
 const fields = loginFields;
 export default function LoginPage() {
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const { login } = useAuthContext();
   const formOptions = {
     resolver: yupResolver(validationSchemaLogin),
   };

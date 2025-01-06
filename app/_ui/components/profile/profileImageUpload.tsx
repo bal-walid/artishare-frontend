@@ -22,7 +22,7 @@ ProfileImageUploadProps) {
   if (!user) return null;
 
   return (
-    <div className="relative group">
+    <div className="relative group translate-y-2">
       <Avatar className="h-32 w-32 border-4 border-background shadow-xl">
         <AvatarImage src={preview || ""} />
         <AvatarFallback className="text-4xl">

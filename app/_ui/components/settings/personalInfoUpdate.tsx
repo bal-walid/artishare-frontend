@@ -2,7 +2,6 @@
 
 import { userUpdateFields } from "@/app/_form/forms/userUpdate";
 import { validationSchemaUserUpdate } from "@/app/_form/validation/userUpdate";
-import { useAuth } from "@/app/_hooks/useAuth";
 import { UpdateUser } from "@/app/_type/users";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Input from "../Input";
 
+import { useAuthContext } from "@/app/contexts/AuthContext";
 import { useEffect } from "react";
 const fields = userUpdateFields;
 const firstlast_name = fields.filter(
@@ -20,7 +20,7 @@ const otherFields = fields.filter(
 );
 
 export default function PersonalInfoForm() {
-  const { user, userUpdate } = useAuth();
+  const { user, userUpdate } = useAuthContext();
   const defaultValues: UpdateUser = {
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",

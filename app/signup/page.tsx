@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Input from "../_ui/components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -17,8 +16,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import signUpFields from "../_form/forms/signup";
 import { validationSchemaSignUp } from "../_form/validation/signup";
-import { useAuth } from "../_hooks/useAuth";
 import { signUp } from "../_type/auth";
+import Input from "../_ui/components/Input";
+import { useAuthContext } from "../contexts/AuthContext";
 const fields = signUpFields;
 const imageField = fields.find((field) => field.name === "profile_image");
 const firstlast_name = fields.filter(
@@ -32,7 +32,7 @@ const otherFields = fields.filter(
 );
 export default function SignUpPage() {
   const [error, setError] = useState("");
-  const { signup } = useAuth();
+  const { signup } = useAuthContext();
   const formOptions = {
     resolver: yupResolver(validationSchemaSignUp),
   };

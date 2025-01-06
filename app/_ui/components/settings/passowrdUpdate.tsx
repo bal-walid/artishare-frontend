@@ -2,11 +2,11 @@
 
 import { userUpdatePasswordFields } from "@/app/_form/forms/userUpdate";
 import { validationSchemaUserUpdatePassword } from "@/app/_form/validation/userUpdate";
-import { useAuth } from "@/app/_hooks/useAuth";
 import { UpdatePassword } from "@/app/_type/users";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
+import { useAuthContext } from "@/app/contexts/AuthContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Input from "../Input";
@@ -14,7 +14,7 @@ import Input from "../Input";
 const fields = userUpdatePasswordFields;
 
 export default function PasswordUpdate() {
-  const { userPasswordUpdate } = useAuth();
+  const { userPasswordUpdate } = useAuthContext();
 
   const formOptions = {
     resolver: yupResolver(validationSchemaUserUpdatePassword),

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/app/_hooks/useAuth";
+import { useAuthContext } from "@/app/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload } from "lucide-react";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ProfilePhotoForm() {
-  const { user, userImageUpdate } = useAuth();
+  const { user, userImageUpdate } = useAuthContext();
   const [preview, setPreview] = useState<string | null>(
     user?.profile_image ? `http://localhost:8000${user.profile_image}` : null
   );

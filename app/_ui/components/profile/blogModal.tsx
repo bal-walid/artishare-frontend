@@ -25,7 +25,6 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import { ChartContainer } from "@/components/ui/chart";
 import {
   Calendar,
   MessageSquare,
@@ -64,8 +63,6 @@ interface BlogModalProps {
 }
 
 export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
-  const chartConfig = {};
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -73,8 +70,8 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
           <Pen className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[85%] max-h-[85vh] p-0 gap-0">
-        <DialogHeader className="px-6 py-4 flex-row items-center justify-between border-b">
+      <DialogContent className="max-w-[95%] md:max-w-[85%] max-h-[90vh] p-0 gap-0">
+        <DialogHeader className="px-4 md:px-6 py-4 flex-row items-center justify-between border-b">
           <DialogTitle className="text-xl">Blog Details</DialogTitle>
           <div className="flex items-center gap-2">
             <DropdownMenu>
@@ -105,8 +102,8 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
             </DialogClose>
           </div>
         </DialogHeader>
-        <div className="grid md:grid-cols-2">
-          <div className="relative h-[300px] md:h-full bg-muted/30">
+        <div className="grid md:grid-cols-2 ">
+          <div className="relative h-[200px] md:h-full bg-muted/30">
             <Image
               src="/placeholder.svg"
               alt={blog.title}
@@ -115,11 +112,13 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
               priority
             />
           </div>
-          <div className="flex flex-col h-full">
-            <div className="p-6 space-y-6">
+          <div className="flex flex-col h-full overflow-hidden">
+            <div className="p-4 md:p-6 space-y-4 md:space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-3">{blog.title}</h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">
+                  {blog.title}
+                </h2>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {blog.description}
                 </p>
               </div>
@@ -129,7 +128,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                   {blog.categories.map((category, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                      className="px-2 md:px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
                     >
                       {category.name}
                     </span>
@@ -150,80 +149,91 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
 
             <Separator />
 
-            <div className="flex-1 p-6">
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="p-4 rounded-lg bg-muted/50 space-y-1">
+            <div className="flex-1 p-4 md:p-6 overflow-hidden">
+              <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
+                <div className="p-3 md:p-4 rounded-lg bg-muted/50 space-y-1">
                   <div className="flex items-center gap-2">
                     <ThumbsUp className="h-4 w-4 text-primary" />
                     <span className="text-sm font-medium">Likes</span>
                   </div>
-                  <p className="text-2xl font-bold">{blog.likes.length}</p>
+                  <p className="text-xl md:text-2xl font-bold">
+                    {blog.likes.length}
+                  </p>
                 </div>
-                <div className="p-4 rounded-lg bg-muted/50 space-y-1">
+                <div className="p-3 md:p-4 rounded-lg bg-muted/50 space-y-1">
                   <div className="flex items-center gap-2">
                     <MessageSquare className="h-4 w-4 text-primary" />
                     <span className="text-sm font-medium">Comments</span>
                   </div>
-                  <p className="text-2xl font-bold">{blog.comments.length}</p>
+                  <p className="text-xl md:text-2xl font-bold">
+                    {blog.comments.length}
+                  </p>
                 </div>
               </div>
-              <h3 className="text-lg font-semibold">Blog Analytics</h3>
-              <Carousel
-                opts={{
-                  align: "start",
-                }}
-                className="w-[85%] mx-auto "
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="md:flex ">
-                    <CarouselPrevious />
-                    <CarouselNext />
-                  </div>
-                </div>
-                <CarouselContent>
-                  <CarouselItem className="md:basis-full pl-0">
-                    <div className="space-y-4 ml-8">
-                      <h4 className="text-base font-medium">Latest Comments</h4>
-                      <div className="space-y-4">
-                        {blog.comments.slice(0, 3).map((comment, index) => (
-                          <div
-                            key={index}
-                            className="p-4 rounded-lg bg-muted/30 space-y-2"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="relative h-12 w-12 rounded-full overflow-hidden">
-                                <Image
-                                  src={comment.user.profile_image}
-                                  fill
-                                  alt="profile pic"
-                                  className="rounded-full"
-                                />
-                              </span>
-                              <span className="font-medium">
-                                {comment.user.first_name}{" "}
-                                {comment.user.last_name}
-                              </span>
-                              <span className="text-sm text-main">
-                                {new Date(
-                                  comment.createdAt
-                                ).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                              {comment.content}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
+
+              <div className="relative">
+                <Carousel
+                  opts={{
+                    align: "start",
+                  }}
+                  className="w-full"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-base md:text-lg font-semibold">
+                      Blog Analytics
+                    </h3>
+                    <div className="flex gap-2">
+                      <CarouselPrevious className="static" />
+                      <CarouselNext className="static" />
                     </div>
-                  </CarouselItem>
-                  <CarouselItem className="md:basis-full">
-                    <div className="space-y-4">
-                      <h4 className="text-base font-medium">
-                        Weekly Engagement
-                      </h4>
-                      <div className="h-[300px] bg-muted/30 rounded-lg p-4">
-                        <ChartContainer config={chartConfig}>
+                  </div>
+                  <CarouselContent>
+                    <CarouselItem className="md:basis-full pl-0">
+                      <div className="space-y-4 ml-10">
+                        <h4 className="text-sm md:text-base font-medium">
+                          Latest Comments
+                        </h4>
+                        <div className="space-y-3 md:space-y-4">
+                          {blog.comments.slice(0, 3).map((comment, index) => (
+                            <div
+                              key={index}
+                              className="p-3 md:p-4 rounded-lg bg-muted/30 space-y-2"
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className="relative h-8 md:h-12 w-8 md:w-12 rounded-full overflow-hidden shrink-0">
+                                  <Image
+                                    src={comment.user.profile_image}
+                                    fill
+                                    alt="profile pic"
+                                    className="rounded-full object-cover"
+                                  />
+                                </span>
+                                <div className="flex flex-col md:flex-row md:items-center md:gap-2">
+                                  <span className="font-medium text-sm md:text-base">
+                                    {comment.user.first_name}{" "}
+                                    {comment.user.last_name}
+                                  </span>
+                                  <span className="text-xs md:text-sm text-muted-foreground">
+                                    {new Date(
+                                      comment.createdAt
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {comment.content}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem className="md:basis-full">
+                      <div className="space-y-4">
+                        <h4 className="text-sm md:text-base font-medium">
+                          Weekly Engagement
+                        </h4>
+                        <div className="h-[250px] md:h-[300px] bg-muted/30 rounded-lg p-4">
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={weeklyLikes}>
                               <XAxis
@@ -252,12 +262,12 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                               />
                             </LineChart>
                           </ResponsiveContainer>
-                        </ChartContainer>
+                        </div>
                       </div>
-                    </div>
-                  </CarouselItem>
-                </CarouselContent>
-              </Carousel>
+                    </CarouselItem>
+                  </CarouselContent>
+                </Carousel>
+              </div>
             </div>
           </div>
         </div>

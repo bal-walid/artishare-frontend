@@ -64,9 +64,9 @@ const BlogCard = ({blog} : {blog: DisplayBlog}) => {
         <Image
           src="/placeholder.svg"
           alt="Blog cover image"
-          width={128}
-          height={96}
-          className=" object-cover rounded-sm ml-16"
+          width={160}
+          height={107}
+          className="h-[107px] object-cover rounded-sm ml-16"
         />
       </div>
     </CardContent>

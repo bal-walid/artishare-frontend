@@ -1,9 +1,14 @@
 // use client
 import { useEffect, useState } from "react";
 import { getLoggedInUser } from "../_network/auth";
-import { User } from "../_type/users";
+import { UpdatePassword, UpdateUser, User } from "../_type/users";
 import { login as loginApi, register } from "../_network/auth";
 import { signUp } from "../_type/auth";
+import {
+  updateUser,
+  updateUserImage,
+  updateUserPassword,
+} from "../_network/users";
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -49,7 +54,27 @@ export const useAuth = () => {
     localStorage.setItem("authToken", newUser.token);
     return newUser.user;
   };
-  console.log(user);
+  const userImageUpdate = async (data: FormData): Promise<User | null> => {
+    if (!user) return null;
+    const updatedUser = await updateUserImage(user?.id, data);
+    setUser(updatedUser.user);
+    return updatedUser.user;
+  };
+
+  const userUpdate = async (data: UpdateUser): Promise<User | null> => {
+    if (!user) return null;
+    const updatedUser = await updateUser(user?.id, data);
+    setUser(updatedUser.user);
+    return updatedUser.user;
+  };
+  const userPasswordUpdate = async (
+    data: UpdatePassword
+  ): Promise<User | null> => {
+    if (!user) return null;
+    const updatedUser = await updateUserPassword(user?.id, data);
+    setUser(updatedUser.user);
+    return updatedUser.user;
+  };
 
   const logout = () => {
     localStorage.removeItem("authToken");
@@ -64,5 +89,8 @@ export const useAuth = () => {
     login,
     signup,
     logout,
+    userUpdate,
+    userPasswordUpdate,
+    userImageUpdate,
   };
 };

@@ -1,4 +1,4 @@
-import { User, UpdateUser } from "@/app/_type/users";
+import { UpdatePassword, UpdateUser, User } from "@/app/_type/users";
 import { fetchData } from "./main";
 
 // Fetch all users
@@ -19,11 +19,51 @@ export const fetchUser = async (id: number): Promise<User> => {
 export const updateUser = async (
   id: number,
   data: UpdateUser
-): Promise<User> => {
-  return (await fetchData<User>(`/users/${id}`, {
+): Promise<{
+  user: User;
+}> => {
+  return (await fetchData<{
+    user: User;
+  }>(`/users/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),
-  })) as User;
+  })) as {
+    user: User;
+  };
+};
+
+//update user image
+export const updateUserImage = async (
+  id: number,
+  data: FormData
+): Promise<{
+  user: User;
+}> => {
+  return (await fetchData<{
+    user: User;
+  }>(`/users/${id}/image`, {
+    method: "POST",
+    body: data,
+  })) as {
+    user: User;
+  };
+};
+
+//update user password
+export const updateUserPassword = async (
+  id: number,
+  data: UpdatePassword
+): Promise<{
+  user: User;
+}> => {
+  return (await fetchData<{
+    user: User;
+  }>(`/users/${id}/password`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  })) as {
+    user: User;
+  };
 };
 
 // Delete a user

@@ -46,8 +46,7 @@ export default function SignUpPage() {
 
   async function onSubmit(data: signUp) {
     try {
-      console.log(data);
-      console.log(await signup(data));
+      await signup(data);
     } catch (error) {
       setError((error as Error).message);
     }

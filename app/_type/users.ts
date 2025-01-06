@@ -24,10 +24,9 @@ export type CreateUser = {
 };
 
 export type UpdateUser = {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  profile_image?: FileList;
+  first_name: string;
+  last_name: string;
+  email: string;
 };
 export type UpdatePassword = {
   current_password: string;

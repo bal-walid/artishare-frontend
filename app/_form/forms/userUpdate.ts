@@ -28,14 +28,6 @@ const userUpdateFields: UserUpdateFields[] = [
     type: "text",
     placeholder: "Enter your last name",
   },
-  {
-    labelText: "Profile Image",
-    labelFor: "profile_image",
-    id: "profile_image",
-    name: "profile_image",
-    type: "file",
-    placeholder: "Upload your profile image",
-  },
 ];
 const userUpdatePasswordFields: UserUpdatePasswordFields[] = [
   {

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
 }
 

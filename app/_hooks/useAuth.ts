@@ -9,6 +9,7 @@ import {
   updateUserImage,
   updateUserPassword,
 } from "../_network/users";
+import { UnauthorizedError } from "../_errors/main";
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,9 @@ export const useAuth = () => {
           setUser(user);
         }
       } catch (error) {
-        console.error(error);
+        if (error instanceof UnauthorizedError) {
+          setLoading(false);
+        }
       } finally {
         setLoading(false);
       }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useAuthContext } from "@/app/contexts/AuthContext";
 
 import {
   DropdownMenu,
@@ -19,20 +20,12 @@ import Logo from "../Logo";
 import { useAuth } from "@/app/_hooks/useAuth";
 
 export default function MainHeader() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated } = useAuthContext();
 
   const handleLogOut = () => {
     // Implement logout logic here
     console.log("Logging out");
   };
-
-  if (loading) {
-    return (
-      <header className="h-16 py-2 border-b">
-        <span className="invisible">Placeholder</span>
-      </header>
-    );
-  }
 
   return (
     <header className="h-16 flex items-center justify-between border-b py-2 px-4 md:px-6">

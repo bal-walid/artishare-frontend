@@ -11,7 +11,7 @@ import Image from "next/image";
 const BlogList = () => {
   const [blogs] = useState(defaultBlogs);
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-4">
+    <div className="max-w-[728px] p-4">
       {blogs.map((blog, index) => (
         <Card
           key={index}

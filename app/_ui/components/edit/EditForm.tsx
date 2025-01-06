@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import formatArticle from "@/lib/formatArticle";
 import parseArticleHtml from "@/lib/parseArticleHtml";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ImagePicker from "./ImagePicker";
 import TagInput from "./TagInput";
 import { createBlog } from "@/app/_network/blogs";
@@ -18,7 +18,10 @@ const inputStyleClasses =
 
 const EditForm = ({ htmlContent }: EditFormProps) => {
   const { user } = useAuthContext();
-  const { title, description, images } = parseArticleHtml(htmlContent);
+  const { title, description, images } = useMemo(
+    () => parseArticleHtml(htmlContent),
+    [htmlContent]
+  );
 
   const [formData, setFormData] = useState<CreateBlog>({
     title,
@@ -89,7 +92,7 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
         </div>
       </div>
 
-      <div className="border-t md:border-t-0 md:border-l border-gray-100">
+      <div className="border-t md:border-none border-gray-100">
         <div className="p-8 md:p-10 space-y-6">
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-2">Tags</h4>
@@ -115,21 +118,19 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
               })
             }
           />
-          <div className="flex items-end justify-end">
+          <div className="pt-2 flex justify-between items-center">
+            <Button
+              onClick={handlePublish}
+              className="rounded-full px-6 py-2  bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
+            >
+              Publish now
+            </Button>
             <p className="text-sm text-gray-600 bg-hero-bg p-4 rounded-lg flex gap-2">
               <span>Created By : </span>
               <span className="text-gray-900">
                 {user?.first_name} {user?.last_name}
               </span>
             </p>
-          </div>
-          <div className="pt-4">
-            <Button
-              onClick={handlePublish}
-              className="rounded-full px-6 py-2 h-auto bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
-            >
-              Publish now
-            </Button>
           </div>
         </div>
       </div>

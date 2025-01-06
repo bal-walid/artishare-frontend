@@ -18,7 +18,7 @@ export default function EditPage() {
         <Tiptap editorRef={editorRef} />
       </div>
       {editorRef.current && (
-        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+        <Modal overlayClassName="bg-gray-50" isOpen={modalOpen} onClose={() => setModalOpen(false)}>
           <EditForm htmlContent={editorRef.current.getHTML()} />
         </Modal>
       )}

@@ -1,11 +1,12 @@
 import Image from "next/image";
 import SubSection from "../subSectionLayout";
+import Link from "next/link";
 const Hero = () => {
   return (
     <div className="flex-1 bg-hero-bg grid grid-cols-2 overflow-hidden w-dvw">
       <SubSection
         animationType="left-to-right"
-        className="h-full flex flex-col gap-8 justify-center pl-8 border-r border-r-black"
+        className="h-full flex flex-col gap-8 justify-center px-12 border-r border-r-black/50"
       >
         <h1 className="font-display text-7xl">
           Your stories <br></br> meet the world
@@ -13,8 +14,8 @@ const Hero = () => {
         <p className="text-3xl">
           Share your thoughts and read everyone else&apos;s
         </p>
-        <button className="w-fit bg-main text-white font-display-secondary rounded-full text-2xl py-2 px-6 hover:bg-main/70 hover:-translate-y-0.5">
-          Read now
+        <button className="w-fit bg-main text-white font-display-secondary rounded-full text-2xl py-2 px-6 hover:bg-main/70">
+          <Link href={"/blogs"}>Read now</Link>
         </button>
       </SubSection>
       <SubSection

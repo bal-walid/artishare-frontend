@@ -1,23 +1,36 @@
 "use client";
 
+import { userUpdatePasswordFields } from "@/app/_form/forms/userUpdate";
+import { validationSchemaUserUpdatePassword } from "@/app/_form/validation/userUpdate";
+import { useAuth } from "@/app/_hooks/useAuth";
+import { UpdatePassword } from "@/app/_type/users";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
 
-interface PasswordUpdateData {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import Input from "../Input";
+
+const fields = userUpdatePasswordFields;
 
 export default function PasswordUpdate() {
-  const { register, handleSubmit } = useForm<PasswordUpdateData>();
+  const { userPasswordUpdate } = useAuth();
 
-  const onSubmit = async (data: PasswordUpdateData) => {
-    console.log("Updating password:", data);
-    // Handle password update
+  const formOptions = {
+    resolver: yupResolver(validationSchemaUserUpdatePassword),
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<UpdatePassword>(formOptions);
+
+  const onSubmit = async (data: UpdatePassword) => {
+    try {
+      await userPasswordUpdate(data);
+    } catch (error) {
+      console.error("User update error:", error);
+    }
   };
 
   return (
@@ -33,35 +46,22 @@ export default function PasswordUpdate() {
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
+              {fields.map((field) => (
                 <Input
-                  id="currentPassword"
-                  type="password"
-                  className="bg-background"
-                  {...register("currentPassword")}
+                  key={field.id}
+                  htmlFor={field.labelFor}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  required
+                  disabled={isSubmitting}
+                  value={field.value}
+                  labelText={field.labelText}
+                  register={register}
+                  name={field.name}
+                  classNameInput=" border border-gray-300 rounded-md w-full px-3 py-2 h-10 outline-none focus:border-none"
+                  error={errors[field.name]?.message}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password</Label>
-                <Input
-                  id="newPassword"
-                  type="password"
-                  className="bg-background"
-                  {...register("newPassword")}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  className="bg-background"
-                  {...register("confirmPassword")}
-                />
-              </div>
+              ))}
             </div>
 
             <div className="flex justify-end">

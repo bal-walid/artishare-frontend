@@ -13,6 +13,7 @@ interface InputProps {
   placeholder: string;
   required?: boolean;
   labelText?: string;
+  value?: string | number;
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>;
@@ -35,6 +36,7 @@ const Input = ({
   classNameInput,
   classNameContainer,
   name,
+  value,
   labelText,
   ...rest
 }: InputProps) => {
@@ -52,6 +54,7 @@ const Input = ({
         classNameInput,
         classNameContainer,
         name,
+        value,
         labelText,
         ...rest,
       }}

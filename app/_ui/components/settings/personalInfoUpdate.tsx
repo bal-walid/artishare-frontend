@@ -1,31 +1,56 @@
 "use client";
 
+import { userUpdateFields } from "@/app/_form/forms/userUpdate";
+import { validationSchemaUserUpdate } from "@/app/_form/validation/userUpdate";
+import { useAuth } from "@/app/_hooks/useAuth";
+import { UpdateUser } from "@/app/_type/users";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-
-interface PersonalInfoFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import Input from "../Input";
+import { useEffect } from "react";
+const fields = userUpdateFields;
+const firstlast_name = fields.filter(
+  (field) => field.name === "first_name" || field.name === "last_name"
+);
+const otherFields = fields.filter(
+  (field) => field.name !== "first_name" && field.name !== "last_name"
+);
 
 export default function PersonalInfoForm() {
-  const { register, handleSubmit } = useForm<PersonalInfoFormData>({
-    defaultValues: {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john@example.com",
-    },
-  });
-
-  const onSubmit = async (data: PersonalInfoFormData) => {
-    console.log("Updating personal info:", data);
-    // Handle personal info update
+  const { user, userUpdate } = useAuth();
+  const defaultValues: UpdateUser = {
+    first_name: user?.first_name || "",
+    last_name: user?.last_name || "",
+    email: user?.email || "",
   };
+  const formOptions = {
+    resolver: yupResolver(validationSchemaUserUpdate),
+    defaultValues,
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<UpdateUser>(formOptions);
 
+  const onSubmit = async (data: UpdateUser) => {
+    try {
+      await userUpdate(data);
+    } catch (error) {
+      console.error("User update error:", error);
+    }
+  };
+  useEffect(() => {
+    reset({
+      first_name: user?.first_name || "",
+      last_name: user?.last_name || "",
+      email: user?.email || "",
+    });
+  }, [reset, user]);
+  if (!user) return null;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Card>
@@ -39,33 +64,40 @@ export default function PersonalInfoForm() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+              {firstlast_name.map((field) => (
                 <Input
-                  id="firstName"
-                  className="bg-background"
-                  {...register("firstName")}
+                  key={field.id}
+                  htmlFor={field.labelFor}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  required
+                  disabled={isSubmitting}
+                  value={field.value}
+                  labelText={field.labelText}
+                  register={register}
+                  name={field.name}
+                  classNameInput=" border border-gray-300 rounded-md w-full px-3 py-2 h-10 outline-none focus:border-none"
+                  error={errors[field.name]?.message}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  className="bg-background"
-                  {...register("lastName")}
-                />
-              </div>
+              ))}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                className="bg-background"
-                {...register("email")}
-              />
+            <div className="grid gap-4 ">
+              {otherFields.map((field) => (
+                <Input
+                  key={field.id}
+                  htmlFor={field.labelFor}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  required
+                  disabled={isSubmitting}
+                  labelText={field.labelText}
+                  register={register}
+                  name={field.name}
+                  classNameInput=" border border-gray-300 w-full block   outline-none focus:border-none"
+                  error={errors[field.name]?.message}
+                />
+              ))}
             </div>
 
             <div className="flex justify-end">

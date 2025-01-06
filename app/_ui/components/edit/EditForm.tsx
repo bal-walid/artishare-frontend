@@ -40,7 +40,7 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
   };
 
   return (
-    <div className="w-full grid md:grid-cols-2 gap-6 max-w-6xl mx-auto bg-white rounded-xl shadow-lg">
+    <div className="w-full grid md:grid-cols-2   mx-auto bg-white rounded-xl shadow-lg">
       <div className="p-8 md:p-10 space-y-6">
         <div>
           <h4 className="text-lg font-semibold text-gray-900 mb-2">
@@ -85,8 +85,7 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
         <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
           <p className="text-sm text-gray-600">
             <strong className="text-gray-900">Note:</strong> Changes here will
-            affect how your story appears in public places like Medium&apos;s
-            homepage and in subscribers&apos; inboxes — not the contents of the
+            affect how your story appears in public places like users' homepage not the contents of the
             story itself.
           </p>
         </div>
@@ -118,14 +117,14 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
               })
             }
           />
-          <div className="pt-2 flex justify-between items-center">
+          <div className="pt-2 flex max-lg:flex-col max-lg:items-start max-lg:gap-3 justify-between items-center">
             <Button
               onClick={handlePublish}
-              className="rounded-full px-6 py-2  bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
+              className="max-lg:order-2 max-sm:mx-auto rounded-full px-6 py-2  bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
             >
               Publish now
             </Button>
-            <p className="text-sm text-gray-600 bg-hero-bg p-4 rounded-lg flex gap-2">
+            <p className="text-sm text-gray-600 bg-hero-bg p-4 max-sm:py-2 rounded-lg flex gap-2 max-sm:w-full max-sm:flex-col">
               <span>Created By : </span>
               <span className="text-gray-900">
                 {user?.first_name} {user?.last_name}

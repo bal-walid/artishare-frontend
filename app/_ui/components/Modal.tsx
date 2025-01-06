@@ -25,13 +25,13 @@ export default function Modal({ isOpen, onClose, children, overlayClassName }: M
 
   return (
     <div
-      className={`fixed inset-0 z-[10000] flex ${overlayClassName}`}
+      className={`fixed inset-0 z-[10000] flex overflow-y-auto p-4 ${overlayClassName}`}
       role="dialog"
       aria-modal="true"
     >
-      <div className="max-w-[1040px] w-full m-auto py-24 px-1 relative">
-        <Button onClick={onClose} className="absolute top-6 left-0 p-0" variant={"mediumLike"}>
-          <ArrowLeft className="!h-8 !w-8" />
+      <div className="max-w-[1040px] max-xl:max-w-[920px] max-lg:max-w-[860px] w-full m-auto py-24 max-md:pt-10 max-md:pb-4 px-1 relative">
+        <Button onClick={onClose} className="absolute top-0 left-0 p-0" variant={"mediumLike"}>
+          <ArrowLeft className="!h-8 !w-8 max-md:!h-6 !max-md:!w-6" />
         </Button>
         {children}
       </div>

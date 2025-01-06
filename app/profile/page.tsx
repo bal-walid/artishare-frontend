@@ -38,8 +38,8 @@ const mockBlogs: Blog[] = [
     title: "First Blog",
     description: "This is my first blog",
     body: "Content here...",
-    creatorId: 1,
-    creator: mockUser,
+    creator_id: 1,
+    user: mockUser,
     comments: [
       {
         id: 101,
@@ -70,8 +70,8 @@ const mockBlogs: Blog[] = [
     title: "Second Blog",
     description: "This is my second blog",
     body: "Content here...",
-    creatorId: 1,
-    creator: mockUser,
+    creator_id: 1,
+    user: mockUser,
     comments: [
       {
         id: 103,
@@ -111,8 +111,8 @@ const mockLikedBlogs: Blog[] = [
     title: "Liked Blog",
     description: "This is a blog I liked",
     body: "Content here...",
-    creatorId: 2,
-    creator: { ...mockUser, id: 2 },
+    creator_id: 2,
+    user: { ...mockUser, id: 2 },
     comments: [],
     likes: [],
     categories: [],
@@ -124,8 +124,8 @@ const mockLikedBlogs: Blog[] = [
     title: "Another Liked Blog",
     description: "This is another blog I liked",
     body: "Content here...",
-    creatorId: 2,
-    creator: { ...mockUser, id: 2 },
+    creator_id: 2,
+    user: { ...mockUser, id: 2 },
     comments: [],
     likes: [],
     categories: [],
@@ -140,8 +140,8 @@ const mockCommentedBlogs: Blog[] = [
     title: "Commented Blog",
     description: "This is a blog I commented on",
     body: "Content here...",
-    creatorId: 3,
-    creator: { ...mockUser, id: 3 },
+    creator_id: 3,
+    user: { ...mockUser, id: 3 },
     comments: [],
     likes: [],
     categories: [],
@@ -153,8 +153,8 @@ const mockCommentedBlogs: Blog[] = [
     title: "Another Commented Blog",
     description: "This is another blog I commented on",
     body: "Content here...",
-    creatorId: 3,
-    creator: { ...mockUser, id: 3 },
+    creator_id: 3,
+    user: { ...mockUser, id: 3 },
     comments: [],
     likes: [],
     categories: [],
@@ -353,7 +353,7 @@ function BlogCard({
             <p>{blog.likes.length} likes</p>
           </div>
           <p>
-            By: {blog.creator.first_name} {blog.creator.last_name}
+            By: {blog.user.first_name} {blog.user.last_name}
           </p>
           <p>Created: {new Date(blog.createdAt).toLocaleDateString()}</p>
         </div>

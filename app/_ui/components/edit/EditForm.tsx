@@ -1,109 +1,140 @@
-import parseArticleHtml from "@/lib/parseArticleHtml";
-import formatArticle from "@/lib/formatArticle";
-import ImagePicker from "./ImagePicker";
-import { Input } from "@/components/ui/input";
-import TagInput from "./TagInput";
-import { useMemo, useState } from "react";
+import { useAuthContext } from "@/app/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import formatArticle from "@/lib/formatArticle";
+import parseArticleHtml from "@/lib/parseArticleHtml";
+import { useState } from "react";
+import ImagePicker from "./ImagePicker";
+import TagInput from "./TagInput";
+import { createBlog } from "@/app/_network/blogs";
+import { CreateBlog } from "@/app/_type/blogs";
 
 interface EditFormProps {
   htmlContent: string;
 }
 
-interface EditFormData {
-  title: string;
-  subtitle: string;
-  selectedImage: string;
-  tags: string[];
-}
-
 const inputStyleClasses =
-  "p-0 pt-1 pb-1 mb-3 rounded-none border-b border-opacity-15 border-black outline-none shadow-none focus-visible:ring-0";
+  "p-0 pt-2 pb-2 mb-4 rounded-none border-b transition-colors duration-200 border-black/10 hover:border-black/20 focus:border-black/30 outline-none shadow-none focus-visible:ring-0 bg-transparent";
 
 const EditForm = ({ htmlContent }: EditFormProps) => {
-  const { title, subtitle, images } = useMemo(
-    () => parseArticleHtml(htmlContent),
-    [htmlContent]
-   );
-  const [formData, setFormData] = useState<EditFormData>({
+  const { user } = useAuthContext();
+  const { title, description, images } = parseArticleHtml(htmlContent);
+
+  const [formData, setFormData] = useState<CreateBlog>({
     title,
-    subtitle,
-    selectedImage: images[0] || "",
-    tags: [],
+    description,
+    preview: images[0] || "",
+    categories: [],
+    body: "",
   });
-  const handlePublish = () => {
-    const articleData = {...formData, html: formatArticle(htmlContent)};
-    console.log(articleData);
-  }
-  const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value;
-    setFormData({ ...formData, title });
-  };
-  const updateSubtitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const subtitle = e.target.value;
-    setFormData({ ...formData, subtitle });
-  };
-  const setSelectedImage = (image: string) => {
-    setFormData({ ...formData, selectedImage: image });
-  };
-  const addTag = (tag: string) => {
-    const tags = formData.tags;
-    const newTags = [...tags, tag.trim()];
-    setFormData({ ...formData, tags: newTags });
-  };
-  const deleteTag = (tagName: string) => {
-    const tags = formData.tags;
-    const newTags = tags.filter((tag) => tag !== tagName);
-    setFormData({ ...formData, tags: newTags });
-  };
+
   const [pickingImage, setPickingImage] = useState<boolean>(false);
+
+  const handlePublish = async () => {
+    const articleData = { ...formData, body: formatArticle(htmlContent) };
+    console.log(articleData);
+    await createBlog(articleData);
+  };
+
   return (
-    <div className="w-full grid grid-cols-2">
-      <div className="p-10">
-        <h4 className="mb-3 font-bold text-lg opacity-80">Story Preview</h4>
+    <div className="w-full grid md:grid-cols-2 gap-6 max-w-6xl mx-auto bg-white rounded-xl shadow-lg">
+      <div className="p-8 md:p-10 space-y-6">
+        <div>
+          <h4 className="text-lg font-semibold text-gray-900 mb-2">
+            Story Preview
+          </h4>
+          <p className="text-sm text-gray-600">
+            This is how your story will appear in feeds
+          </p>
+        </div>
+
         <ImagePicker
           onPickingImage={() => setPickingImage(!pickingImage)}
           pickingImage={pickingImage}
-          selectedImage={formData.selectedImage}
-          setSelectedImage={setSelectedImage}
+          selectedImage={formData.preview}
+          setSelectedImage={(image) =>
+            setFormData({ ...formData, preview: image })
+          }
           images={images}
         />
+
         {!pickingImage && (
-          <>
+          <div className="space-y-4">
             <Input
               value={formData.title}
-              onChange={updateTitle}
-              className={`${inputStyleClasses} font-medium-title font-bold !text-xl mt-4`}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              placeholder="Write a title..."
+              className={`${inputStyleClasses} font-medium text-xl text-gray-900`}
             />
             <Input
-              value={formData.subtitle}
-              onChange={updateSubtitle}
-              className={`${inputStyleClasses} font-medium-subtitle font-light text-medium-gray !text-base`}
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              placeholder="Write a description..."
+              className={`${inputStyleClasses} text-base text-gray-600`}
             />
-          </>
+          </div>
         )}
 
-        <p className="text-sm opacity-70">
-          <strong>Note</strong>: Changes here will affect how your story appears
-          in public places like Medium’s homepage and in subscribers’ inboxes —
-          not the contents of the story itself.
-        </p>
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+          <p className="text-sm text-gray-600">
+            <strong className="text-gray-900">Note:</strong> Changes here will
+            affect how your story appears in public places like Medium&apos;s
+            homepage and in subscribers&apos; inboxes — not the contents of the
+            story itself.
+          </p>
+        </div>
       </div>
-      <div className="p-10">
-        <h4 className="mb-3 font-bold text-lg opacity-80">Tags</h4>
-        <p className="opacity-90">
-          Add up to 5 topics so readers know what your story is about.
-        </p>
-        <TagInput tags={formData.tags} addTag={addTag} deleteTag={deleteTag} />
-        <Button
-          className="mt-5 p-0 rounded-full py-2 px-4 h-auto"
-          variant={"success"}
-          onClick={handlePublish}
-        >
-          Publish now
-        </Button>
+
+      <div className="border-t md:border-t-0 md:border-l border-gray-100">
+        <div className="p-8 md:p-10 space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold text-gray-900 mb-2">Tags</h4>
+            <p className="text-sm text-gray-600">
+              Add up to 5 topics so readers know what your story is about
+            </p>
+          </div>
+
+          <TagInput
+            tags={formData.categories}
+            addTag={(category_id) =>
+              setFormData({
+                ...formData,
+                categories: [...formData.categories, category_id],
+              })
+            }
+            deleteTag={(category_id) =>
+              setFormData({
+                ...formData,
+                categories: formData.categories.filter(
+                  (t) => t !== category_id
+                ),
+              })
+            }
+          />
+          <div className="flex items-end justify-end">
+            <p className="text-sm text-gray-600 bg-hero-bg p-4 rounded-lg flex gap-2">
+              <span>Created By : </span>
+              <span className="text-gray-900">
+                {user?.first_name} {user?.last_name}
+              </span>
+            </p>
+          </div>
+          <div className="pt-4">
+            <Button
+              onClick={handlePublish}
+              className="rounded-full px-6 py-2 h-auto bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
+            >
+              Publish now
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 export default EditForm;

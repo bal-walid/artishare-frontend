@@ -65,6 +65,17 @@ const BlogCard = ({ blog, className }: { blog: Blog; className?: string }) => {
                   <span className="sr-only">likes</span>
                 </div>
               </div>
+              {/* Categories section */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {blog.categories.map((category) => (
+                  <span
+                    key={category.id}
+                    className="px-2 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                  >
+                    {category.name}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="relative aspect-[3/2] sm:w-[200px] rounded-lg overflow-hidden">

@@ -27,11 +27,9 @@ const BlogList = ({
 
   // Fetch blogs whenever `page` or `isVisible` changes
   useEffect(() => {
-    console.log(currentPage);
     if (isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
-    console.log(blogs);
   }, [isVisible, hasMore]);
   useEffect(() => {
     connect();

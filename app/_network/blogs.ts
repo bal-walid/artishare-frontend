@@ -1,32 +1,32 @@
-import { Blog, CreateBlog, DisplayBlog, UpdateBlog } from "@/app/_type/blogs";
+import { Blog, CreateBlog, UpdateBlog } from "@/app/_type/blogs";
 import { fetchData } from "./main";
-import { serverAddress } from "../_config/main";
 
 // Fetch all blogs
-export const fetchBlogs = async (page = 1): Promise<{ blogs: DisplayBlog[]; hasMore: boolean }> => {
+export const fetchBlogs = async (
+  query: string = "",
+  page = 1,
+  tags: string[] = []
+): Promise<{ blogs: Blog[]; currentPage: number; hasMoreBlogs: boolean }> => {
   try {
-    const response = await fetchData(`/blogs?page=${page}`);
-    const blogs = response.blog.data.map((blog: any) => ({
-      id: blog.id,
-      title: blog.title,
-      creator: `${blog.user.first_name} ${blog.user.last_name}`,
-      creatorPicture: serverAddress + blog.user.profile_image,
-      description: blog.description,
-      preview: serverAddress + blog.preview,
-      categories: blog.categories.map((category: any) => category.name),
-      likeCount: blog.likes_count,
-      commentCount: blog.comments_count,
-      date: blog.created_at,
-    }));
-    const hasMore = response.blog.next_page_url !== null;
-
-    return { blogs, hasMore };
+    const response = await fetchData<{
+      blogs: Blog[];
+      currentPage: number;
+      hasMoreBlogs: boolean;
+    }>(`/blogs/search?query=${query}&currentPage=${page}`, {
+      method: "POST",
+      body: JSON.stringify({ tags }),
+    });
+    console.log(response);
+    return response as {
+      blogs: Blog[];
+      currentPage: number;
+      hasMoreBlogs: boolean;
+    };
   } catch (error) {
     console.error("Error fetching blogs:", error);
-    return { blogs: [], hasMore: false };
+    return { blogs: [], currentPage: 1, hasMoreBlogs: false };
   }
 };
-
 
 // Fetch a single blog
 export const fetchBlog = async (id: number): Promise<Blog> => {

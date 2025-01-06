@@ -14,20 +14,8 @@ export type Blog = {
   likes: Like[];
   preview?: string;
   categories: Category[];
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
-};
-
-// This type is meant for display in the /blogs list
-export type DisplayBlog = {
-  id: number;
-  title: string;
-  creator: string;
-  description: string;
-  categories: string[];
-  likeCount: number;
-  commentCount: number;
-  date: string;
 };
 
 export type CreateBlog = {

@@ -17,9 +17,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logo from "../Logo";
-import { useAuth } from "@/app/_hooks/useAuth";
+interface MainHeaderProps {
+  query: string;
+  updateQuery: (query: string) => void;
+}
 
-export default function MainHeader() {
+export default function MainHeader({ query, updateQuery }: MainHeaderProps) {
   const { isAuthenticated } = useAuthContext();
 
   const handleLogOut = () => {
@@ -38,6 +41,8 @@ export default function MainHeader() {
             type="search"
             placeholder="Search"
             className="peer w-[240px] pl-8 bg-muted/50 shadow-none border-none focus-visible:ring-0 rounded-full font-semibold placeholder:text-gray-700 placeholder:font-semibold"
+            value={query}
+            onChange={(e) => updateQuery(e.target.value)}
           />
           <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-700 peer-focus:text-black" />
         </div>

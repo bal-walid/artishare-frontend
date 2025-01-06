@@ -8,7 +8,7 @@ export type Comt = {
   user: User;
   blogId: number;
   blog?: Blog;
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
 };
 

@@ -2,7 +2,7 @@ export type Like = {
   id: number;
   userId: number;
   blogId: number;
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
 };
 

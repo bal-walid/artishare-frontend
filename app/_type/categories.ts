@@ -1,18 +1,18 @@
 export type Category = {
-    id: number;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  name: string;
+  created_at: string;
+  updatedAt: string;
 };
 
 export type CreateCategory = {
-    name: string;
+  name: string;
 };
 
 export type UpdateCategory = {
-    name?: string;
+  name?: string;
 };
 
 export type DeleteCategory = {
-    id: number;
+  id: number;
 };

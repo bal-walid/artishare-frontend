@@ -24,7 +24,7 @@ const mockUser: User = {
   last_name: "Doe",
   email: "john@example.com",
   password: "******",
-  createdAt: "2024-01-01",
+  created_at: "2024-01-01",
   updatedAt: "2024-01-01",
   blogs: [],
   likes: [],
@@ -47,7 +47,7 @@ const mockBlogs: Blog[] = [
         userId: 2,
         user: mockUser,
         blogId: 1,
-        createdAt: "2024-01-02",
+        created_at: "2024-01-02",
         updatedAt: "2024-01-02",
       },
       {
@@ -56,13 +56,13 @@ const mockBlogs: Blog[] = [
         userId: 3,
         user: mockUser,
         blogId: 1,
-        createdAt: "2024-01-03",
+        created_at: "2024-01-03",
         updatedAt: "2024-01-03",
       },
     ],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
   {
@@ -79,13 +79,13 @@ const mockBlogs: Blog[] = [
         userId: 4,
         user: mockUser,
         blogId: 4,
-        createdAt: "2024-01-04",
+        created_at: "2024-01-04",
         updatedAt: "2024-01-04",
       },
     ],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
 ];
@@ -116,7 +116,7 @@ const mockLikedBlogs: Blog[] = [
     comments: [],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
   {
@@ -129,7 +129,7 @@ const mockLikedBlogs: Blog[] = [
     comments: [],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
 ];
@@ -145,7 +145,7 @@ const mockCommentedBlogs: Blog[] = [
     comments: [],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
   {
@@ -158,13 +158,14 @@ const mockCommentedBlogs: Blog[] = [
     comments: [],
     likes: [],
     categories: [],
-    createdAt: "2024-01-01",
+    created_at: "2024-01-01",
     updatedAt: "2024-01-01",
   },
 ];
 
 export default function ProfileView() {
   const { user } = useAuthContext();
+  console.log(user);
   if (!user) return null;
   const profile_image = user.profile_image;
   return (
@@ -355,7 +356,7 @@ function BlogCard({
           <p>
             By: {blog.user.first_name} {blog.user.last_name}
           </p>
-          <p>Created: {new Date(blog.createdAt).toLocaleDateString()}</p>
+          <p>Created: {new Date(blog.created_at).toLocaleDateString()}</p>
         </div>
       </CardContent>
     </Card>

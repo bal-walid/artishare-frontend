@@ -138,11 +138,11 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <User className="h-4 w-4" />
                   <span>
-                    {blog.creator.first_name} {blog.creator.last_name}
+                    {blog.user.first_name} {blog.user.last_name}
                   </span>
                   <Separator orientation="vertical" className="h-4" />
                   <Calendar className="h-4 w-4" />
-                  <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                  <span>{new Date(blog.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                                   </span>
                                   <span className="text-xs md:text-sm text-muted-foreground">
                                     {new Date(
-                                      comment.createdAt
+                                      comment.created_at
                                     ).toLocaleDateString()}
                                   </span>
                                 </div>

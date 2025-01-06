@@ -7,7 +7,7 @@ export type User = {
   last_name: string;
   email: string;
   password: string;
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
   blogs: Blog[];
   likes: Like[];

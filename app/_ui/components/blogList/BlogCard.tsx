@@ -14,10 +14,11 @@ const BlogCard = ({blog} : {blog: DisplayBlog}) => {
     <CardHeader className="py-4 px-0">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Avatar className="h-6 w-6 border-2 border-secondary">
+          <Avatar className="h-7 w-7 border-2 border-secondary rounded-full">
             <AvatarImage
               src="/avatar_placeholder.png"
               alt={blog.creator}
+              className="h-full w-full rounded-full"
             />
           </Avatar>
           <span className="text-xs">{blog.creator}</span>

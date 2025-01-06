@@ -29,7 +29,7 @@ const mockUser: User = {
   blogs: [],
   likes: [],
   comments: [],
-  profile_image: "/profile.jpg",
+  profile_image: "/hero.png",
 };
 
 const mockBlogs: Blog[] = [
@@ -40,7 +40,26 @@ const mockBlogs: Blog[] = [
     body: "Content here...",
     creatorId: 1,
     creator: mockUser,
-    comments: [],
+    comments: [
+      {
+        id: 101,
+        content: "Great post!",
+        userId: 2,
+        user: mockUser,
+        blogId: 1,
+        createdAt: "2024-01-02",
+        updatedAt: "2024-01-02",
+      },
+      {
+        id: 102,
+        content: "I found this very helpful!",
+        userId: 3,
+        user: mockUser,
+        blogId: 1,
+        createdAt: "2024-01-03",
+        updatedAt: "2024-01-03",
+      },
+    ],
     likes: [],
     categories: [],
     createdAt: "2024-01-01",
@@ -53,13 +72,38 @@ const mockBlogs: Blog[] = [
     body: "Content here...",
     creatorId: 1,
     creator: mockUser,
-    comments: [],
+    comments: [
+      {
+        id: 103,
+        content: "Interesting read!",
+        userId: 4,
+        user: mockUser,
+        blogId: 4,
+        createdAt: "2024-01-04",
+        updatedAt: "2024-01-04",
+      },
+    ],
     likes: [],
     categories: [],
     createdAt: "2024-01-01",
     updatedAt: "2024-01-01",
   },
 ];
+
+export const mockUser2 = {
+  id: 2,
+  name: "Jane Smith",
+};
+
+export const mockUser3 = {
+  id: 3,
+  name: "Alice Johnson",
+};
+
+export const mockUser4 = {
+  id: 4,
+  name: "Bob Brown",
+};
 
 const mockLikedBlogs: Blog[] = [
   {
@@ -267,7 +311,7 @@ function BlogCarousel({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="flex justify-end gap-2 mt-4">
+      <div className="xl:flex justify-end gap-2 mt-4 hidden ">
         <CarouselPrevious />
         <CarouselNext />
       </div>

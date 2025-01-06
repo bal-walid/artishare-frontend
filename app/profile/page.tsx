@@ -191,7 +191,7 @@ export default function ProfileView() {
           <section>
             <h2 className="text-2xl font-bold mb-4">Blogs You Liked</h2>
             {user.blogs.length > 0 ? (
-              <BlogCarousel blogs={mockLikedBlogs} showUpdateButton />
+              <BlogCarousel blogs={mockLikedBlogs} showUpdateButton={false} />
             ) : (
               <EmptyState
                 icon={ThumbsUp}
@@ -204,7 +204,10 @@ export default function ProfileView() {
           <section>
             <h2 className="text-2xl font-bold mb-4">Blogs You Commented On</h2>
             {mockCommentedBlogs.length > 0 ? (
-              <BlogCarousel blogs={mockCommentedBlogs} showUpdateButton />
+              <BlogCarousel
+                blogs={mockCommentedBlogs}
+                showUpdateButton={false}
+              />
             ) : (
               <EmptyState
                 icon={MessageSquare}

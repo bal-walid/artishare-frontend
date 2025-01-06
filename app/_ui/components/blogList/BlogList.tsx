@@ -19,19 +19,23 @@ const BlogList = ({
   hasMore,
 }: BlogListProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { isVisible } = useIntersection({
+  const { isVisible, connect } = useIntersection({
     element: observerRef,
     rootMargin: "-150px", // Adjust this value to show part of the skeleton before fetching
-    threshold: 0.5,
+    threshold: 0,
   });
 
   // Fetch blogs whenever `page` or `isVisible` changes
   useEffect(() => {
+    console.log(currentPage);
     if (isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
+    console.log(blogs);
   }, [isVisible, hasMore]);
-
+  useEffect(() => {
+    connect();
+  }, [hasMore]);
   return (
     <div className="max-w-[728px] w-full p-4">
       {blogs.map((blog) => (

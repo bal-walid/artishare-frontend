@@ -34,8 +34,21 @@ export const useIntersection = ({
     };
   }, [element, rootMargin]);
 
+  const connect = () => {
+    if (element.current) {
+      observer?.observe(element.current);
+    }
+  };
+  const disconnect = () => {
+    if (element.current) {
+      observer?.disconnect();
+    }
+  };
+
   return {
     isVisible,
     observer,
+    connect,
+    disconnect,
   };
 };

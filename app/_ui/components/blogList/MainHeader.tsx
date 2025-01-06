@@ -1,11 +1,11 @@
 "use client";
 
-import { Edit, Search, User, Settings, LogOut } from "lucide-react";
-import Link from "next/link";
+import { useAuthContext } from "@/app/contexts/AuthContext";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useAuthContext } from "@/app/contexts/AuthContext";
+import { Edit, LogOut, Search, Settings, User } from "lucide-react";
+import Link from "next/link";
 
 import {
   DropdownMenu,
@@ -16,15 +16,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ChangeEvent, useState } from "react";
 import Logo from "../Logo";
 interface MainHeaderProps {
-  query: string;
-  updateQuery: (query: string) => void;
+  blogsByQuery: (query: string) => void;
 }
 
-export default function MainHeader({ query, updateQuery }: MainHeaderProps) {
-  const { isAuthenticated } = useAuthContext();
+export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
+  const [query, setQuery] = useState<string>("");
 
+  const { isAuthenticated } = useAuthContext();
+  const onChangefunction = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    blogsByQuery(e.target.value);
+  };
   const handleLogOut = () => {
     // Implement logout logic here
     console.log("Logging out");
@@ -42,7 +47,7 @@ export default function MainHeader({ query, updateQuery }: MainHeaderProps) {
             placeholder="Search"
             className="peer w-[240px] pl-8 bg-muted/50 shadow-none border-none focus-visible:ring-0 rounded-full font-semibold placeholder:text-gray-700 placeholder:font-semibold"
             value={query}
-            onChange={(e) => updateQuery(e.target.value)}
+            onChange={onChangefunction}
           />
           <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-700 peer-focus:text-black" />
         </div>

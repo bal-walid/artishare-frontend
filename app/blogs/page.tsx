@@ -45,6 +45,15 @@ export default function Blogs() {
   };
 
   const updateQuery = async (query: string) => {
+    if (query === "") {
+      updatedAtaLocallly({
+        newQuery: "",
+        newCurrentPage: "1",
+        newBlogs: [],
+      });
+      setHasMore(true);
+      return;
+    }
     const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
     updatedAtaLocallly({
       newQuery: query,
@@ -52,7 +61,6 @@ export default function Blogs() {
       newBlogs: blogs,
     });
     setHasMore(hasMoreBlogs);
-    setCurrentPage("1");
   };
   const updateCurrentPage = async (page: string) => {
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
@@ -92,7 +100,7 @@ export default function Blogs() {
   }, []);
   return (
     <div className="h-full flex flex-col">
-      <MainHeader query={query} updateQuery={updateQuery} />
+      <MainHeader blogsByQuery={updateQuery} />
       <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
         <BlogList
           updateCurrentPage={updateCurrentPage}

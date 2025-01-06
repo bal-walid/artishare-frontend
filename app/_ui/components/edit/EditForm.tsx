@@ -1,8 +1,10 @@
 import parseArticleHtml from "@/lib/parseArticleHtml";
+import formatArticle from "@/lib/formatArticle";
 import ImagePicker from "./ImagePicker";
 import { Input } from "@/components/ui/input";
 import TagInput from "./TagInput";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface EditFormProps {
   htmlContent: string;
@@ -19,13 +21,20 @@ const inputStyleClasses =
   "p-0 pt-1 pb-1 mb-3 rounded-none border-b border-opacity-15 border-black outline-none shadow-none focus-visible:ring-0";
 
 const EditForm = ({ htmlContent }: EditFormProps) => {
-  const { title, subtitle, images } = parseArticleHtml(htmlContent);
+  const { title, subtitle, images } = useMemo(
+    () => parseArticleHtml(htmlContent),
+    [htmlContent]
+   );
   const [formData, setFormData] = useState<EditFormData>({
     title,
     subtitle,
     selectedImage: images[0] || "",
     tags: [],
   });
+  const handlePublish = () => {
+    const articleData = {...formData, html: formatArticle(htmlContent)};
+    console.log(articleData);
+  }
   const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
     setFormData({ ...formData, title });
@@ -86,6 +95,13 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
           Add up to 5 topics so readers know what your story is about.
         </p>
         <TagInput tags={formData.tags} addTag={addTag} deleteTag={deleteTag} />
+        <Button
+          className="mt-5 p-0 rounded-full py-2 px-4 h-auto"
+          variant={"success"}
+          onClick={handlePublish}
+        >
+          Publish now
+        </Button>
       </div>
     </div>
   );

@@ -37,8 +37,9 @@ const ImagePicker = ({
         >
           Done
         </Button>
-        {images.map((image) => (
+        {images.map((image, index) => (
           <img
+            key={index}
             className={
               "w-28 h-28 object-cover border-[3px] hover:border-green-300" +
               (image === selectedImage ? " border-green-500" : "")

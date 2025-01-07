@@ -22,13 +22,15 @@ import Logo from "../Logo";
 interface MainHeaderProps {
   blogsByQuery?: (query: string) => void;
   isSearchPage?: boolean;
+  initialQuery?: string;
 }
 
 export default function MainHeader({
   blogsByQuery,
   isSearchPage = true,
+  initialQuery = "",
 }: MainHeaderProps) {
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>(initialQuery);
   const { isAuthenticated } = useAuthContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const router = useRouter();

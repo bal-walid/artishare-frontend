@@ -1,24 +1,19 @@
 "use client";
 
-import { Blog } from "@/app/_type/blogs";
-import "@/app/_ui/stylesheets/editor.scss";
-import formatDate from "@/lib/formatDate";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { serverAddress } from "@/app/_config/main";
-import {
-  HeartIcon,
-  MessageCircleIcon,
-  SendIcon,
-  Share2Icon,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Separator } from "@/components/ui/separator";
-import { Comt, CreateComment } from "@/app/_type/comments";
-import { useAuthContext } from "@/app/contexts/AuthContext";
 import { createComment } from "@/app/_network/comments";
-import Tiptap from "../comment/Editor";
+import { Blog } from "@/app/_type/blogs";
+import { Comt, CreateComment } from "@/app/_type/comments";
+import "@/app/_ui/stylesheets/editor.scss";
+import { useAuthContext } from "@/app/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import formatDate from "@/lib/formatDate";
 import { Editor } from "@tiptap/react";
+import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
+import { useState } from "react";
+import Tiptap from "../comment/Editor";
 
 interface BlogDisplayProps {
   blog: Blog;
@@ -117,14 +112,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 <span>{likesCount} likes</span>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-medium-gray hover:text-black"
-            >
-              <Share2Icon className="h-4 w-4 mr-2" />
-              Share
-            </Button>
           </div>
         </div>
 
@@ -159,14 +146,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
               Passionate about sharing insights and experiences through writing.
               Join me on this journey of discovery and learning.
             </p>
-            <div className="flex gap-3 mt-2">
-              <Button variant="outline" size="sm">
-                Follow
-              </Button>
-              <Button variant="ghost" size="sm">
-                View Profile
-              </Button>
-            </div>
           </div>
         </div>
       </div>
@@ -198,14 +177,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
             <span>{comments.length} comments</span>
           </button>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-medium-gray hover:text-black"
-        >
-          <Share2Icon className="h-4 w-4 mr-2" />
-          Share
-        </Button>
       </div>
 
       {/* Enhanced Comments section */}
@@ -291,14 +262,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                   className="text-muted-foreground leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
-                <div className="flex gap-4 mt-1">
-                  <button className="text-xs text-muted-foreground hover:text-foreground">
-                    Reply
-                  </button>
-                  <button className="text-xs text-muted-foreground hover:text-foreground">
-                    Share
-                  </button>
-                </div>
               </div>
             </div>
           ))}

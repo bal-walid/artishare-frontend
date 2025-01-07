@@ -4,9 +4,9 @@ import { User } from "./users";
 export type Comt = {
   id: number;
   content: string;
-  userId: number;
+  user_id: number;
   user: User;
-  blogId: number;
+  blog_id: number;
   blog?: Blog;
   created_at: string;
   updatedAt: string;
@@ -14,8 +14,8 @@ export type Comt = {
 
 export type CreateComment = {
   content: string;
-  userId: number;
-  blogId: number;
+  user_id: number;
+  blog_id: number;
 };
 
 export type UpdateComment = {

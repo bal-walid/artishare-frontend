@@ -1,16 +1,19 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./ToolBar";
 import Underline from "@tiptap/extension-underline";
+import { useEffect } from "react";
 
 interface Props {
   onChange: (newContent: string) => void;
   content: string;
+  children?: React.ReactNode;
+  setEditor: (editor: Editor) => void;
 }
 
-const Tiptap = ({ onChange, content }: Props) => {
+const Tiptap = ({ onChange, content, children, setEditor }: Props) => {
   const handleChange = (newContent: string) => {
     onChange(newContent);
   };
@@ -25,11 +28,17 @@ const Tiptap = ({ onChange, content }: Props) => {
     onUpdate: ({ editor }) => {
       handleChange(editor.getHTML());
     },
+    immediatelyRender: true,
   });
+  useEffect(() => {
+    if (editor) setEditor(editor);
+  }, [editor]);
 
   return (
     <div className="w-full px-4">
-      <Toolbar editor={editor} content={content} />
+      <Toolbar editor={editor} content={content}>
+        {children}
+      </Toolbar>
       <EditorContent style={{ whiteSpace: "normal" }} editor={editor} />
     </div>
   );

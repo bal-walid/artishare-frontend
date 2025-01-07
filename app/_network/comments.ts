@@ -1,50 +1,56 @@
-import { Comment, CreateComment, UpdateComment } from "@/app/_type/comments";
+import { Comt, CreateComment, UpdateComment } from "@/app/_type/comments";
 import { fetchData } from "./main";
 
 // Fetch all comments for a blog
-export const fetchComments = async (blogId: number): Promise<Comment[]> => {
-  return (await fetchData<Comment[]>(`/blogs/${blogId}/comments`)) as Comment[];
+export const fetchComments = async (blog_id: number): Promise<Comt[]> => {
+  return (await fetchData<Comt[]>(`/blogs/${blog_id}/comments`)) as Comt[];
 };
 
 // Fetch a single comment
 export const fetchComment = async (
-  blogId: number,
+  blog_id: number,
   commentId: number
-): Promise<Comment> => {
-  return (await fetchData<Comment>(
-    `/blogs/${blogId}/comments/${commentId}`
-  )) as Comment;
+): Promise<Comt> => {
+  return (await fetchData<Comt>(
+    `/blogs/${blog_id}/comments/${commentId}`
+  )) as Comt;
 };
 
 // Create a new comment for a blog
 export const createComment = async (
-  blogId: number,
+  blog_id: number,
   data: CreateComment
-): Promise<Comment> => {
-  return (await fetchData<Comment>(`/blogs/${blogId}/comments`, {
+): Promise<{
+  comment: Comt;
+}> => {
+  return (await fetchData<{
+    comment: Comt;
+  }>(`/blogs/${blog_id}/comments`, {
     method: "POST",
     body: JSON.stringify(data),
-  })) as Comment;
+  })) as {
+    comment: Comt;
+  };
 };
 
 // Update a comment
 export const updateComment = async (
-  blogId: number,
+  blog_id: number,
   commentId: number,
   data: UpdateComment
-): Promise<Comment> => {
-  return (await fetchData<Comment>(`/blogs/${blogId}/comments/${commentId}`, {
+): Promise<Comt> => {
+  return (await fetchData<Comt>(`/blogs/${blog_id}/comments/${commentId}`, {
     method: "PUT",
     body: JSON.stringify(data),
-  })) as Comment;
+  })) as Comt;
 };
 
 // Delete a comment
 export const deleteComment = async (
-  blogId: number,
+  blog_id: number,
   commentId: number
 ): Promise<boolean> => {
-  await fetchData(`/blogs/${blogId}/comments/${commentId}`, {
+  await fetchData(`/blogs/${blog_id}/comments/${commentId}`, {
     method: "DELETE",
   });
   return true;

@@ -19,10 +19,12 @@ import { validationSchemaLogin } from "../_form/validation/login";
 import { login } from "../_type/auth";
 import Input from "../_ui/components/Input";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useRouter } from "next/navigation";
 const fields = loginFields;
 export default function LoginPage() {
   const [error, setError] = useState("");
   const { login } = useAuthContext();
+  const router = useRouter();
   const formOptions = {
     resolver: yupResolver(validationSchemaLogin),
   };
@@ -37,6 +39,7 @@ export default function LoginPage() {
     try {
       console.log(data);
       await login(data.email, data.password);
+      router.push('/blogs');
     } catch (error) {
       setError((error as Error).message);
     }

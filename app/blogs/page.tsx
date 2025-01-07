@@ -57,6 +57,13 @@ export default function Blogs() {
       setHasMore(true);
       return;
     }
+    if (query.length < 3) {
+      updatedAtaLocallly({
+        newQuery: query,
+        newCurrentPage: "1",
+      });
+      return;
+    }
     const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
     updatedAtaLocallly({
       newQuery: query,

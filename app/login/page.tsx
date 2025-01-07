@@ -20,6 +20,8 @@ import { login } from "../_type/auth";
 import Input from "../_ui/components/Input";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import { InternalServerError, UnauthorizedError } from "../_errors/main";
+
 const fields = loginFields;
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -38,10 +40,15 @@ export default function LoginPage() {
   async function onSubmit(data: login) {
     try {
       console.log(data);
-      await login(data.email, data.password);
-      router.push('/blogs');
+      console.log(await login(data.email, data.password));
+      // router.push('/blogs');
     } catch (error) {
-      setError((error as Error).message);
+      if (error instanceof UnauthorizedError) {
+        setError("Credentials are invalid");
+      }
+      if (error instanceof InternalServerError) {
+        setError("This email is not associated with an existing account");
+      }
     }
   }
 
@@ -55,7 +62,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {error && <div className="text-sm text-red-500 ml-5">{error}</div>}
+        <div className="text-sm text-red-500 ml-6 h-6">{error || "  "}</div>
           <CardContent className="space-y-4">
             {fields.map((field) => (
               <Input

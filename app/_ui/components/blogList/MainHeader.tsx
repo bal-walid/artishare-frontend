@@ -65,8 +65,8 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
               <Input
                 type="search"
                 placeholder="Search articles..."
-                className="w-[300px] pl-9 pr-4 h-10 bg-transparent border-none rounded-full transition-all duration-200
-                         focus-visible:ring-1 focus-visible:ring-primary/20 focus-visible:bg-primary/5
+                className="w-[300px] pl-9 pr-4 h-10 bg-transparent  rounded-full transition-all duration-200
+                          focus-visible:bg-primary/5
                          placeholder:text-muted-foreground/70"
                 value={query}
                 onChange={onChangefunction}
@@ -77,36 +77,28 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            className="hidden md:inline-flex items-center gap-2 hover:bg-primary/5 transition-colors"
-          >
-            <PenSquare className="h-4 w-4" />
-            <span>Write</span>
-          </Button>
-
-          {!isAuthenticated ? (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                className="text-sm font-medium hover:bg-primary/5"
-              >
-                Sign in
-              </Button>
-              <Button className="text-sm font-medium px-6 shadow-sm hover:shadow-md transition-shadow">
-                Get started
-              </Button>
-            </div>
-          ) : (
-            <DropdownMenu>
+        <div className="flex items-center gap-3">
+        <Button variant={"mediumLike"} className="font-normal">
+          <PenSquare strokeWidth={1} className="!w-5 !h-5" />
+          <span className="ml-1">Write</span>
+        </Button>
+        {!isAuthenticated && (
+          <>
+            <Button className="rounded-full font-normal shadow-none text-xs">
+              Sign Up
+            </Button>
+            <Button variant={"mediumLike"}>Sign in</Button>
+          </>
+        )}
+        {isAuthenticated && (
+          <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="rounded-full h-10 w-10 p-0.5 hover:bg-primary/5 transition-colors"
                 >
-                  <Avatar className="h-full w-full border-2 border-border hover:border-primary/20 transition-colors">
+                  <Avatar className="h-full w-full border-2 border-border hover:border-main/50 transition-colors">
                     <AvatarImage
                       src="/avatar_placeholder.png"
                       alt="Profile picture"
@@ -161,8 +153,8 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          )}
-        </div>
+        )}
+      </div>
       </div>
     </header>
   );

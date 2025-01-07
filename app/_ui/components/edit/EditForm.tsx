@@ -8,6 +8,7 @@ import ImagePicker from "./ImagePicker";
 import TagInput from "./TagInput";
 import { createBlog, updateBlog } from "@/app/_network/blogs";
 import { Blog, CreateBlog } from "@/app/_type/blogs";
+import { useRouter } from "next/navigation";
 
 interface EditFormProps {
   htmlContent: string;
@@ -19,6 +20,7 @@ const inputStyleClasses =
   "p-0 pt-2 pb-2 mb-4 rounded-none border-b transition-colors duration-200 border-black/10 hover:border-black/20 focus:border-black/30 outline-none shadow-none focus-visible:ring-0 bg-transparent";
 
 const EditForm = ({ htmlContent, blog }: EditFormProps) => {
+  const router = useRouter();
   const { user } = useAuthContext();
   const { title, description, images } = useMemo(
     () => parseArticleHtml(htmlContent),
@@ -39,8 +41,11 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
     const articleData = { ...formData, body: formatArticle(htmlContent) };
     if (blog) {
       await updateBlog(blog.id ,articleData)
+      router.push(`/blog/${blog.id}`);
     } else {
-      await createBlog(articleData);
+      const newBlog = await createBlog(articleData);
+      console.log(newBlog);
+      router.push(`/blog/${newBlog.blog.id}`);
     }
     
   };

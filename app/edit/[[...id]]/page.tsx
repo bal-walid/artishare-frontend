@@ -8,6 +8,7 @@ import Modal from "../../_ui/components/Modal";
 import EditForm from "../../_ui/components/edit/EditForm";
 import { fetchBlog } from "@/app/_network/blogs";
 import { Blog } from "@/app/_type/blogs";
+import { AuthGuard } from "@/app/contexts/AuthContext";
 
 type paramsType = Promise<{ id?: string }>;
 
@@ -28,33 +29,35 @@ export default function EditPage({ params }: { params: paramsType }) {
       } else {
         setLoading(false);
       }
-    })
-    
-    
+    });
   }, [params]);
-  
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {loading ? (
-        "d"
-      ) : (
-        <>
-          <EditHeader onBtnClick={() => setModalOpen(true)} />
-          <div className="flex-1">
-            <Tiptap content={blog?.body} editorRef={editorRef} />
-          </div>
-          {editorRef.current && (
-            <Modal
-              overlayClassName="bg-gray-50"
-              isOpen={modalOpen}
-              onClose={() => setModalOpen(false)}
-            >
-              <EditForm blog={blog} htmlContent={editorRef.current.getHTML()} />
-            </Modal>
-          )}
-        </>
-      )}
-    </div>
+    <AuthGuard requireAuth={true}>
+      <div className="min-h-screen flex flex-col bg-white">
+        {loading ? (
+          "..."
+        ) : (
+          <>
+            <EditHeader onBtnClick={() => setModalOpen(true)} />
+            <div className="flex-1">
+              <Tiptap content={blog?.body} editorRef={editorRef} />
+            </div>
+            {editorRef.current && (
+              <Modal
+                overlayClassName="bg-gray-50"
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+              >
+                <EditForm
+                  blog={blog}
+                  htmlContent={editorRef.current.getHTML()}
+                />
+              </Modal>
+            )}
+          </>
+        )}
+      </div>
+    </AuthGuard>
   );
 }

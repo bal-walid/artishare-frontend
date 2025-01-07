@@ -5,7 +5,6 @@ import { Blog } from "@/app/_type/blogs";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import "@/app/_ui/stylesheets/editor.scss";
-import formatDate from "@/lib/formatDate";
 import BlogDisplay from "@/app/_ui/components/blog/BlogDisplay";
 import MainHeader from "@/app/_ui/components/blogList/MainHeader";
 
@@ -31,7 +30,10 @@ export default function BlogPage() {
   }
   if (blog) {
     return (
-      <><MainHeader /><BlogDisplay blog={blog} /></>
+      <>
+        <MainHeader  />
+        <BlogDisplay blog={blog} />
+      </>
     );
   }
 }

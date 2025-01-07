@@ -19,6 +19,7 @@ import { validationSchemaSignUp } from "../_form/validation/signup";
 import { signUp } from "../_type/auth";
 import Input from "../_ui/components/Input";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useRouter } from "next/navigation";
 const fields = signUpFields;
 const imageField = fields.find((field) => field.name === "profile_image");
 const firstlast_name = fields.filter(
@@ -33,6 +34,7 @@ const otherFields = fields.filter(
 export default function SignUpPage() {
   const [error, setError] = useState("");
   const { signup } = useAuthContext();
+  const router = useRouter();
   const formOptions = {
     resolver: yupResolver(validationSchemaSignUp),
   };
@@ -47,6 +49,7 @@ export default function SignUpPage() {
   async function onSubmit(data: signUp) {
     try {
       await signup(data);
+      router.push("/blogs");
     } catch (error) {
       setError((error as Error).message);
     }

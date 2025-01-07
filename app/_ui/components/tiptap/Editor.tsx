@@ -54,17 +54,22 @@ const editorContainerProps: HTMLAttributes<HTMLDivElement> = {
 };
 
 interface TiptapProps {
-  editorRef: RefObject<Editor | null>
+  editorRef: RefObject<Editor | null>;
+  content?: string;
 }
 
-const Tiptap = ({editorRef} : TiptapProps) => {
+const Tiptap = ({ editorRef, content }: TiptapProps) => {
+  console.log(content);
   return (
     <div className=" pb-24 mt-24">
       <EditorProvider
         {...editorProps}
         editorContainerProps={editorContainerProps}
         extensions={extensions}
-        onCreate={({editor}) => editorRef.current = editor}
+        content={content}
+        onCreate={({ editor }) => {
+          editorRef.current = editor;
+        }}
       >
         <BubbleMenu></BubbleMenu>
         <FloatingMenu></FloatingMenu>

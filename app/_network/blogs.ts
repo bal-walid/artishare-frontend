@@ -29,8 +29,16 @@ export const fetchBlogs = async (
 };
 
 // Fetch a single blog
-export const fetchBlog = async (id: number): Promise<Blog> => {
-  return (await fetchData<Blog>(`/blogs/${id}`)) as Blog;
+export const fetchBlog = async (
+  id: number
+): Promise<{
+  blog: Blog;
+}> => {
+  return (await fetchData<{
+    blog: Blog;
+  }>(`/blogs/${id}`)) as {
+    blog: Blog;
+  };
 };
 
 //Search for blogs

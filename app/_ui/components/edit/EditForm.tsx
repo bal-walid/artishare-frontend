@@ -22,7 +22,7 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
     () => parseArticleHtml(htmlContent),
     [htmlContent]
   );
-
+  console.log(images);
   const [formData, setFormData] = useState<CreateBlog>({
     title,
     description,
@@ -35,7 +35,6 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
 
   const handlePublish = async () => {
     const articleData = { ...formData, body: formatArticle(htmlContent) };
-    console.log(articleData);
     await createBlog(articleData);
   };
 
@@ -85,8 +84,8 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
         <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
           <p className="text-sm text-gray-600">
             <strong className="text-gray-900">Note:</strong> Changes here will
-            affect how your story appears in public places like users' homepage not the contents of the
-            story itself.
+            affect how your story appears in public places like users&apos; homepage
+            not the contents of the story itself.
           </p>
         </div>
       </div>

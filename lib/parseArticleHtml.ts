@@ -14,8 +14,10 @@ function parseArticleHtml(html: string) {
       ? firstElement.nextElementSibling.textContent || ""
       : "";
 
-  // Find all images
-  const images = Array.from(doc.querySelectorAll("img")).map((img) => img.src);
+  // Find all images and remove localhost:8000 part
+  const images = Array.from(doc.querySelectorAll("img")).map((img) =>
+    img.src.replace("http://localhost:8000", "")
+  );
 
   return {
     title: firstH1,

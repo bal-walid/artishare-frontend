@@ -1,13 +1,8 @@
 "use client";
 
 import { useAuthContext } from "@/app/contexts/AuthContext";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Edit, LogOut, Search, Settings, User, PenSquare } from "lucide-react";
-import Link from "next/link";
-import { ChangeEvent, useState } from "react";
-import Logo from "../Logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { LogOut, PenSquare, Search, Settings, User } from "lucide-react";
+import Link from "next/link";
+import { ChangeEvent, useState } from "react";
+import Logo from "../Logo";
 
 interface MainHeaderProps {
   blogsByQuery: (query: string) => void;

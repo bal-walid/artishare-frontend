@@ -1,13 +1,14 @@
-import { Button } from "@/components/ui/button"
-import { ImageIcon } from 'lucide-react'
-import Image from "next/image"
+import { serverAddress } from "@/app/_config/main";
+import { Button } from "@/components/ui/button";
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
 
 interface ImagePickerProps {
-  images: string[]
-  selectedImage: string
-  setSelectedImage: (image: string) => void
-  onPickingImage: () => void
-  pickingImage: boolean
+  images: string[];
+  selectedImage: string;
+  setSelectedImage: (image: string) => void;
+  onPickingImage: () => void;
+  pickingImage: boolean;
 }
 
 const ImagePicker = ({
@@ -23,11 +24,12 @@ const ImagePicker = ({
         <div className="px-6 space-y-3">
           <ImageIcon className="w-8 h-8 text-gray-400 mx-auto" />
           <span className="text-sm text-gray-600 block">
-            Include a high-quality image in your story to make it more inviting to readers.
+            Include a high-quality image in your story to make it more inviting
+            to readers.
           </span>
         </div>
       </div>
-    )
+    );
   }
 
   if (pickingImage) {
@@ -47,32 +49,36 @@ const ImagePicker = ({
             <div
               key={index}
               className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-200 
-                ${image === selectedImage 
-                  ? 'ring-2 ring-green-500 ring-offset-2' 
-                  : 'hover:ring-2 hover:ring-green-400 hover:ring-offset-2'
+                ${
+                  image === selectedImage
+                    ? "ring-2 ring-green-500 ring-offset-2"
+                    : "hover:ring-2 hover:ring-green-400 hover:ring-offset-2"
                 }`}
-              onClick={() =>{
-                setSelectedImage(image.replace('http://localhost:8000', ''))
+              onClick={() => {
+                setSelectedImage(image.replace("http://localhost:8000", ""));
               }}
             >
               <Image
                 alt="preview"
                 fill
                 className="object-cover"
-                src={image}
+                src={serverAddress + image}
               />
             </div>
           ))}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="relative group rounded-lg overflow-hidden bg-gray-900">
-      <img 
-        className="w-full h-[200px] object-cover transition-opacity duration-200 group-hover:opacity-75" 
-        src={selectedImage} 
+      <Image
+        className="  transition-opacity duration-200 group-hover:opacity-75"
+        width={400}
+        height={200}
+        objectFit="cover"
+        src={serverAddress + selectedImage}
         alt="Preview"
       />
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -85,8 +91,7 @@ const ImagePicker = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ImagePicker
-
+export default ImagePicker;

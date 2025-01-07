@@ -31,7 +31,7 @@ export default function BlogPage() {
   if (blog) {
     return (
       <>
-        <MainHeader  />
+        <MainHeader isSearchPage={false} />
         <BlogDisplay blog={blog} />
       </>
     );

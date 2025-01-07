@@ -15,21 +15,35 @@ import {
 import { Input } from "@/components/ui/input";
 import { LogOut, PenSquare, Search, Settings, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import Logo from "../Logo";
 
 interface MainHeaderProps {
-  blogsByQuery: (query: string) => void;
+  blogsByQuery?: (query: string) => void;
+  isSearchPage?: boolean;
 }
 
-export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
+export default function MainHeader({
+  blogsByQuery,
+  isSearchPage = true,
+}: MainHeaderProps) {
   const [query, setQuery] = useState<string>("");
   const { isAuthenticated } = useAuthContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const router = useRouter();
 
   const onChangefunction = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    blogsByQuery(e.target.value);
+    if (blogsByQuery) {
+      blogsByQuery(e.target.value);
+    }
+  };
+
+  const handleSearch = () => {
+    if (query.trim()) {
+      router.push(`/blogs?query=${encodeURIComponent(query.trim())}`);
+    }
   };
 
   const handleLogOut = () => {
@@ -48,7 +62,7 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
             <Logo className="text-primary text-3xl" />
           </Link>
 
-          <div className="relative group">
+          <div className="relative group flex items-center gap-2">
             <div
               className={`absolute inset-0 bg-primary/5 rounded-full transition-all duration-300 ${
                 isSearchFocused
@@ -65,33 +79,46 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
               <Input
                 type="search"
                 placeholder="Search articles..."
-                className="w-[300px] pl-9 pr-4 h-10 bg-transparent  rounded-full transition-all duration-200
-                          focus-visible:bg-primary/5
-                         placeholder:text-muted-foreground/70"
+                className="w-[300px] pl-9 pr-4 h-10 bg-transparent rounded-full transition-all duration-200 focus-visible:bg-primary/5 placeholder:text-muted-foreground/70 [&::-webkit-search-cancel-button]:hidden"
                 value={query}
                 onChange={onChangefunction}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !isSearchPage) {
+                    handleSearch();
+                  }
+                }}
               />
             </div>
+            {!isSearchPage && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className=" h-[40px] px-5 absolute top-0 right-0 w-fit bg-main rounded-full hover:bg-main/50"
+                onClick={handleSearch}
+              >
+                <span className="text-white">Search</span>
+              </Button>
+            )}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-        <Button variant={"mediumLike"} className="font-normal">
-          <PenSquare strokeWidth={1} className="!w-5 !h-5" />
-          <span className="ml-1">Write</span>
-        </Button>
-        {!isAuthenticated && (
-          <>
-            <Button className="rounded-full font-normal shadow-none text-xs">
-              Sign Up
-            </Button>
-            <Button variant={"mediumLike"}>Sign in</Button>
-          </>
-        )}
-        {isAuthenticated && (
-          <DropdownMenu>
+          <Button variant={"mediumLike"} className="font-normal">
+            <PenSquare strokeWidth={1} className="!w-5 !h-5" />
+            <span className="ml-1">Write</span>
+          </Button>
+          {!isAuthenticated && (
+            <>
+              <Button className="rounded-full font-normal shadow-none text-xs">
+                Sign Up
+              </Button>
+              <Button variant={"mediumLike"}>Sign in</Button>
+            </>
+          )}
+          {isAuthenticated && (
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -153,8 +180,8 @@ export default function MainHeader({ blogsByQuery }: MainHeaderProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-        )}
-      </div>
+          )}
+        </div>
       </div>
     </header>
   );

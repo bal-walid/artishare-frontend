@@ -8,10 +8,13 @@ import { Blog } from "../_type/blogs";
 import { fetchBlogs } from "../_network/blogs";
 import { fetchCategories } from "../_network/categories";
 import { Category } from "../_type/categories";
+import { useSearchParams } from "next/navigation";
 
 export default function Blogs() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("query") || "";
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>(initialQuery);
   const [currentPage, setCurrentPage] = useState<string>("1");
   const [tags, setTags] = useState<Category[]>([]);
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
@@ -98,9 +101,14 @@ export default function Blogs() {
     }
     fetchTags();
   }, []);
+  useEffect(() => {
+    if (initialQuery) {
+      updateQuery(initialQuery);
+    }
+  }, [initialQuery]);
   return (
     <div className="h-full flex flex-col">
-      <MainHeader blogsByQuery={updateQuery} />
+      <MainHeader initialQuery={initialQuery} blogsByQuery={updateQuery} />
       <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
         <BlogList
           updateCurrentPage={updateCurrentPage}

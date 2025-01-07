@@ -31,7 +31,7 @@ export type UpdateBlog = {
   description?: string;
   body?: string;
   preview?: string;
-  categories?: number[];
+  categories?: string[];
 };
 
 export type DeleteBlog = {

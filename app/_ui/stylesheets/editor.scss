@@ -1,4 +1,4 @@
-.tiptap-editor {
+.tiptap-editor, .blog-view {
   --title-font: Georgia, Cambria, "Times New Roman", Times, serif;
   --serif-font: Georgia, Cambria, "Times New Roman", Times, serif;
   --sans-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva,
@@ -196,5 +196,32 @@
       font-size: 14px;
       font-weight: 400;
     }
+  }
+}
+
+.blog-view {
+  padding: 2rem 0;
+  max-width: 680px;
+  .blog-header {
+    font-size: 16px;
+    @apply font-sans;
+  }
+  .blog-title {
+    font-size: 48px;
+    font-weight: 400;
+    font-family: var(--serif-font);
+    line-height: 1.25;
+    margin: 0;
+    padding-top: 16px;
+    line-height: 52px;
+    font-weight: 500;
+  }
+
+  .blog-subtitle {
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.54);
+    margin: 20px 0;
+    line-height: 28px;
   }
 }

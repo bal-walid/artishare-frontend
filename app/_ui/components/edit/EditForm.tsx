@@ -6,17 +6,19 @@ import parseArticleHtml from "@/lib/parseArticleHtml";
 import { useMemo, useState } from "react";
 import ImagePicker from "./ImagePicker";
 import TagInput from "./TagInput";
-import { createBlog } from "@/app/_network/blogs";
-import { CreateBlog } from "@/app/_type/blogs";
+import { createBlog, updateBlog } from "@/app/_network/blogs";
+import { Blog, CreateBlog } from "@/app/_type/blogs";
 
 interface EditFormProps {
   htmlContent: string;
+  blog?: Blog;
+  blogId?: number; 
 }
 
 const inputStyleClasses =
   "p-0 pt-2 pb-2 mb-4 rounded-none border-b transition-colors duration-200 border-black/10 hover:border-black/20 focus:border-black/30 outline-none shadow-none focus-visible:ring-0 bg-transparent";
 
-const EditForm = ({ htmlContent }: EditFormProps) => {
+const EditForm = ({ htmlContent, blog }: EditFormProps) => {
   const { user } = useAuthContext();
   const { title, description, images } = useMemo(
     () => parseArticleHtml(htmlContent),
@@ -27,7 +29,7 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
     title,
     description,
     preview: images[0] || "",
-    categories: [],
+    categories: blog ? blog.categories.map((category) => category.name) : [],
     body: "",
   });
 
@@ -35,7 +37,12 @@ const EditForm = ({ htmlContent }: EditFormProps) => {
 
   const handlePublish = async () => {
     const articleData = { ...formData, body: formatArticle(htmlContent) };
-    await createBlog(articleData);
+    if (blog) {
+      await updateBlog(blog.id ,articleData)
+    } else {
+      await createBlog(articleData);
+    }
+    
   };
 
   return (

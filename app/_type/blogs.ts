@@ -30,7 +30,8 @@ export type UpdateBlog = {
   title?: string;
   description?: string;
   body?: string;
-  category_id?: number[];
+  preview?: string;
+  categories?: number[];
 };
 
 export type DeleteBlog = {

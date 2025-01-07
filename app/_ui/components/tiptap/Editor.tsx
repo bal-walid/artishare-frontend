@@ -9,7 +9,7 @@ import BubbleMenu from "./BubbleMenu/BubbleMenu";
 import Youtube from "@tiptap/extension-youtube";
 
 import "@/app/_ui/stylesheets/editor.scss";
-import { HTMLAttributes, MutableRefObject, RefObject } from "react";
+import { HTMLAttributes, RefObject } from "react";
 import FloatingMenu from "./FloatingMenu/FloatingMenu";
 
 const HeadingFirstDocument = Document.extend({

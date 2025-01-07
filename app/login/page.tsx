@@ -41,7 +41,7 @@ export default function LoginPage() {
     try {
       console.log(data);
       console.log(await login(data.email, data.password));
-      // router.push('/blogs');
+      router.push('/blogs');
     } catch (error) {
       if (error instanceof UnauthorizedError) {
         setError("Credentials are invalid");

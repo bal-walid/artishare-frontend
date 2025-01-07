@@ -32,7 +32,7 @@ export const useIntersection = ({
         observer.unobserve(current);
       }
     };
-  }, [element, rootMargin]);
+  }, [element, rootMargin, threshold]);
 
   const connect = () => {
     if (element.current) {

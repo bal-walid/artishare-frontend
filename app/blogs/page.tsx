@@ -3,7 +3,7 @@
 import MainHeader from "../_ui/components/blogList/MainHeader";
 import BlogList from "../_ui/components/blogList/BlogList";
 import BlogSideBar from "../_ui/components/blogList/BlogSidebar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Blog } from "../_type/blogs";
 import { fetchBlogs } from "../_network/blogs";
 import { fetchCategories } from "../_network/categories";
@@ -27,7 +27,7 @@ export default function Blogs() {
     newTags?: Category[];
     newBlogs?: Blog[];
   }
-  const updatedAtaLocallly = ({
+  const updatedAtaLocallly = useCallback(({
     newQuery,
     newCurrentPage,
     newTags,
@@ -45,9 +45,9 @@ export default function Blogs() {
     if (newBlogs) {
       setBlogs(newBlogs);
     }
-  };
+  }, []) ;
 
-  const updateQuery = async (query: string) => {
+  const updateQuery = useCallback(async (query: string) => {
     if (query === "") {
       updatedAtaLocallly({
         newQuery: "",
@@ -71,7 +71,7 @@ export default function Blogs() {
       newBlogs: blogs,
     });
     setHasMore(hasMoreBlogs);
-  };
+  }, [updatedAtaLocallly]); 
   const updateCurrentPage = async (page: string) => {
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
@@ -112,7 +112,7 @@ export default function Blogs() {
     if (initialQuery) {
       updateQuery(initialQuery);
     }
-  }, [initialQuery]);
+  }, [initialQuery, updateQuery]);
   return (
     <div className="h-full flex flex-col">
       <MainHeader initialQuery={initialQuery} blogsByQuery={updateQuery} />

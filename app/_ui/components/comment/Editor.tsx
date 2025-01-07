@@ -32,7 +32,7 @@ const Tiptap = ({ onChange, content, children, setEditor }: Props) => {
   });
   useEffect(() => {
     if (editor) setEditor(editor);
-  }, [editor]);
+  }, [editor, setEditor]);
 
   return (
     <div className="w-full px-4">

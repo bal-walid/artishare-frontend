@@ -3,7 +3,7 @@ import { saveImage } from "@/app/_network/blogs";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
-import { Image } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 
 interface ImageButtonProps {
   hideMenu: () => void;
@@ -44,7 +44,8 @@ const ImageButton = ({ hideMenu }: ImageButtonProps) => {
         onClick={() => document.getElementById("file-input")?.click()}
         aria-label={"image"}
       >
-        <Image className="h-5 w-5" strokeWidth={1.5} />
+        
+        <ImageIcon  className="h-5 w-5" strokeWidth={1.5} />
       </Button>
       <input
         type="file"

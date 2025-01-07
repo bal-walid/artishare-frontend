@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { X, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ModalProps {

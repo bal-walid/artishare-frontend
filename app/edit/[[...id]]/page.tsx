@@ -9,24 +9,29 @@ import EditForm from "../../_ui/components/edit/EditForm";
 import { fetchBlog } from "@/app/_network/blogs";
 import { Blog } from "@/app/_type/blogs";
 
-export default function EditPage({ params }: { params: { id?: string[] } }) {
+type paramsType = Promise<{ id?: string }>;
+
+export default function EditPage({ params }: { params: paramsType }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [blog, setBlog] = useState<Blog | undefined>(undefined);
   const editorRef = useRef<Editor | null>(null);
   useEffect(() => {
-    if (params.id) {
-      fetchBlog(parseInt(params.id[0])).then((blog) => {
-        const modifiedBody = `<h1>${blog.blog.title}</h1><h2>${blog.blog.description}</h2>${blog.blog.body}`;
-        blog.blog.body = modifiedBody;
-        setBlog(blog.blog);
+    params.then((res) => {
+      if (res.id) {
+        fetchBlog(parseInt(res.id[0])).then((blog) => {
+          const modifiedBody = `<h1>${blog.blog.title}</h1><h2>${blog.blog.description}</h2>${blog.blog.body}`;
+          blog.blog.body = modifiedBody;
+          setBlog(blog.blog);
+          setLoading(false);
+        });
+      } else {
         setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
+      }
+    })
     
-  }, []);
+    
+  }, [params]);
   
 
   return (

@@ -30,10 +30,10 @@ const BlogList = ({
     if (isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
-  }, [isVisible, hasMore]);
+  }, [isVisible, hasMore, currentPage, updateCurrentPage, connect]);
   useEffect(() => {
     connect();
-  }, [hasMore]);
+  }, [hasMore, connect]);
 
   return (
     <div className="max-w-[728px] w-full p-4">

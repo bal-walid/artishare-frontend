@@ -9,25 +9,24 @@ import BlogDisplay from "@/app/_ui/components/blog/BlogDisplay";
 import MainHeader from "@/app/_ui/components/blogList/MainHeader";
 
 export default function BlogPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState<boolean>(true);
   const [blog, setBlog] = useState<Blog | null>(null);
   useEffect(() => {
     if (Array.isArray(id)) {
       throw new Error("Invalid Path");
     }
-    if (id) {
-      console.log(id);
-      fetchBlog(parseInt(id)).then((blog) => {
-        setBlog(blog.blog);
-        setLoading(false);
-      });
+    async function fetchData() {
+      if (!id) return;
+      setLoading(true);
+      const { blog } = await fetchBlog(parseInt(id));
+      setBlog(blog);
+      setLoading(false);
     }
-  }, []);
+    fetchData();
+  }, [id]);
 
-  if (loading) {
-    return "loading...";
-  }
+  if (loading) return;
   if (blog) {
     return (
       <>

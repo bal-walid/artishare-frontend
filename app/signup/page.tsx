@@ -56,9 +56,9 @@ export default function SignUpPage() {
   // const formValues = watch(); // Returns all form field values
   // console.log("Form Values:", formValues);
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-main">
-      <Card className="w-full min-h-[65vh] space-y-3 bg-hero-bg max-w-lg">
-        <CardHeader className="space-y-3 pt-10">
+    <div className="h-full flex items-center justify-center bg-main overflow-y-auto">
+      <Card className="w-fit max-[400px]:w-[90%] max-sm:w-3/4   bg-hero-bg flex flex-col">
+        <CardHeader className=" pt-5">
           <CardTitle className="text-2xl font-bold">
             Create an account
           </CardTitle>
@@ -66,9 +66,9 @@ export default function SignUpPage() {
             Enter your information to create a new account
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex-1 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           {error && <div className="text-sm text-red-500 ml-5">{error}</div>}
-          <CardContent className="space-y-5">
+          <CardContent className="gap-3">
             <Input
               key={imageField?.id}
               htmlFor={imageField?.labelFor}
@@ -81,7 +81,7 @@ export default function SignUpPage() {
               name={imageField?.name}
               error={errors[imageField?.name]?.message}
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3 mt-4 mb-2">
               {firstlast_name.map((field) => (
                 <Input
                   key={field.id}
@@ -94,11 +94,12 @@ export default function SignUpPage() {
                   register={register}
                   name={field.name}
                   error={errors[field.name]?.message}
+                  classNameContainer="space-y-2"
                 />
               ))}
             </div>
             {otherFields.map((field) => (
-              <Input
+              <Input classNameContainer="mb-2"
                 key={field.name}
                 name={field.name}
                 htmlFor={field.labelFor}
@@ -112,14 +113,14 @@ export default function SignUpPage() {
               />
             ))}
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4 mt-4">
+          <CardFooter className="flex flex-col">
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
               Create account
             </Button>
-            <div className="text-sm text-center text-muted-foreground">
+            <div className="text-sm text-center text-muted-foreground mt-2 flex gap-2 max-[400px]:flex-col">
               Already have an account?{" "}
               <Link href="/login" className="text-primary hover:underline">
                 Login <ArrowRight className="inline h-4 w-4" />

@@ -107,10 +107,12 @@ export default function MainHeader({
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant={"mediumLike"} className="font-normal">
-            <PenSquare strokeWidth={1} className="!w-5 !h-5" />
-            <span className="ml-1">Write</span>
-          </Button>
+          <Link href={"/edit"}>
+            <Button variant={"mediumLike"} className="font-normal">
+              <PenSquare strokeWidth={1} className="!w-5 !h-5" />
+              <span className="ml-1">Write</span>
+            </Button>
+          </Link>
           {!isAuthenticated && (
             <>
               <Button className="rounded-full font-normal shadow-none text-xs">

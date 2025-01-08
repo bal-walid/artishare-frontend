@@ -30,7 +30,7 @@ const BlogList = ({
     console.log(currentPage);
   }, [currentPage]);
   useEffect(() => {
-    if (isVisible && hasMore) {
+    if (currentPage === "0" || isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
   }, [isVisible, hasMore]);
@@ -40,16 +40,9 @@ const BlogList = ({
 
   return (
     <div className="max-w-[728px] w-full p-4">
-      {loadingBlogs && (
-        <div className="flex flex-col items-center">
-          <BlogCardSkeleton />
-          <BlogCardSkeleton />
-          <BlogCardSkeleton />
-        </div>
-      )}
       {/* This is to avoid that no blogs message on first load,
       do NOT remove */}
-      {blogs.length === 0 && !loadingBlogs ? (
+      {blogs.length === 0 && !loadingBlogs &&!hasMore ? (
         <div className="text-center text-muted-foreground">
           No blogs available.
         </div>
@@ -61,6 +54,9 @@ const BlogList = ({
       {hasMore && (
         <>
           <BlogCardSkeleton ref={observerRef} />
+          <BlogCardSkeleton />
+          <BlogCardSkeleton />
+          <BlogCardSkeleton />
           <BlogCardSkeleton />
           <BlogCardSkeleton />
         </>

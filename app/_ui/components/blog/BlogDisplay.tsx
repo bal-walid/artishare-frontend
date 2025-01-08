@@ -15,7 +15,6 @@ import { Editor } from "@tiptap/react";
 import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
-import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
   blog: Blog;
@@ -27,7 +26,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
-  const router = useRouter();
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -42,7 +40,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
       user_id: user.id,
       blog_id: blog.id,
     });
-    router.refresh()
+    window.location.reload();
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -57,7 +55,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         blog_id: blog.id,
       };
       await createComment(blog.id, newComment);
-      router.refresh()
+      window.location.reload();
     } catch (error) {
       console.error("Failed to post comment:", error);
     } finally {

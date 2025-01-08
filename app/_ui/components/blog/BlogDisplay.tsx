@@ -21,8 +21,7 @@ import {
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
 import Link from "next/link";
-import { CreateLike } from "@/app/_type/likes";
-import { createLike } from "@/app/_network/likes";
+
 import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
@@ -36,7 +35,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
       ? blog.likes.find((like) => like.user_id == user?.id)
       : false
   );
-  const { user } = useAuthContext();
+
   const [editor, setEditor] = useState<Editor | null>(null);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

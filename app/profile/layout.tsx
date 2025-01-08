@@ -28,7 +28,10 @@ export default function ProfileLayout({
           <SidebarHeader>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton size="lg">
+                <SidebarMenuButton
+                  size="lg"
+                  onClick={() => router.push("/blogs")}
+                >
                   <Home className="h-6 w-6" />
                   <span>Blog Dashboard</span>
                 </SidebarMenuButton>

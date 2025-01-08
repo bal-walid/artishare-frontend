@@ -15,7 +15,7 @@ export default function Blogs() {
   const initialQuery = searchParams.get("query") || "";
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [query, setQuery] = useState<string>(initialQuery);
-  const [currentPage, setCurrentPage] = useState<string>("1");
+  const [currentPage, setCurrentPage] = useState<string>("0");
   const [tags, setTags] = useState<Category[]>([]);
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
   const [activeTags, setactiveTags] = useState<Category[]>([]);
@@ -54,7 +54,7 @@ export default function Blogs() {
     console.log(query);
     updatedAtaLocallly({
       newQuery: query,
-      newCurrentPage: "1",
+      newCurrentPage: "0",
       newBlogs: [],
     });
     setHasMore(true);
@@ -76,7 +76,7 @@ export default function Blogs() {
   const updateActiveTags = async (tags: Category[]) => {
     updatedAtaLocallly({
       newTags: tags,
-      newCurrentPage: "1",
+      newCurrentPage: "0",
       newBlogs: [],
     });
     setHasMore(true);

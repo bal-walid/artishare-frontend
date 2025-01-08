@@ -9,6 +9,7 @@ import { fetchBlogs } from "../_network/blogs";
 import { fetchCategories } from "../_network/categories";
 import { Category } from "../_type/categories";
 import { useSearchParams } from "next/navigation";
+import BlogCardSkeleton from "../_ui/components/blogList/BlogSkeleton";
 
 export default function Blogs() {
   const searchParams = useSearchParams();
@@ -20,6 +21,7 @@ export default function Blogs() {
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
   const [activeTags, setactiveTags] = useState<Category[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loadingBlogs, setLoadingBlogs] = useState<boolean>(true);
 
   interface MainHeaderProps {
     newQuery?: string;
@@ -47,6 +49,7 @@ export default function Blogs() {
 
   const updateQuery = useCallback(
     async (query: string) => {
+      setLoadingBlogs(true);
       const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
       updatedAtaLocallly({
         newQuery: query,
@@ -54,10 +57,12 @@ export default function Blogs() {
         newBlogs: blogs,
       });
       setHasMore(hasMoreBlogs);
+      setLoadingBlogs(false);
     },
     [updatedAtaLocallly]
   );
   const updateCurrentPage = async (page: string) => {
+    setLoadingBlogs(true);
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
       +currentPage,
@@ -68,8 +73,10 @@ export default function Blogs() {
       newBlogs: [...blogs, ...newBlogs],
     });
     setHasMore(hasMoreBlogs);
+    setLoadingBlogs(false);
   };
   const updateActiveTags = async (tags: Category[]) => {
+    setLoadingBlogs(true);
     const { blogs, hasMoreBlogs } = await fetchBlogs(
       "",
       1,
@@ -82,6 +89,7 @@ export default function Blogs() {
       newCurrentPage: "1",
       newQuery: "",
     });
+    setLoadingBlogs(false);
   };
 
   useEffect(() => {
@@ -112,6 +120,7 @@ export default function Blogs() {
           currentPage={currentPage}
           blogs={blogs}
           hasMore={hasMore}
+          loadingBlogs={loadingBlogs}
         />
         <BlogSideBar
           updateTags={updateActiveTags}

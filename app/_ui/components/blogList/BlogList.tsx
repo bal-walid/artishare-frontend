@@ -10,6 +10,7 @@ interface BlogListProps {
   currentPage: string;
   blogs: Blog[];
   hasMore: boolean;
+  loadingBlogs: boolean;
 }
 
 const BlogList = ({
@@ -17,6 +18,7 @@ const BlogList = ({
   currentPage,
   blogs,
   hasMore,
+  loadingBlogs,
 }: BlogListProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { isVisible, connect } = useIntersection({
@@ -27,7 +29,11 @@ const BlogList = ({
 
   // Fetch blogs whenever `page` or `isVisible` changes
   useEffect(() => {
-    if (isVisible && hasMore) {
+    // The condition was added because the page would only load 
+    // if the observer was visible, so to play the animation
+    // this is necessary for the loading animation to play
+    // do not remove unless logic rebuilt!
+    if ((currentPage === "1" || isVisible) && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
   }, [isVisible, hasMore, currentPage, updateCurrentPage, connect]);
@@ -37,7 +43,16 @@ const BlogList = ({
 
   return (
     <div className="max-w-[728px] w-full p-4">
-      {blogs.length === 0 ? (
+      {loadingBlogs && (
+        <div className="flex flex-col items-center">
+          <BlogCardSkeleton />
+          <BlogCardSkeleton />
+          <BlogCardSkeleton />
+        </div>
+      )}
+      {/* This is to avoid that no blogs message on first load,
+      do NOT remove */}
+      {blogs.length === 0 && !loadingBlogs ? (
         <div className="text-center text-muted-foreground">
           No blogs available.
         </div>

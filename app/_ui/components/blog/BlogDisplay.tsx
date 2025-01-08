@@ -292,7 +292,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                   </span>
                 </div>
                 <div
-                  className="text-muted-foreground leading-relaxed"
+                  className="text-black/70 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
               </div>

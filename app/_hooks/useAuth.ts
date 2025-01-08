@@ -18,14 +18,14 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-
   useEffect(() => {
     async function checkUser() {
       try {
-        const user = await getLoggedInUser();
-        if (user) {
+        if (user) return;
+        const Newuser = await getLoggedInUser();
+        if (Newuser) {
           setIsAuthenticated(true);
-          setUser(user);
+          setUser(Newuser);
         }
       } catch (error) {
         if (error instanceof UnauthorizedError) {
@@ -36,7 +36,7 @@ export const useAuth = () => {
       }
     }
     checkUser();
-  }, []);
+  }, [user]);
 
   const login = async (email: string, password: string): Promise<User> => {
     const user = await loginApi(email, password);

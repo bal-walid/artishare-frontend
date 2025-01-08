@@ -24,14 +24,22 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { deleteBlog } from "../_network/blogs";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 export default function ProfileView() {
   const { user } = useAuthContext();
+
+  const profile_image = user?.profile_image;
+  const commentedBlogs: Blog[] = useMemo(() => {
+    return user?.comments.map((comment) => comment.blog as Blog) || [];
+  }, [user?.comments]);
+
+  const likedBlogs: Blog[] = useMemo(() => {
+    return user?.likes.map((like) => like.blog as Blog) || [];
+  }, [user?.likes]);
   if (!user) return null;
 
-  const profile_image = user.profile_image;
-  const commentedBlogs = user.comments.map((comment) => comment.blog as Blog);
-  const likedBlogs = user.likes.map((like) => like.blog as Blog);
+  console.log(commentedBlogs);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-24 overflow-x-hidden">

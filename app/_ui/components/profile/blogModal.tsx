@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import {
-  Line,
-  LineChart,
+  Area,
+  AreaChart,
   ResponsiveContainer,
   XAxis,
   YAxis,
@@ -34,17 +34,14 @@ import {
   Trash,
   X,
   User,
+  Eye,
 } from "lucide-react";
 import Image from "next/image";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import { serverAddress } from "@/app/_config/main";
+import { motion, AnimatePresence } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface DailyLikes {
   date: string;
@@ -59,23 +56,25 @@ interface BlogModalProps {
 
 export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
   const [weeklyLikes, setWeeklyLikes] = useState<DailyLikes[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<"comments" | "analytics">(
+    "comments"
+  );
+
   useEffect(() => {
     const getDailyLikes = () => {
       const allLikes = blog.likes;
       const dailyLikesMap = new Map<string, number>();
 
-      // Get the date 7 days ago
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      // Initialize all days in the past week with 0 likes
       for (let i = 0; i < 7; i++) {
         const date = new Date();
         date.setDate(date.getDate() - i);
         dailyLikesMap.set(date.toLocaleDateString(), 0);
       }
 
-      // Count likes for each day
       allLikes.forEach((like) => {
         const likeDate = new Date(like.created_at);
         if (likeDate >= sevenDaysAgo) {
@@ -87,7 +86,6 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
         }
       });
 
-      // Convert map to array and sort by date
       const dailyLikesArray = Array.from(dailyLikesMap, ([date, likes]) => ({
         date,
         likes,
@@ -102,220 +100,337 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
   }, [blog.likes]);
 
   const handleDelete = async () => {
-    await onDelete?.(blog.id);
-    window.location.reload();
+    try {
+      setIsLoading(true);
+      await onDelete?.(blog.id);
+      window.location.reload();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          size="icon"
+          className="transition-all duration-300 hover:border-primary hover:text-primary hover:scale-105"
+        >
           <Pen className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[95%] md:max-w-[85%] max-h-[90vh] p-0 gap-0">
-        <DialogHeader className="px-4 md:px-6 py-4 flex-row items-center justify-between border-b">
-          <DialogTitle className="text-xl">Blog Details</DialogTitle>
-          <div className="flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-muted">
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onUpdate?.(blog)}>
-                  <Pen className="h-4 w-4 mr-2" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => handleDelete()}
-                  className="text-destructive"
+      <DialogContent className="max-w-[95%] md:max-w-[85%] lg:max-w-[75%] max-h-[90vh] p-0 gap-0">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+          className="h-full"
+        >
+          <DialogHeader className="px-4 md:px-6 py-4 flex-row items-center justify-between border-b backdrop-blur-sm bg-background/95 sticky top-0 z-10">
+            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
+              Blog Details
+            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hover:bg-primary/10 transition-colors"
+                    disabled={isLoading}
+                  >
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onClick={() => onUpdate?.(blog)}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Pen className="h-4 w-4" />
+                    <span>Edit Blog</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleDelete}
+                    className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Skeleton className="h-4 w-4 rounded-full" />
+                    ) : (
+                      <Trash className="h-4 w-4" />
+                    )}
+                    <span>{isLoading ? "Deleting..." : "Delete Blog"}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DialogClose asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-destructive/10 hover:text-destructive transition-colors"
                 >
-                  <Trash className="h-4 w-4 mr-2" />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DialogClose asChild>
-              <Button variant="ghost" size="icon" className="hover:bg-muted">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </DialogClose>
-          </div>
-        </DialogHeader>
-        <div className="grid md:grid-cols-2">
-          <div className="relative md:h-full bg-muted/30">
-            <Image
-              src={serverAddress + blog.preview}
-              alt={blog.title}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="flex flex-col h-full overflow-hidden">
-            <div className="p-2 space-y-4">
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">
-                  {blog.title}
-                </h2>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {blog.description}
-                </p>
-              </div>
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Close</span>
+                </Button>
+              </DialogClose>
+            </div>
+          </DialogHeader>
 
-              <div className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  {blog.categories.map((category, index) => (
-                    <span
-                      key={index}
-                      className="px-2 md:px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
-                    >
-                      {category.name}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <User className="h-4 w-4" />
-                  <span>
-                    {blog.user.first_name} {blog.user.last_name}
-                  </span>
-                  <Separator orientation="vertical" className="h-4" />
-                  <Calendar className="h-4 w-4" />
-                  <span>{new Date(blog.created_at).toLocaleDateString()}</span>
-                </div>
+          <div className="grid md:grid-cols-2  overflow-hidden">
+            <div className="relative bg-muted/30 group">
+              <Image
+                src={serverAddress + blog.preview}
+                alt={blog.title}
+                fill
+                className="object-cover "
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <h2 className="text-2xl md:text-3xl font-bold text-main mb-2">
+                    {blog.title}
+                  </h2>
+                  <p className="text-main/80 line-clamp-2">
+                    {blog.description}
+                  </p>
+                </motion.div>
               </div>
             </div>
 
-            <Separator />
-
-            <div className="flex-1 p-4 md:p-6 overflow-hidden">
-              <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
-                <div className="p-3 md:p-4 rounded-lg bg-muted/50 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <ThumbsUp className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium">Likes</span>
-                  </div>
-                  <p className="text-xl md:text-2xl font-bold">
-                    {blog.likes.length}
-                  </p>
-                </div>
-                <div className="p-3 md:p-4 rounded-lg bg-muted/50 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium">Comments</span>
-                  </div>
-                  <p className="text-xl md:text-2xl font-bold">
-                    {blog.comments.length}
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative">
-                <Carousel
-                  opts={{
-                    align: "start",
-                  }}
-                  className="w-full"
+            <div className="flex flex-col h-full overflow-y-auto">
+              <div className="p-4 md:p-6 space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-4"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base md:text-lg font-semibold">
-                      Blog Analytics
-                    </h3>
-                    <div className="flex gap-2">
-                      <CarouselPrevious className="static" />
-                      <CarouselNext className="static" />
+                  <div className="flex flex-wrap gap-2">
+                    {blog.categories.map((category, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-main text-white rounded-full text-sm font-medium transition-colors"
+                      >
+                        {category.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <User className="h-4 w-4 text-primary" />
+                      </div>
+                      <span>
+                        {blog.user.first_name} {blog.user.last_name}
+                      </span>
+                    </div>
+                    <Separator orientation="vertical" className="h-4" />
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <Calendar className="h-4 w-4 text-primary" />
+                      </div>
+                      <span>
+                        {new Date(blog.created_at).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
-                  <CarouselContent>
-                    <CarouselItem className="md:basis-full pl-0">
-                      <div className="space-y-4 ml-10">
-                        <h4 className="text-sm md:text-base font-medium">
-                          Latest Comments
-                        </h4>
-                        <div className="space-y-3 md:space-y-4">
-                          {blog.comments.slice(0, 3).map((comment, index) => (
-                            <div
-                              key={index}
-                              className="p-3 md:p-4 rounded-lg bg-muted/30 space-y-2"
-                            >
-                              <div className="flex items-center gap-2">
-                                <span className="relative h-8 md:h-12 w-8 md:w-12 rounded-full overflow-hidden shrink-0">
-                                  <Image
-                                    src={
-                                      serverAddress + comment.user.profile_image
-                                    }
-                                    fill
-                                    alt="profile pic"
-                                    className="rounded-full object-cover"
-                                  />
-                                </span>
-                                <div className="flex flex-col md:flex-row md:items-center md:gap-2">
-                                  <span className="font-medium text-sm md:text-base">
-                                    {comment.user.first_name}{" "}
-                                    {comment.user.last_name}
-                                  </span>
-                                  <span className="text-xs md:text-sm text-muted-foreground">
-                                    {new Date(
-                                      comment.created_at
-                                    ).toLocaleDateString()}
-                                  </span>
-                                </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="grid grid-cols-2 gap-4"
+                >
+                  <div className="p-4 rounded-lg bg-muted/50 space-y-2 transition-all duration-300 hover:bg-muted/70">
+                    <div className="flex items-center gap-2">
+                      <ThumbsUp className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-medium">Likes</span>
+                    </div>
+                    <p className="text-2xl md:text-3xl font-bold">
+                      {blog.likes.length}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/50 space-y-2 transition-all duration-300 hover:bg-muted/70">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-medium">Comments</span>
+                    </div>
+                    <p className="text-2xl md:text-3xl font-bold">
+                      {blog.comments.length}
+                    </p>
+                  </div>
+                </motion.div>
+
+                <div className="flex gap-2 border-b">
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "relative h-9 rounded-none",
+                      activeTab === "comments" && "text-primary"
+                    )}
+                    onClick={() => setActiveTab("comments")}
+                  >
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Comments
+                    {activeTab === "comments" && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                        layoutId="activeTab"
+                      />
+                    )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "relative h-9 rounded-none",
+                      activeTab === "analytics" && "text-primary"
+                    )}
+                    onClick={() => setActiveTab("analytics")}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Analytics
+                    {activeTab === "analytics" && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                        layoutId="activeTab"
+                      />
+                    )}
+                  </Button>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {activeTab === "comments" ? (
+                    <motion.div
+                      key="comments"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-4"
+                    >
+                      <h4 className="text-base font-medium flex items-center gap-2">
+                        <MessageSquare className="h-4 w-4" />
+                        Latest Comments
+                      </h4>
+                      <div className="space-y-4 min-w-[513px] h-[300px]">
+                        {blog.comments.slice(0, 3).map((comment, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="p-4 rounded-lg bg-muted/30 space-y-3 transition-all duration-300 hover:bg-muted/50"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="relative h-10 w-10 rounded-full overflow-hidden ring-2 ring-primary/20">
+                                <Image
+                                  src={
+                                    serverAddress + comment.user.profile_image
+                                  }
+                                  fill
+                                  alt="profile pic"
+                                  className="object-cover"
+                                />
                               </div>
-                              <p className="text-sm text-muted-foreground">
-                                {comment.content}
-                              </p>
+                              <div>
+                                <span className="font-medium block">
+                                  {comment.user.first_name}{" "}
+                                  {comment.user.last_name}
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  {new Date(
+                                    comment.created_at
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
                             </div>
-                          ))}
-                        </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {comment.content}
+                            </p>
+                          </motion.div>
+                        ))}
                       </div>
-                    </CarouselItem>
-                    <CarouselItem className="md:basis-full">
-                      <div className="space-y-4">
-                        <h4 className="text-sm md:text-base font-medium">
-                          Weekly Engagement
-                        </h4>
-                        <div className="h-[250px] md:h-[300px] bg-muted/30 rounded-lg p-4">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={weeklyLikes}>
-                              <XAxis
-                                dataKey="date"
-                                stroke="hsl(var(--muted-foreground))"
-                                fontSize={12}
-                              />
-                              <YAxis
-                                stroke="hsl(var(--muted-foreground))"
-                                fontSize={12}
-                              />
-                              <Tooltip
-                                contentStyle={{
-                                  background: "hsl(var(--background))",
-                                  border: "1px solid hsl(var(--border))",
-                                  borderRadius: "6px",
-                                  fontSize: "12px",
-                                }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="likes"
-                                stroke="hsl(var(--primary))"
-                                strokeWidth={2}
-                                dot={{ fill: "hsl(var(--primary))" }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="analytics"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-4"
+                    >
+                      <h4 className="text-base font-medium flex items-center gap-2">
+                        <Eye className="h-4 w-4" />
+                        Weekly Engagement
+                      </h4>
+                      <div className="h-[300px] bg-muted/30 rounded-lg p-4">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={weeklyLikes}>
+                            <defs>
+                              <linearGradient
+                                id="colorLikes"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="5%"
+                                  stopColor="hsl(var(--primary))"
+                                  stopOpacity={0.3}
+                                />
+                                <stop
+                                  offset="95%"
+                                  stopColor="hsl(var(--primary))"
+                                  stopOpacity={0}
+                                />
+                              </linearGradient>
+                            </defs>
+                            <XAxis
+                              dataKey="date"
+                              stroke="hsl(var(--muted-foreground))"
+                              fontSize={12}
+                            />
+                            <YAxis
+                              stroke="hsl(var(--muted-foreground))"
+                              fontSize={12}
+                            />
+                            <Tooltip
+                              contentStyle={{
+                                background: "hsl(var(--background))",
+                                border: "1px solid hsl(var(--border))",
+                                borderRadius: "8px",
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                              }}
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="likes"
+                              stroke="hsl(var(--primary))"
+                              fill="url(#colorLikes)"
+                              strokeWidth={2}
+                            />
+                          </AreaChart>
+                        </ResponsiveContainer>
                       </div>
-                    </CarouselItem>
-                  </CarouselContent>
-                </Carousel>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );

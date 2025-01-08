@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Tiptap from "../../_ui/components/tiptap/Editor";
 import { Editor } from "@tiptap/react";
-import EditHeader from "../../_ui/components/tiptap/EditHeader";
+import MainHeader from "../../_ui/components/blogList/MainHeader";
 import Modal from "../../_ui/components/Modal";
 import EditForm from "../../_ui/components/edit/EditForm";
 import { fetchBlog } from "@/app/_network/blogs";
@@ -39,7 +39,11 @@ export default function EditPage({ params }: { params: paramsType }) {
           "..."
         ) : (
           <>
-            <EditHeader onBtnClick={() => setModalOpen(true)} />
+            <MainHeader
+              isSearchPage={false}
+              isEditMode={true}
+              onPublish={() => setModalOpen(true)}
+            />
             <div className="flex-1">
               <Tiptap content={blog?.body} editorRef={editorRef} />
             </div>

@@ -1,4 +1,5 @@
 import { Blog } from "./blogs";
+import { Comt } from "./comments";
 import { Like } from "./likes";
 
 export type User = {
@@ -11,7 +12,7 @@ export type User = {
   updatedAt: string;
   blogs: Blog[];
   likes: Like[];
-  comments: Comment[];
+  comments: Comt[];
   profile_image: string;
 };
 

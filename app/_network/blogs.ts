@@ -51,11 +51,19 @@ export const searchBlogs = async (
   )) as Blog[];
 };
 // Create a new blog
-export const createBlog = async (data: CreateBlog): Promise<Blog> => {
-  return (await fetchData<Blog>("/blogs", {
+export const createBlog = async (
+  data: CreateBlog
+): Promise<{
+  blog: Blog;
+}> => {
+  return (await fetchData<{
+    blog: Blog;
+  }>("/blogs", {
     method: "POST",
     body: JSON.stringify(data),
-  })) as Blog;
+  })) as {
+    blog: Blog;
+  };
 };
 // save image to the server
 export const saveImage = async (

@@ -2,6 +2,7 @@
 
 import { serverAddress } from "@/app/_config/main";
 import { createComment } from "@/app/_network/comments";
+import { createLike } from "@/app/_network/likes";
 import { Blog } from "@/app/_type/blogs";
 import { Comt, CreateComment } from "@/app/_type/comments";
 import "@/app/_ui/stylesheets/editor.scss";
@@ -22,6 +23,7 @@ import Tiptap from "../comment/Editor";
 import Link from "next/link";
 import { CreateLike } from "@/app/_type/likes";
 import { createLike } from "@/app/_network/likes";
+import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
   blog: Blog;
@@ -34,12 +36,12 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
       ? blog.likes.find((like) => like.user_id == user?.id)
       : false
   );
+  const { user } = useAuthContext();
   const [editor, setEditor] = useState<Editor | null>(null);
-  const [likesCount, setLikesCount] = useState(blog.likes.length);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<Comt[]>(blog.comments);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
+  const router = useRouter();
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -50,13 +52,11 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
 
   const handleLike = async () => {
     if (!user) return;
-    setIsLiked(!isLiked);
-    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
-    const newLike: CreateLike = {
+    await createLike(blog.id, {
       user_id: user.id,
       blog_id: blog.id,
-    };
-    await createLike(blog.id, newLike);
+    });
+    router.refresh()
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -70,10 +70,8 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         user_id: user?.id,
         blog_id: blog.id,
       };
-
-      const Comment = await createComment(blog.id, newComment);
-      setComments([...comments, Comment.comment]);
-      setComment("");
+      await createComment(blog.id, newComment);
+      router.refresh()
     } catch (error) {
       console.error("Failed to post comment:", error);
     } finally {
@@ -133,16 +131,11 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 className="flex items-center gap-2 text-medium-gray hover:text-black transition-colors"
               >
                 <MessageCircleIcon strokeWidth={1} className="h-5 w-5" />
-                <span>{comments.length} comments</span>
+                <span>{blog.comments.length} comments</span>
               </button>
               <div className="flex items-center gap-2 text-medium-gray">
-                <HeartIcon
-                  strokeWidth={1}
-                  className={`h-5 w-5 ${
-                    isLiked ? "fill-red-500 stroke-none" : ""
-                  }`}
-                />
-                <span>{likesCount} likes</span>
+                <HeartIcon strokeWidth={1} className="h-5 w-5" />
+                <span>{blog.likes.length} likes</span>
               </div>
             </div>
           </div>
@@ -195,26 +188,28 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
             <HeartIcon
               strokeWidth={1}
               className={`h-5 w-5 transition-colors ${
-                isLiked
+                blog.likes.find((like) => like.user_id === user?.id)
                   ? "fill-red-500 stroke-none"
                   : "group-hover:fill-red-500 group-hover:stroke-none"
               }`}
             />
-            <span>{likesCount} likes</span>
+            <span>{blog.likes.length} likes</span>
           </button>
           <button
             onClick={scrollToComments}
             className="flex items-center gap-2 text-medium-gray hover:text-black transition-colors"
           >
             <MessageCircleIcon strokeWidth={1} className="h-5 w-5" />
-            <span>{comments.length} comments</span>
+            <span>{blog.comments.length} comments</span>
           </button>
         </div>
       </div>
 
       {/* Enhanced Comments section */}
       <div id="comments-section" className="space-y-8 pt-8">
-        <h3 className="text-2xl font-semibold">Comments ({comments.length})</h3>
+        <h3 className="text-2xl font-semibold">
+          Comments ({blog.comments.length})
+        </h3>
 
         {/* Comment form */}
         <div className="bg-muted/30 rounded-lg p-6">
@@ -268,7 +263,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
 
         {/* Comments list */}
         <div className="space-y-6">
-          {comments.map((comment: Comt) => (
+          {blog.comments.map((comment: Comt) => (
             <div
               key={comment.id}
               className="flex gap-4 p-4 rounded-lg hover:bg-muted/30 transition-colors"

@@ -31,6 +31,7 @@ const BlogCard = ({ blog, className }: { blog: Blog; className?: string }) => {
                 <AvatarImage
                   src={serverAddress + blog.user.profile_image}
                   alt={blog.user.first_name}
+                  sizes="40px"
                 />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>

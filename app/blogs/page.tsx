@@ -27,51 +27,36 @@ export default function Blogs() {
     newTags?: Category[];
     newBlogs?: Blog[];
   }
-  const updatedAtaLocallly = useCallback(({
-    newQuery,
-    newCurrentPage,
-    newTags,
-    newBlogs,
-  }: MainHeaderProps) => {
-    if (newQuery) {
-      setQuery(newQuery);
-    }
-    if (newCurrentPage) {
-      setCurrentPage(newCurrentPage);
-    }
-    if (newTags) {
-      setactiveTags(newTags);
-    }
-    if (newBlogs) {
-      setBlogs(newBlogs);
-    }
-  }, []) ;
+  const updatedAtaLocallly = useCallback(
+    ({ newQuery, newCurrentPage, newTags, newBlogs }: MainHeaderProps) => {
+      if (newQuery) {
+        setQuery(newQuery);
+      }
+      if (newCurrentPage) {
+        setCurrentPage(newCurrentPage);
+      }
+      if (newTags) {
+        setactiveTags(newTags);
+      }
+      if (newBlogs) {
+        setBlogs(newBlogs);
+      }
+    },
+    []
+  );
 
-  const updateQuery = useCallback(async (query: string) => {
-    if (query === "") {
-      updatedAtaLocallly({
-        newQuery: "",
-        newCurrentPage: "1",
-        newBlogs: [],
-      });
-      setHasMore(true);
-      return;
-    }
-    if (query.length < 3) {
+  const updateQuery = useCallback(
+    async (query: string) => {
+      const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
       updatedAtaLocallly({
         newQuery: query,
         newCurrentPage: "1",
+        newBlogs: blogs,
       });
-      return;
-    }
-    const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
-    updatedAtaLocallly({
-      newQuery: query,
-      newCurrentPage: "1",
-      newBlogs: blogs,
-    });
-    setHasMore(hasMoreBlogs);
-  }, [updatedAtaLocallly]); 
+      setHasMore(hasMoreBlogs);
+    },
+    [updatedAtaLocallly]
+  );
   const updateCurrentPage = async (page: string) => {
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
@@ -108,6 +93,7 @@ export default function Blogs() {
     }
     fetchTags();
   }, []);
+
   useEffect(() => {
     if (initialQuery) {
       updateQuery(initialQuery);
@@ -115,7 +101,11 @@ export default function Blogs() {
   }, [initialQuery, updateQuery]);
   return (
     <div className="h-full flex flex-col">
-      <MainHeader initialQuery={initialQuery} blogsByQuery={updateQuery} />
+      <MainHeader
+        initialQuery={initialQuery}
+        blogsByQuery={updateQuery}
+        isSearchPage={true}
+      />
       <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
         <BlogList
           updateCurrentPage={updateCurrentPage}

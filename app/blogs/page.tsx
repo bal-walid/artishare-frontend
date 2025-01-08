@@ -76,7 +76,10 @@ export default function Blogs() {
   const updateActiveTags = async (tags: Category[]) => {
     updatedAtaLocallly({
       newTags: tags,
+      newCurrentPage: "1",
+      newBlogs: [],
     });
+    setHasMore(true);
   };
 
   useEffect(() => {

@@ -34,7 +34,7 @@ export default function MainHeader({
   const { isAuthenticated } = useAuthContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const router = useRouter();
-
+  
   const onChangefunction = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     if (blogsByQuery) {

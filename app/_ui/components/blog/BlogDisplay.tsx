@@ -11,16 +11,22 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import formatDate from "@/lib/formatDate";
 import { Editor } from "@tiptap/react";
-import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
+import {
+  HeartIcon,
+  MessageCircleIcon,
+  PenSquare,
+  SendIcon,
+} from "lucide-react";
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
+import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
   blog: Blog;
 }
 
 const BlogDisplay = ({ blog }: BlogDisplayProps) => {
-  const { user } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
   const [isLiked, setIsLiked] = useState(false);
   const [editor, setEditor] = useState<Editor | null>(null);
   const [likesCount, setLikesCount] = useState(blog.likes.length);
@@ -28,6 +34,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
   const [comments, setComments] = useState<Comt[]>(blog.comments);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
+  const router = useRouter();
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -96,6 +103,12 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 </span>
               </div>
             </div>
+            {isAuthenticated && user?.id == blog.user.id && (
+              <Button onClick={() => router.push(`/edit/${blog.id}`)} className="ml-auto mr-4 self-start">
+                <PenSquare strokeWidth={2} className="!w-5 !h-5" />
+                <span className="ml-1">Edit</span>
+              </Button>
+            )}
           </div>
 
           <div className="flex items-center justify-between border-y mt-6 py-2 px-4">

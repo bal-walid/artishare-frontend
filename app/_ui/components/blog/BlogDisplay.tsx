@@ -12,35 +12,20 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import formatDate from "@/lib/formatDate";
 import { Editor } from "@tiptap/react";
-import {
-  HeartIcon,
-  MessageCircleIcon,
-  PenSquare,
-  SendIcon,
-} from "lucide-react";
+import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
-import Link from "next/link";
-
-import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
   blog: Blog;
 }
 
 const BlogDisplay = ({ blog }: BlogDisplayProps) => {
-  const { isAuthenticated, user } = useAuthContext();
-  const [isLiked, setIsLiked] = useState(
-    isAuthenticated
-      ? blog.likes.find((like) => like.user_id == user?.id)
-      : false
-  );
-
+  const { user } = useAuthContext();
   const [editor, setEditor] = useState<Editor | null>(null);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
-  const router = useRouter();
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -55,7 +40,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
       user_id: user.id,
       blog_id: blog.id,
     });
-    router.refresh()
+    window.location.reload();
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -70,7 +55,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         blog_id: blog.id,
       };
       await createComment(blog.id, newComment);
-      router.refresh()
+      window.location.reload();
     } catch (error) {
       console.error("Failed to post comment:", error);
     } finally {
@@ -110,17 +95,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 </span>
               </div>
             </div>
-            {isAuthenticated && user?.id == blog.user.id && (
-              <Link
-                className="ml-auto mr-4 self-start"
-                href={`/edit/${blog.id}`}
-              >
-                <Button>
-                  <PenSquare strokeWidth={2} className="!w-5 !h-5" />
-                  <span className="ml-1">Edit</span>
-                </Button>
-              </Link>
-            )}
           </div>
 
           <div className="flex items-center justify-between border-y mt-6 py-2 px-4">
@@ -286,7 +260,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                   </span>
                 </div>
                 <div
-                  className="text-black/70 leading-relaxed"
+                  className="text-muted-foreground leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
               </div>

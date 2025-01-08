@@ -1,5 +1,6 @@
 "use client";
 
+import { serverAddress } from "@/app/_config/main";
 import { Blog } from "@/app/_type/blogs";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,32 +18,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Calendar,
+  Eye,
   MessageSquare,
   MoreVertical,
   Pen,
   ThumbsUp,
   Trash,
-  X,
   User,
-  Eye,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { serverAddress } from "@/app/_config/main";
-import { motion, AnimatePresence } from "framer-motion";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface DailyLikes {
   date: string;
@@ -61,7 +60,6 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
   const [activeTab, setActiveTab] = useState<"comments" | "analytics">(
     "comments"
   );
-  const router = useRouter();
   useEffect(() => {
     const getDailyLikes = () => {
       const allLikes = blog.likes;
@@ -104,7 +102,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
     try {
       setIsLoading(true);
       await onDelete?.(blog.id);
-      router.refresh();
+      window.location.reload();
     } finally {
       setIsLoading(false);
     }

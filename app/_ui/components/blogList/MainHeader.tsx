@@ -47,7 +47,7 @@ export default function Header({
   const { isAuthenticated, logout } = useAuthContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const router = useRouter();
-  
+
   const onChangefunction = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };

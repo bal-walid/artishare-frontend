@@ -19,7 +19,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { CreateLike } from "@/app/_type/likes";
+import { createLike } from "@/app/_network/likes";
 
 interface BlogDisplayProps {
   blog: Blog;
@@ -34,7 +36,6 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
   const [comments, setComments] = useState<Comt[]>(blog.comments);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
-  const router = useRouter();
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -47,6 +48,11 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
     if (!user) return;
     setIsLiked(!isLiked);
     setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+    const newLike : CreateLike = {
+      user_id: user.id,
+      blog_id: blog.id,
+    }
+    await createLike(blog.id, newLike);
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -104,10 +110,12 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
               </div>
             </div>
             {isAuthenticated && user?.id == blog.user.id && (
-              <Button onClick={() => router.push(`/edit/${blog.id}`)} className="ml-auto mr-4 self-start">
-                <PenSquare strokeWidth={2} className="!w-5 !h-5" />
-                <span className="ml-1">Edit</span>
-              </Button>
+              <Link className="ml-auto mr-4 self-start" href={`/edit/${blog.id}`}>
+                <Button >
+                  <PenSquare strokeWidth={2} className="!w-5 !h-5" />
+                  <span className="ml-1">Edit</span>
+                </Button>
+              </Link>
             )}
           </div>
 

@@ -1,19 +1,19 @@
-// use client
+"use client";
 import { useEffect, useState } from "react";
-import { getLoggedInUser } from "../_network/auth";
-import { UpdatePassword, UpdateUser, User } from "../_type/users";
+import { UnauthorizedError } from "../_errors/main";
 import {
+  getLoggedInUser,
   login as loginApi,
-  register,
   logout as logoutApi,
+  register,
 } from "../_network/auth";
-import { signUp } from "../_type/auth";
 import {
   updateUser,
   updateUserImage,
   updateUserPassword,
 } from "../_network/users";
-import { UnauthorizedError } from "../_errors/main";
+import { signUp } from "../_type/auth";
+import { UpdatePassword, UpdateUser, User } from "../_type/users";
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,6 @@ export const useAuth = () => {
   useEffect(() => {
     async function checkUser() {
       try {
-        if (user) return;
         const Newuser = await getLoggedInUser();
         if (Newuser) {
           setIsAuthenticated(true);
@@ -36,7 +35,7 @@ export const useAuth = () => {
       }
     }
     checkUser();
-  }, [user]);
+  }, []);
 
   const login = async (email: string, password: string): Promise<User> => {
     const user = await loginApi(email, password);

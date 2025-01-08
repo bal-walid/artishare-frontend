@@ -42,6 +42,7 @@ import { serverAddress } from "@/app/_config/main";
 import { motion, AnimatePresence } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface DailyLikes {
   date: string;
@@ -60,7 +61,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
   const [activeTab, setActiveTab] = useState<"comments" | "analytics">(
     "comments"
   );
-
+  const router = useRouter();
   useEffect(() => {
     const getDailyLikes = () => {
       const allLikes = blog.likes;
@@ -103,7 +104,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
     try {
       setIsLoading(true);
       await onDelete?.(blog.id);
-      window.location.reload();
+      router.refresh();
     } finally {
       setIsLoading(false);
     }
@@ -206,7 +207,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
             </div>
 
             <div className="flex flex-col h-full overflow-y-auto">
-              <div className="p-4 md:p-6 space-y-6">
+              <div className="p-4 md:p-6 space-y-6 overflow-x-hidden">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -354,9 +355,12 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                                 </span>
                               </div>
                             </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              {comment.content}
-                            </p>
+                            <p
+                              className="text-sm text-muted-foreground leading-relaxed"
+                              dangerouslySetInnerHTML={{
+                                __html: comment.content,
+                              }}
+                            />
                           </motion.div>
                         ))}
                       </div>

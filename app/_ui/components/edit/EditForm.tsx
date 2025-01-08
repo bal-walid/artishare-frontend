@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 interface EditFormProps {
   htmlContent: string;
   blog?: Blog;
-  blogId?: number; 
+  blogId?: number;
 }
 
 const inputStyleClasses =
@@ -40,14 +40,12 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
   const handlePublish = async () => {
     const articleData = { ...formData, body: formatArticle(htmlContent) };
     if (blog) {
-      await updateBlog(blog.id ,articleData)
+      await updateBlog(blog.id, articleData);
       router.push(`/blog/${blog.id}`);
     } else {
       const newBlog = await createBlog(articleData);
-      console.log(newBlog);
       router.push(`/blog/${newBlog.blog.id}`);
     }
-    
   };
 
   return (
@@ -96,8 +94,8 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
         <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
           <p className="text-sm text-gray-600">
             <strong className="text-gray-900">Note:</strong> Changes here will
-            affect how your story appears in public places like users&apos; homepage
-            not the contents of the story itself.
+            affect how your story appears in public places like users&apos;
+            homepage not the contents of the story itself.
           </p>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { Blog } from "@/app/_type/blogs";
 import ProfileImageUpload from "@/app/_ui/components/profile/profileImageUpload";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
@@ -10,36 +11,47 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { motion } from "framer-motion";
 import {
+  ArrowRight,
+  Calendar,
   Mail,
   MessageSquare,
   PenSquare,
   ThumbsUp,
-  Calendar,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { deleteBlog } from "../_network/blogs";
+import { Comt } from "../_type/comments";
 import { BlogModal } from "../_ui/components/profile/blogModal";
 import { EmptyState } from "../_ui/components/profile/emptyState";
 import { useAuthContext } from "../contexts/AuthContext";
-import { deleteBlog } from "../_network/blogs";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { fetchUser } from "../_network/users";
+import { User } from "../_type/users";
 
 export default function ProfileView() {
-  const { user } = useAuthContext();
-
+  const { user: ActiveUser } = useAuthContext();
+  const [user, setUser] = useState<User | null>(null);
   const profile_image = user?.profile_image;
+  console.log(user);
   const commentedBlogs: Blog[] = useMemo(() => {
-    return user?.comments.map((comment) => comment.blog as Blog) || [];
-  }, [user?.comments]);
+    return user ? user?.comments.map((comment) => comment.blog as Blog) : [];
+  }, [user]);
 
   const likedBlogs: Blog[] = useMemo(() => {
-    return user?.likes.map((like) => like.blog as Blog) || [];
-  }, [user?.likes]);
+    return user ? user?.likes.map((like) => like.blog as Blog) : [];
+  }, [user]);
+  useEffect(() => {
+    async function fetchUserInformation() {
+      if (!ActiveUser) return;
+      const response = await fetchUser(ActiveUser.id);
+      setUser(response.user);
+    }
+    fetchUserInformation();
+  }, [ActiveUser]);
   if (!user) return null;
-
-  console.log(commentedBlogs);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-24 overflow-x-hidden">
@@ -114,7 +126,12 @@ export default function ProfileView() {
             delay={0.4}
           >
             {user.blogs.length > 0 ? (
-              <BlogCarousel blogs={user.blogs} showUpdateButton />
+              <BlogCarousel
+                blogs={user.blogs}
+                showUpdateButton
+                type="default"
+                user={user}
+              />
             ) : (
               <EmptyState
                 icon={PenSquare}
@@ -130,7 +147,12 @@ export default function ProfileView() {
             delay={0.6}
           >
             {likedBlogs.length > 0 ? (
-              <BlogCarousel blogs={likedBlogs} showUpdateButton={false} />
+              <BlogCarousel
+                blogs={likedBlogs}
+                showUpdateButton={false}
+                type="liked"
+                user={user}
+              />
             ) : (
               <EmptyState
                 icon={ThumbsUp}
@@ -146,7 +168,12 @@ export default function ProfileView() {
             delay={0.8}
           >
             {commentedBlogs.length > 0 ? (
-              <BlogCarousel blogs={commentedBlogs} showUpdateButton={false} />
+              <BlogCarousel
+                blogs={commentedBlogs}
+                showUpdateButton={false}
+                type="commented"
+                user={user}
+              />
             ) : (
               <EmptyState
                 icon={MessageSquare}
@@ -215,18 +242,28 @@ function ProfileSection({
   );
 }
 
-function BlogCarousel({
-  blogs,
-  showUpdateButton = false,
-}: {
+interface BlogCarouselProps {
   blogs: Blog[];
   showUpdateButton?: boolean;
-}) {
+  type?: "default" | "commented" | "liked";
+  user: User;
+}
+
+export function BlogCarousel({
+  blogs,
+  showUpdateButton = false,
+  type = "default",
+  user,
+}: BlogCarouselProps) {
+  const getUserComment = (blogId: number): Comt | undefined => {
+    return user?.comments.find((comment) => comment.blog_id === blogId);
+  };
+
   return (
     <Carousel
       opts={{
         align: "start",
-        loop: true,
+        loop: false,
       }}
       className="w-full"
     >
@@ -236,7 +273,14 @@ function BlogCarousel({
             key={id}
             className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
           >
-            <BlogCard blog={blog} showUpdateButton={showUpdateButton} />
+            <BlogCard
+              blog={blog}
+              showUpdateButton={showUpdateButton}
+              type={type}
+              userComment={
+                type === "commented" ? getUserComment(blog.id) : undefined
+              }
+            />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -247,14 +291,19 @@ function BlogCarousel({
     </Carousel>
   );
 }
-
-function BlogCard({
-  blog,
-  showUpdateButton = false,
-}: {
+interface BlogCardProps {
   blog: Blog;
   showUpdateButton?: boolean;
-}) {
+  type?: "default" | "commented" | "liked";
+  userComment?: Comt;
+}
+
+export function BlogCard({
+  blog,
+  showUpdateButton = false,
+  type = "default",
+  userComment,
+}: BlogCardProps) {
   const router = useRouter();
 
   return (
@@ -279,6 +328,25 @@ function BlogCard({
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-muted-foreground line-clamp-2">{blog.description}</p>
+
+        {type === "commented" && userComment && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="space-y-3 border-l-2 border-primary/20 pl-4"
+          >
+            <p className="text-sm font-medium text-primary">Your Comment:</p>
+            <p
+              className="text-sm text-muted-foreground italic"
+              dangerouslySetInnerHTML={{ __html: userComment.content }}
+            />
+
+            <time className="text-xs text-muted-foreground block">
+              {new Date(userComment.created_at).toLocaleDateString()}
+            </time>
+          </motion.div>
+        )}
+
         <div className="space-y-2">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
@@ -299,6 +367,17 @@ function BlogCard({
           <p className="text-sm font-medium">
             By: {blog.user.first_name} {blog.user.last_name}
           </p>
+        </div>
+        <div className="pt-4 flex justify-end">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hover:text-primary transition-colors"
+            onClick={() => router.push(`/blog/${blog.id}`)}
+          >
+            View Blog
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </CardContent>
     </Card>

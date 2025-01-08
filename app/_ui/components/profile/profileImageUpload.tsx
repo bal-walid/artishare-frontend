@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 // import { Camera } from "lucide-react";
-import { useAuth } from "@/app/_hooks/useAuth";
+import { useAuthContext } from "@/app/contexts/AuthContext";
 
 interface ProfileImageUploadProps {
   initialImage?: string;
@@ -14,7 +14,7 @@ export default function ProfileImageUpload({
   initialImage,
 }: // onImageChange,
 ProfileImageUploadProps) {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const [preview] = useState<string | null>(
     "http://localhost:8000" + initialImage || null
   );

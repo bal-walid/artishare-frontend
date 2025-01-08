@@ -9,10 +9,18 @@ export const fetchUsers = async (): Promise<User[]> => {
 };
 
 // Fetch a single user
-export const fetchUser = async (id: number): Promise<User> => {
-  return (await fetchData<User>(`/users/${id}`, {
+export const fetchUser = async (
+  id: number
+): Promise<{
+  user: User;
+}> => {
+  return (await fetchData<{
+    user: User;
+  }>(`/users/${id}`, {
     method: "GET",
-  })) as User;
+  })) as {
+    user: User;
+  };
 };
 
 // Update a user

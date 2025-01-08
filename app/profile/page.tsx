@@ -10,220 +10,103 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Mail, MessageSquare, PenSquare, ThumbsUp } from "lucide-react";
+import {
+  Mail,
+  MessageSquare,
+  PenSquare,
+  ThumbsUp,
+  Calendar,
+} from "lucide-react";
 import Image from "next/image";
 import { BlogModal } from "../_ui/components/profile/blogModal";
 import { EmptyState } from "../_ui/components/profile/emptyState";
 import { useAuthContext } from "../contexts/AuthContext";
-import { User } from "../_type/users";
-
-// Mock data for demonstration
-const mockUser: User = {
-  id: 1,
-  first_name: "John",
-  last_name: "Doe",
-  email: "john@example.com",
-  password: "******",
-  created_at: "2024-01-01",
-  updatedAt: "2024-01-01",
-  blogs: [],
-  likes: [],
-  comments: [],
-  profile_image: "/hero.png",
-};
-
-const mockBlogs: Blog[] = [
-  {
-    id: 1,
-    title: "First Blog",
-    description: "This is my first blog",
-    body: "Content here...",
-    creator_id: 1,
-    user: mockUser,
-    comments: [
-      {
-        id: 101,
-        content: "Great post!",
-        user_id: 2,
-        user: mockUser,
-        blog_id: 1,
-        created_at: "2024-01-02",
-        updatedAt: "2024-01-02",
-      },
-      {
-        id: 102,
-        content: "I found this very helpful!",
-        user_id: 3,
-        user: mockUser,
-        blog_id: 1,
-        created_at: "2024-01-03",
-        updatedAt: "2024-01-03",
-      },
-    ],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-  {
-    id: 4,
-    title: "Second Blog",
-    description: "This is my second blog",
-    body: "Content here...",
-    creator_id: 1,
-    user: mockUser,
-    comments: [
-      {
-        id: 103,
-        content: "Interesting read!",
-        user_id: 4,
-        user: mockUser,
-        blog_id: 4,
-        created_at: "2024-01-04",
-        updatedAt: "2024-01-04",
-      },
-    ],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-];
-
-export const mockUser2 = {
-  id: 2,
-  name: "Jane Smith",
-};
-
-export const mockUser3 = {
-  id: 3,
-  name: "Alice Johnson",
-};
-
-export const mockUser4 = {
-  id: 4,
-  name: "Bob Brown",
-};
-
-const mockLikedBlogs: Blog[] = [
-  {
-    id: 2,
-    title: "Liked Blog",
-    description: "This is a blog I liked",
-    body: "Content here...",
-    creator_id: 2,
-    user: { ...mockUser, id: 2 },
-    comments: [],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-  {
-    id: 5,
-    title: "Another Liked Blog",
-    description: "This is another blog I liked",
-    body: "Content here...",
-    creator_id: 2,
-    user: { ...mockUser, id: 2 },
-    comments: [],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-];
-
-const mockCommentedBlogs: Blog[] = [
-  {
-    id: 3,
-    title: "Commented Blog",
-    description: "This is a blog I commented on",
-    body: "Content here...",
-    creator_id: 3,
-    user: { ...mockUser, id: 3 },
-    comments: [],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-  {
-    id: 6,
-    title: "Another Commented Blog",
-    description: "This is another blog I commented on",
-    body: "Content here...",
-    creator_id: 3,
-    user: { ...mockUser, id: 3 },
-    comments: [],
-    likes: [],
-    categories: [],
-    created_at: "2024-01-01",
-    updatedAt: "2024-01-01",
-  },
-];
+import { deleteBlog } from "../_network/blogs";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function ProfileView() {
   const { user } = useAuthContext();
-  console.log(user);
   if (!user) return null;
+
   const profile_image = user.profile_image;
+  const commentedBlogs = user.comments.map((comment) => comment.blog as Blog);
+  const likedBlogs = user.likes.map((like) => like.blog as Blog);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-background pb-24 overflow-x-hidden">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-24 overflow-x-hidden">
       <div className="relative">
-        {/* Background image section */}
-        <div className="relative h-[350px] w-full">
+        {/* Enhanced background section */}
+        <div className="relative h-[400px] w-full">
           <Image
             src="/bgProfile.jpg"
             alt="Profile cover"
             fill
-            className="object-cover brightness-[0.7]"
+            className="object-cover brightness-75 transition-all duration-500 hover:brightness-90"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/10 to-background/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.015]" />
         </div>
 
-        {/* Profile content */}
-        <div className="relative z-10 px-4 -mt-32 space-y-8 max-w-[1200px] mx-auto ">
-          <div className="flex flex-col items-center translate-y-5">
-            <ProfileImageUpload initialImage={profile_image} />
-            <div className="mt-4 text-center">
-              <h1 className="text-3xl font-bold text-slate-800">
+        {/* Enhanced profile content */}
+        <div className="relative z-10 px-4 -mt-40 space-y-12 max-w-[1200px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center"
+          >
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+              <ProfileImageUpload initialImage={profile_image} />
+            </div>
+            <div className="mt-6 text-center">
+              <h1 className="text-4xl text-main font-bold bg-gradient-to-r from-primary to-primary/50 capitalize bg-clip-text">
                 {user.first_name} {user.last_name}
               </h1>
-              <p className="text-slate-800/70 flex items-center justify-center gap-2 mt-2">
-                <Mail className="h-4 w-4" />
+              <p className="text-muted-foreground flex items-center justify-center gap-2 mt-3 text-lg">
+                <Mail className="h-5 w-5" />
                 {user.email}
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          <Card className="w-full backdrop-blur-sm   border-primary/10 shadow-lg shadow-primary/5">
-            <CardContent className="p-6 ">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-hero-bg">
-                <StatsCard
-                  icon={<ThumbsUp className="h-5 w-5" />}
-                  title="Liked Blogs"
-                  value={user.likes.length}
-                />
-                <StatsCard
-                  icon={<MessageSquare className="h-5 w-5" />}
-                  title="Commented Blogs"
-                  value={user.comments.length}
-                />
-                <StatsCard
-                  icon={<PenSquare className="h-5 w-5" />}
-                  title="Created Blogs"
-                  value={user.blogs.length}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Card className="w-full backdrop-blur-sm bg-background/95 border-primary/10 shadow-xl shadow-primary/5">
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <StatsCard
+                    icon={<ThumbsUp className="h-6 w-6" />}
+                    title="Liked Blogs"
+                    value={user.likes.length}
+                  />
+                  <StatsCard
+                    icon={<MessageSquare className="h-6 w-6" />}
+                    title="Commented Blogs"
+                    value={user.comments.length}
+                  />
+                  <StatsCard
+                    icon={<PenSquare className="h-6 w-6" />}
+                    title="Created Blogs"
+                    value={user.blogs.length}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Your Blogs</h2>
-            {mockBlogs.length > 0 ? (
-              <BlogCarousel blogs={mockBlogs} showUpdateButton />
+          <ProfileSection
+            title="Your Blogs"
+            icon={<PenSquare className="h-5 w-5" />}
+            delay={0.4}
+          >
+            {user.blogs.length > 0 ? (
+              <BlogCarousel blogs={user.blogs} showUpdateButton />
             ) : (
               <EmptyState
                 icon={PenSquare}
@@ -231,12 +114,15 @@ export default function ProfileView() {
                 description="Start writing your first blog post to share your thoughts with the world."
               />
             )}
-          </section>
+          </ProfileSection>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Blogs You Liked</h2>
-            {user.blogs.length > 0 ? (
-              <BlogCarousel blogs={mockLikedBlogs} showUpdateButton={false} />
+          <ProfileSection
+            title="Blogs You Liked"
+            icon={<ThumbsUp className="h-5 w-5" />}
+            delay={0.6}
+          >
+            {likedBlogs.length > 0 ? (
+              <BlogCarousel blogs={likedBlogs} showUpdateButton={false} />
             ) : (
               <EmptyState
                 icon={ThumbsUp}
@@ -244,15 +130,15 @@ export default function ProfileView() {
                 description="Explore and like blogs that interest you to see them here."
               />
             )}
-          </section>
+          </ProfileSection>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Blogs You Commented On</h2>
-            {mockCommentedBlogs.length > 0 ? (
-              <BlogCarousel
-                blogs={mockCommentedBlogs}
-                showUpdateButton={false}
-              />
+          <ProfileSection
+            title="Blogs You Commented On"
+            icon={<MessageSquare className="h-5 w-5" />}
+            delay={0.8}
+          >
+            {commentedBlogs.length > 0 ? (
+              <BlogCarousel blogs={commentedBlogs} showUpdateButton={false} />
             ) : (
               <EmptyState
                 icon={MessageSquare}
@@ -260,7 +146,7 @@ export default function ProfileView() {
                 description="Join the conversation by commenting on blogs you find interesting."
               />
             )}
-          </section>
+          </ProfileSection>
         </div>
       </div>
     </div>
@@ -277,13 +163,47 @@ function StatsCard({
   value: number;
 }) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-lg bg-primary/5 border border-primary/10 transition-colors hover:bg-primary/10">
-      <div className="p-3 rounded-full bg-primary/10 text-primary">{icon}</div>
-      <div>
-        <p className="text-sm text-muted-foreground">{title}</p>
-        <p className="text-2xl font-bold text-primary">{value}</p>
+    <div className="group relative">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-xl blur opacity-30 group-hover:opacity-75 transition duration-1000"></div>
+      <div className="relative flex items-center gap-4 p-6 rounded-lg bg-background/40 backdrop-blur-sm border border-primary/10 transition-all duration-300 hover:scale-[1.02]">
+        <div className="p-4 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
+          {icon}
+        </div>
+        <div>
+          <p className="text-sm text-muted-foreground font-medium">{title}</p>
+          <p className="text-3xl font-bold text-primary">{value}</p>
+        </div>
       </div>
     </div>
+  );
+}
+
+function ProfileSection({
+  title,
+  children,
+  icon,
+  delay,
+}: {
+  title: string;
+  children: React.ReactNode;
+  icon: React.ReactNode;
+  delay: number;
+}) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      className="space-y-6"
+    >
+      <div className="flex items-center gap-2">
+        <div className="p-2 rounded-full bg-primary/10 text-primary">
+          {icon}
+        </div>
+        <h2 className="text-2xl font-bold">{title}</h2>
+      </div>
+      {children}
+    </motion.section>
   );
 }
 
@@ -300,25 +220,26 @@ function BlogCarousel({
         align: "start",
         loop: true,
       }}
-      className="w-full mt-4 "
+      className="w-full"
     >
-      <CarouselContent className="ml-2 md:ml-4 ">
-        {blogs.map((blog) => (
+      <CarouselContent className="-ml-2 md:-ml-4">
+        {blogs.map((blog, id) => (
           <CarouselItem
-            key={blog.id}
-            className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 "
+            key={id}
+            className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
           >
             <BlogCard blog={blog} showUpdateButton={showUpdateButton} />
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="xl:flex justify-end gap-2 mt-4 hidden ">
-        <CarouselPrevious />
-        <CarouselNext />
+      <div className="flex justify-end gap-2 mt-4">
+        <CarouselPrevious className="static translate-x-0 translate-y-0" />
+        <CarouselNext className="static translate-x-0 translate-y-0" />
       </div>
     </Carousel>
   );
 }
+
 function BlogCard({
   blog,
   showUpdateButton = false,
@@ -326,37 +247,50 @@ function BlogCard({
   blog: Blog;
   showUpdateButton?: boolean;
 }) {
+  const router = useRouter();
+
   return (
-    <Card className="h-full max-w-xs ">
-      <CardHeader>
+    <Card className="group h-full overflow-hidden border-primary/10 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20">
+      <CardHeader className="space-y-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl capitalize ">{blog.title}</CardTitle>
+          <CardTitle className="text-xl font-bold capitalize line-clamp-1 group-hover:text-primary transition-colors">
+            {blog.title}
+          </CardTitle>
           {showUpdateButton && (
             <BlogModal
               blog={blog}
-              onDelete={(id) => {
-                // Implement your delete logic here
-                console.log("Deleting blog:", id);
+              onDelete={async (id) => {
+                await deleteBlog(id);
               }}
               onUpdate={(blog) => {
-                // Implement your update logic here
-                console.log("Updating blog:", blog);
+                router.push(`/edit/${blog.id}`);
               }}
             />
           )}
         </div>
       </CardHeader>
-      <CardContent>
-        <p className="text-foreground/70 line-clamp-2 ">{blog.description}</p>
-        <div className="mt-4 flex flex-col flex-wrap gap-2 text-sm text-muted-foreground">
-          <div className="flex gap-2">
-            <p>{blog.comments.length} comments</p>
-            <p>{blog.likes.length} likes</p>
+      <CardContent className="space-y-4">
+        <p className="text-muted-foreground line-clamp-2">{blog.description}</p>
+        <div className="space-y-2">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <MessageSquare className="h-4 w-4" />
+              <span>{blog.comments?.length}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ThumbsUp className="h-4 w-4" />
+              <span>{blog.likes?.length}</span>
+            </div>
           </div>
-          <p>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="h-4 w-4" />
+            <time dateTime={blog.created_at}>
+              {new Date(blog.created_at).toLocaleDateString()}
+            </time>
+          </div>
+          <p className="text-sm font-medium">
             By: {blog.user.first_name} {blog.user.last_name}
           </p>
-          <p>Created: {new Date(blog.created_at).toLocaleDateString()}</p>
         </div>
       </CardContent>
     </Card>

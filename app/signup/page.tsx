@@ -55,9 +55,6 @@ export default function SignUpPage() {
     }
   }
   if (!imageField) return null;
-  // // Use watch to monitor form values
-  // const formValues = watch(); // Returns all form field values
-  // console.log("Form Values:", formValues);
   return (
     <div className="h-full flex items-center justify-center bg-main overflow-y-auto">
       <Card className="w-fit max-[400px]:w-[90%] max-sm:w-3/4   bg-hero-bg flex flex-col">

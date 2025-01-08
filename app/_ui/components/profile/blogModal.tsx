@@ -43,26 +43,69 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
+import { serverAddress } from "@/app/_config/main";
 
-// Enhanced weekly likes data with more points
-const weeklyLikes = [
-  { week: "Week 1", likes: 23 },
-  { week: "Week 2", likes: 45 },
-  { week: "Week 3", likes: 32 },
-  { week: "Week 4", likes: 67 },
-  { week: "Week 5", likes: 52 },
-  { week: "Week 6", likes: 89 },
-  { week: "Week 7", likes: 73 },
-  { week: "Week 8", likes: 95 },
-];
+interface DailyLikes {
+  date: string;
+  likes: number;
+}
 
 interface BlogModalProps {
   blog: Blog;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: number) => Promise<void>;
   onUpdate?: (blog: Blog) => void;
 }
 
 export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
+  const [weeklyLikes, setWeeklyLikes] = useState<DailyLikes[]>([]);
+  useEffect(() => {
+    const getDailyLikes = () => {
+      const allLikes = blog.likes;
+      const dailyLikesMap = new Map<string, number>();
+
+      // Get the date 7 days ago
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      // Initialize all days in the past week with 0 likes
+      for (let i = 0; i < 7; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        dailyLikesMap.set(date.toLocaleDateString(), 0);
+      }
+
+      // Count likes for each day
+      allLikes.forEach((like) => {
+        const likeDate = new Date(like.created_at);
+        if (likeDate >= sevenDaysAgo) {
+          const dateString = likeDate.toLocaleDateString();
+          dailyLikesMap.set(
+            dateString,
+            (dailyLikesMap.get(dateString) || 0) + 1
+          );
+        }
+      });
+
+      // Convert map to array and sort by date
+      const dailyLikesArray = Array.from(dailyLikesMap, ([date, likes]) => ({
+        date,
+        likes,
+      })).sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+
+      return dailyLikesArray;
+    };
+
+    setWeeklyLikes(getDailyLikes());
+  }, [blog.likes]);
+
+  const handleDelete = async () => {
+    await onDelete?.(blog.id);
+    window.location.reload();
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -86,7 +129,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => onDelete?.(blog.id)}
+                  onClick={() => handleDelete()}
                   className="text-destructive"
                 >
                   <Trash className="h-4 w-4 mr-2" />
@@ -102,10 +145,10 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
             </DialogClose>
           </div>
         </DialogHeader>
-        <div className="grid md:grid-cols-2 ">
-          <div className="relative h-[200px] md:h-full bg-muted/30">
+        <div className="grid md:grid-cols-2">
+          <div className="relative md:h-full bg-muted/30">
             <Image
-              src="/placeholder.svg"
+              src={serverAddress + blog.preview}
               alt={blog.title}
               fill
               className="object-cover"
@@ -113,7 +156,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
             />
           </div>
           <div className="flex flex-col h-full overflow-hidden">
-            <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+            <div className="p-2 space-y-4">
               <div>
                 <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">
                   {blog.title}
@@ -202,7 +245,9 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                               <div className="flex items-center gap-2">
                                 <span className="relative h-8 md:h-12 w-8 md:w-12 rounded-full overflow-hidden shrink-0">
                                   <Image
-                                    src={comment.user.profile_image}
+                                    src={
+                                      serverAddress + comment.user.profile_image
+                                    }
                                     fill
                                     alt="profile pic"
                                     className="rounded-full object-cover"
@@ -237,7 +282,7 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={weeklyLikes}>
                               <XAxis
-                                dataKey="week"
+                                dataKey="date"
                                 stroke="hsl(var(--muted-foreground))"
                                 fontSize={12}
                               />

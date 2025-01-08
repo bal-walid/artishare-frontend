@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import { getLoggedInUser } from "../_network/auth";
 import { UpdatePassword, UpdateUser, User } from "../_type/users";
-import { login as loginApi, register } from "../_network/auth";
+import {
+  login as loginApi,
+  register,
+  logout as logoutApi,
+} from "../_network/auth";
 import { signUp } from "../_type/auth";
 import {
   updateUser,
@@ -79,7 +83,8 @@ export const useAuth = () => {
     return updatedUser.user;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await logoutApi();
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
     setUser(null);

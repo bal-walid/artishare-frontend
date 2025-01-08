@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   login: (email: string, password: string) => Promise<User>;
   signup: (user: signUp) => Promise<User>;
-  logout: () => void;
+  logout: () => Promise<void>;
   userUpdate: (data: UpdateUser) => Promise<User | null>;
   userPasswordUpdate: (data: UpdatePassword) => Promise<User | null>;
   userImageUpdate: (data: FormData) => Promise<User | null>;
@@ -40,7 +40,6 @@ export function AuthGuard({
 }) {
   const auth = useAuth();
   const router = useRouter();
-
   useEffect(() => {
     if (!auth.loading && requireAuth && !auth.isAuthenticated) {
       router.push(redirectTo);

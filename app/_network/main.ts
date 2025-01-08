@@ -50,7 +50,7 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
       return response.json() as Promise<T>;
     } else {
       const errorBody = await response.json();
-      const errorMessage = errorBody.error;
+      const errorMessage = errorBody.message;
       switch (response.status) {
         case 401:
           throw new UnauthorizedError(errorMessage);

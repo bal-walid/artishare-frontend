@@ -1,7 +1,10 @@
+import { Blog } from "./blogs";
+
 export type Like = {
   id: number;
   user_id: number;
   blog_id: number;
+  blog: Blog;
   created_at: string;
   updatedAt: string;
 };

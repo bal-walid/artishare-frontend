@@ -29,7 +29,11 @@ interface BlogDisplayProps {
 
 const BlogDisplay = ({ blog }: BlogDisplayProps) => {
   const { isAuthenticated, user } = useAuthContext();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(
+    isAuthenticated
+      ? blog.likes.find((like) => like.user_id == user?.id)
+      : false
+  );
   const [editor, setEditor] = useState<Editor | null>(null);
   const [likesCount, setLikesCount] = useState(blog.likes.length);
   const [comment, setComment] = useState("");
@@ -48,10 +52,10 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
     if (!user) return;
     setIsLiked(!isLiked);
     setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
-    const newLike : CreateLike = {
+    const newLike: CreateLike = {
       user_id: user.id,
       blog_id: blog.id,
-    }
+    };
     await createLike(blog.id, newLike);
   };
 
@@ -110,8 +114,11 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
               </div>
             </div>
             {isAuthenticated && user?.id == blog.user.id && (
-              <Link className="ml-auto mr-4 self-start" href={`/edit/${blog.id}`}>
-                <Button >
+              <Link
+                className="ml-auto mr-4 self-start"
+                href={`/edit/${blog.id}`}
+              >
+                <Button>
                   <PenSquare strokeWidth={2} className="!w-5 !h-5" />
                   <span className="ml-1">Edit</span>
                 </Button>
@@ -129,7 +136,12 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 <span>{comments.length} comments</span>
               </button>
               <div className="flex items-center gap-2 text-medium-gray">
-                <HeartIcon strokeWidth={1} className="h-5 w-5" />
+                <HeartIcon
+                  strokeWidth={1}
+                  className={`h-5 w-5 ${
+                    isLiked ? "fill-red-500 stroke-none" : ""
+                  }`}
+                />
                 <span>{likesCount} likes</span>
               </div>
             </div>

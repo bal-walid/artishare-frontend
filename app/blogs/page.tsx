@@ -1,15 +1,14 @@
 "use client";
 
-import MainHeader from "../_ui/components/blogList/MainHeader";
-import BlogList from "../_ui/components/blogList/BlogList";
-import BlogSideBar from "../_ui/components/blogList/BlogSidebar";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { Blog } from "../_type/blogs";
 import { fetchBlogs } from "../_network/blogs";
 import { fetchCategories } from "../_network/categories";
+import { Blog } from "../_type/blogs";
 import { Category } from "../_type/categories";
-import { useSearchParams } from "next/navigation";
-import BlogCardSkeleton from "../_ui/components/blogList/BlogSkeleton";
+import BlogList from "../_ui/components/blogList/BlogList";
+import BlogSideBar from "../_ui/components/blogList/BlogSidebar";
+import MainHeader from "../_ui/components/blogList/MainHeader";
 
 export default function Blogs() {
   const searchParams = useSearchParams();
@@ -23,15 +22,19 @@ export default function Blogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loadingBlogs, setLoadingBlogs] = useState<boolean>(true);
 
-  interface MainHeaderProps {
-    newQuery?: string;
-    newCurrentPage?: string;
-    newTags?: Category[];
-    newBlogs?: Blog[];
-  }
   const updatedAtaLocallly = useCallback(
-    ({ newQuery, newCurrentPage, newTags, newBlogs }: MainHeaderProps) => {
-      if (newQuery) {
+    ({
+      newQuery,
+      newCurrentPage,
+      newTags,
+      newBlogs,
+    }: {
+      newQuery?: string;
+      newCurrentPage?: string;
+      newTags?: Category[];
+      newBlogs?: Blog[];
+    }) => {
+      if (newQuery || newQuery === "") {
         setQuery(newQuery);
       }
       if (newCurrentPage) {
@@ -47,26 +50,21 @@ export default function Blogs() {
     []
   );
 
-  const updateQuery = useCallback(
-    async (query: string) => {
-      setLoadingBlogs(true);
-      const { blogs, hasMoreBlogs } = await fetchBlogs(query, 1, []);
-      updatedAtaLocallly({
-        newQuery: query,
-        newCurrentPage: "1",
-        newBlogs: blogs,
-      });
-      setHasMore(hasMoreBlogs);
-      setLoadingBlogs(false);
-    },
-    [updatedAtaLocallly]
-  );
+  const updateQuery = async (query: string) => {
+    console.log(query);
+    updatedAtaLocallly({
+      newQuery: query,
+      newCurrentPage: "1",
+      newBlogs: [],
+    });
+    setHasMore(true);
+  };
   const updateCurrentPage = async (page: string) => {
     setLoadingBlogs(true);
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
-      +currentPage,
-      []
+      +page,
+      activeTags.map((tag) => tag.name)
     );
     updatedAtaLocallly({
       newCurrentPage: page,
@@ -76,20 +74,9 @@ export default function Blogs() {
     setLoadingBlogs(false);
   };
   const updateActiveTags = async (tags: Category[]) => {
-    setLoadingBlogs(true);
-    const { blogs, hasMoreBlogs } = await fetchBlogs(
-      "",
-      1,
-      tags.map((tag) => tag.name)
-    );
-    setHasMore(hasMoreBlogs);
     updatedAtaLocallly({
       newTags: tags,
-      newBlogs: blogs,
-      newCurrentPage: "1",
-      newQuery: "",
     });
-    setLoadingBlogs(false);
   };
 
   useEffect(() => {
@@ -101,12 +88,9 @@ export default function Blogs() {
     }
     fetchTags();
   }, []);
-
   useEffect(() => {
-    if (initialQuery) {
-      updateQuery(initialQuery);
-    }
-  }, [initialQuery, updateQuery]);
+    console.log(currentPage);
+  }, [currentPage]);
   return (
     <div className="h-full flex flex-col">
       <MainHeader

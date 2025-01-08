@@ -23,20 +23,17 @@ const BlogList = ({
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { isVisible, connect } = useIntersection({
     element: observerRef,
-    rootMargin: "-150px", // Adjust this value to show part of the skeleton before fetching
+    rootMargin: "-150px",
     threshold: 0,
   });
-
-  // Fetch blogs whenever `page` or `isVisible` changes
   useEffect(() => {
-    // The condition was added because the page would only load 
-    // if the observer was visible, so to play the animation
-    // this is necessary for the loading animation to play
-    // do not remove unless logic rebuilt!
-    if ((currentPage === "1" || isVisible) && hasMore) {
+    console.log(currentPage);
+  }, [currentPage]);
+  useEffect(() => {
+    if (isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());
     }
-  }, [isVisible, hasMore, currentPage, updateCurrentPage, connect]);
+  }, [isVisible, hasMore]);
   useEffect(() => {
     connect();
   }, [hasMore, connect]);

@@ -33,16 +33,21 @@ export const useAuthContext = () => {
 export function AuthGuard({
   children,
   requireAuth = true,
+  requireAdmin = false,
   redirectTo = "/login",
 }: {
   children: React.ReactNode;
   requireAuth?: boolean;
   redirectTo?: string;
+  requireAdmin?: boolean;
 }) {
   const auth = useAuth();
   const router = useRouter();
   useEffect(() => {
     if (!auth.loading && requireAuth && !auth.isAuthenticated) {
+      router.push(redirectTo);
+    }
+    if (!auth.loading && requireAdmin && !auth.isAdmin) {
       router.push(redirectTo);
     }
   }, [auth.loading, auth.isAuthenticated, requireAuth, redirectTo, router]);
@@ -51,7 +56,7 @@ export function AuthGuard({
     return <Loading />;
   }
 
-  if (requireAuth && !auth.isAuthenticated) {
+  if ((requireAuth && !auth.isAuthenticated) || (requireAdmin && !auth.isAdmin)) {
     // Don't render anything while redirecting
     return null;
   }

@@ -165,18 +165,22 @@ export default function Header({
 
           {isAdmin && (
             <div>
-              <Button
-                variant={pathname === "/blogs" ? "default" : "outline"}
-                className="ml-2"
-              >
-                All Blogs
-              </Button>
-              <Button
-                variant={pathname === "/users" ? "default" : "outline"}
-                className="ml-2"
-              >
-                All Users
-              </Button>
+              <Link href="/blogs">
+                <Button
+                  variant={pathname === "/blogs" ? "default" : "outline"}
+                  className="ml-2"
+                >
+                  All Blogs
+                </Button>
+              </Link>
+              <Link href="/users">
+                <Button
+                  variant={pathname === "/users" ? "default" : "outline"}
+                  className="ml-2"
+                >
+                  All Users
+                </Button>
+              </Link>
             </div>
           )}
         </div>

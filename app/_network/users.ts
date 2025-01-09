@@ -8,6 +8,13 @@ export const fetchUsers = async (): Promise<User[]> => {
   })) as User[];
 };
 
+// Search for users
+export const searchUsers = async (query: string): Promise<User[]> => {
+  return (await fetchData<User[]>(`/users/search?query=${query}`, {
+    method: "GET",
+  })) as User[];
+};
+
 // Fetch a single user
 export const fetchUser = async (
   id: number

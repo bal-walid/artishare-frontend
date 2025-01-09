@@ -57,7 +57,7 @@ export default function ProfileView() {
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-24 overflow-x-hidden">
       <div className="relative">
         {/* Enhanced background section */}
-        <div className="relative h-[400px] w-full">
+        <div className="relative h-[200px] w-full">
           <Image
             src="/bgProfile.jpg"
             alt="Profile cover"

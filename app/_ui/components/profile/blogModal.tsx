@@ -119,13 +119,13 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
           <Pen className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[95%] md:max-w-[85%] lg:max-w-[75%] max-h-[90vh] p-0 gap-0">
+      <DialogContent className="max-w-[95%] md:max-w-[85%] lg:max-w-[75%] max-h-[90vh] h-[90vh] p-0 gap-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.3 }}
-          className="h-full"
+          className="h-[90vh] flex flex-col"
         >
           <DialogHeader className="px-4 md:px-6 py-4 flex-row items-center justify-between border-b backdrop-blur-sm bg-background/95 sticky top-0 z-10">
             <DialogTitle className="text-xl font-bold bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
@@ -178,12 +178,12 @@ export function BlogModal({ blog, onDelete, onUpdate }: BlogModalProps) {
             </div>
           </DialogHeader>
 
-          <div className="grid md:grid-cols-2  overflow-hidden">
-            <div className="relative bg-muted/30 group">
+          <div className="grid md:grid-cols-2   flex-1">
+            <div className="relative bg-muted/30 group h-full">
               <Image
                 src={serverAddress + blog.preview}
                 alt={blog.title}
-                fill
+                layout="fill"
                 className="object-cover "
                 priority
               />

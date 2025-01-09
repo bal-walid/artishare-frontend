@@ -6,7 +6,7 @@ import ProfileMenu from "./ProfileMenu";
 import { Input } from "@/components/ui/input";
 import { HelpCircle, PenSquare, Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import Logo from "../Logo";
 
@@ -27,9 +27,10 @@ export default function Header({
 }: HeaderProps) {
   const { user } = useAuthContext();
   const [query, setQuery] = useState<string>(initialQuery);
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, isAdmin, logout } = useAuthContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const onChangefunction = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -135,12 +136,14 @@ export default function Header({
               </Button>
             </>
           ) : (
-            <Link href="/create">
-              <Button variant="mediumLike" className="font-normal">
-                <PenSquare strokeWidth={1} className="!w-5 !h-5" />
-                <span className="ml-1">Write</span>
-              </Button>
-            </Link>
+            !isAdmin && (
+              <Link href="/create">
+                <Button variant="mediumLike" className="font-normal">
+                  <PenSquare strokeWidth={1} className="!w-5 !h-5" />
+                  <span className="ml-1">Write</span>
+                </Button>
+              </Link>
+            )
           )}
 
           {!isAuthenticated && !isEditMode && (
@@ -152,12 +155,29 @@ export default function Header({
             </>
           )}
 
-          {isAuthenticated && (
+          {isAuthenticated && !isAdmin && (
             <ProfileMenu
               user={user}
               isEditMode={isEditMode}
               handleLogOut={handleLogOut}
             />
+          )}
+
+          {isAdmin && (
+            <div>
+              <Button
+                variant={pathname === "/blogs" ? "default" : "outline"}
+                className="ml-2"
+              >
+                All Blogs
+              </Button>
+              <Button
+                variant={pathname === "/users" ? "default" : "outline"}
+                className="ml-2"
+              >
+                All Users
+              </Button>
+            </div>
           )}
         </div>
       </div>

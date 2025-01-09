@@ -21,6 +21,7 @@ import Input from "../_ui/components/Input";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { InternalServerError, LockedError, UnauthorizedError } from "../_errors/main";
+import Logo from "../_ui/components/Logo";
 
 const fields = loginFields;
 export default function LoginPage() {
@@ -56,10 +57,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-main">
-      <Card className="w-full max-w-lg bg-hero-bg">
+    <div className="min-h-screen flex gap-4 flex-col items-center justify-center p-4 bg-hero-bg">
+      <Logo className="text-main text-4xl"/>
+      <Card className="w-full max-w-lg bg-white">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-main">Login</CardTitle>
           <CardDescription>
             Enter your email and password to login to your account
           </CardDescription>

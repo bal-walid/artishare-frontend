@@ -125,13 +125,13 @@ export default function Header({
           {isEditMode ? (
             <>
               <Button
-                className="p-0 rounded-full py-1 px-3 text-sm h-auto font-normal"
+                className="mr-3 p-0 rounded-full py-1 px-3 text-sm h-auto font-normal"
                 variant="success"
                 onClick={onPublish}
               >
                 Publish
               </Button>
-              <Button className="w-auto h-auto p-0" variant="mediumLike">
+              <Button className="w-auto h-auto p-0 mr-1" variant="mediumLike">
                 <HelpCircle strokeWidth={2} className="!h-6 !w-6" />
               </Button>
             </>

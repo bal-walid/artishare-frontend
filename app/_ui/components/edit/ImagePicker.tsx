@@ -20,7 +20,7 @@ const ImagePicker = ({
 }: ImagePickerProps) => {
   if (!images.length) {
     return (
-      <div className="w-full bg-gray-50 rounded-lg border border-gray-100 h-[200px] flex items-center justify-center text-center transition-colors duration-200 hover:bg-gray-100">
+      <div className="w-full bg-[#FAFAFA] h-[200px] flex items-center justify-center text-center">
         <div className="px-6 space-y-3">
           <ImageIcon className="w-8 h-8 text-gray-400 mx-auto" />
           <span className="text-sm text-gray-600 block">
@@ -72,24 +72,16 @@ const ImagePicker = ({
   }
 
   return (
-    <div className="relative group rounded-lg overflow-hidden bg-gray-900">
-      <Image
-        className="  transition-opacity duration-200 group-hover:opacity-75"
-        width={400}
-        height={200}
-        objectFit="cover"
-        src={serverAddress + selectedImage}
-        alt="Preview"
-      />
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        <Button
-          variant="secondary"
-          onClick={onPickingImage}
-          className="rounded-full shadow-lg bg-white/90 hover:bg-white text-gray-900 border-0"
-        >
-          Change Preview Image
-        </Button>
-      </div>
+    <div className="w-full h-[200px] relative">
+      <Image width={400} height={200} alt="" className="border rounded-sm w-full h-full object-cover" src={serverAddress + selectedImage} />
+      <Button
+        variant={"mediumLike"}
+        onClick={onPickingImage}
+        className="rounded-full border border-white text-white hover:text-white bg-black bg-opacity-70
+        hover:bg-opacity-100 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-sm focus-visible:outline-none"
+      >
+        Change Preview Image
+      </Button>
     </div>
   );
 };

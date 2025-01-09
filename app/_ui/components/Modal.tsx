@@ -29,7 +29,7 @@ export default function Modal({ isOpen, onClose, children, overlayClassName }: M
       role="dialog"
       aria-modal="true"
     >
-      <div className="max-w-[1040px] max-xl:max-w-[920px] max-lg:max-w-[860px] w-full m-auto py-24 max-md:pt-10 max-md:pb-4 px-1 relative">
+      <div className="max-w-[1040px] max-xl:max-w-[920px] max-lg:max-w-[860px] w-full m-auto pt-14 max-md:pt-10 max-md:pb-4 px-1 relative">
         <Button onClick={onClose} className="absolute top-0 left-0 p-0" variant={"mediumLike"}>
           <ArrowLeft className="!h-8 !w-8 max-md:!h-6 !max-md:!w-6" />
         </Button>

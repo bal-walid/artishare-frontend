@@ -61,7 +61,7 @@ interface TiptapProps {
 const Tiptap = ({ editorRef, content }: TiptapProps) => {
   console.log(content);
   return (
-    <div className=" pb-24 mt-24">
+    <div className=" pb-24 mt-12">
       <EditorProvider
         {...editorProps}
         editorContainerProps={editorContainerProps}

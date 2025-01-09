@@ -295,35 +295,35 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         )}
 
         {/* Comments list */}
-        <div className="space-y-6">
-          {comments.map((comment: Comt) => (
+        <div>
+          {comments.map((comment: Comt, index) => (
             <div
               key={comment.id}
-              className="flex gap-4 p-4 rounded-lg hover:bg-muted/30 transition-colors"
+              className={`flex flex-col gap-4 px-4 py-6 hover:bg-muted/30 transition-colors border-b border-medium-gray/50 ${index === 0 ? "border-t" : ""} ${index === comments.length - 1 ? "border-none" : ""}`}
             >
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={serverAddress + comment.user.profile_image}
-                  alt={comment.user.first_name}
-                />
-                <AvatarFallback>
-                  {comment.user.first_name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-2 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium hover:text-primary cursor-pointer">
-                    {comment.user.first_name} {comment.user.last_name}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {formatDate(comment.created_at)}
-                  </span>
-                </div>
-                <div
-                  className="text-muted-foreground leading-relaxed"
+              <div className="flex gap-4">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage
+                    src={serverAddress + comment.user.profile_image}
+                    alt={comment.user.first_name}
+                  />
+                  <AvatarFallback>
+                    {comment.user.first_name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col ">
+                    <span className="font-medium hover:text-primary cursor-pointer">
+                      {comment.user.first_name} {comment.user.last_name}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDate(comment.created_at)}
+                    </span>
+                  </div>
+              </div>
+              <div
+                  className="text-[15px] leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
-              </div>
             </div>
           ))}
         </div>

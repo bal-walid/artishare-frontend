@@ -89,8 +89,8 @@ export const useAuth = () => {
   const logout = async () => {
     await logoutApi();
     localStorage.removeItem("authToken");
-    setIsAuthenticated(false);
-    setUser(null);
+    // setIsAuthenticated(false);
+    // setUser(null);
   };
 
   return {

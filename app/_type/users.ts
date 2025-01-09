@@ -14,6 +14,8 @@ export type User = {
   likes: Like[];
   comments: Comt[];
   profile_image: string;
+  role: string;
+  account_locked: boolean;
 };
 
 export type CreateUser = {

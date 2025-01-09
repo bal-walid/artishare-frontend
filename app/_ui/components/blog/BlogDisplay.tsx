@@ -12,20 +12,32 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import formatDate from "@/lib/formatDate";
 import { Editor } from "@tiptap/react";
-import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
+import {
+  HeartIcon,
+  MessageCircleIcon,
+  PenSquare,
+  SendIcon,
+  Trash,
+} from "lucide-react";
 import { useState } from "react";
 import Tiptap from "../comment/Editor";
+import Link from "next/link";
+import { DestructiveDialog } from "../admin/DestructiveDialog";
+import { deleteBlog } from "@/app/_network/blogs";
+import { useRouter } from "next/navigation";
 
 interface BlogDisplayProps {
   blog: Blog;
 }
 
 const BlogDisplay = ({ blog }: BlogDisplayProps) => {
-  const { user } = useAuthContext();
+  const { user, isAdmin } = useAuthContext();
   const [editor, setEditor] = useState<Editor | null>(null);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
+  const router = useRouter();
+  console.log("Is admin: ", isAdmin);
 
   const scrollToComments = () => {
     document.getElementById("comments-section")?.scrollIntoView({
@@ -63,6 +75,13 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
     }
   };
 
+  const handleDelete = async () => {
+    const deleted = await deleteBlog(blog.id);
+    if (deleted) {
+      router.push("/blogs");
+    }
+  }
+
   return (
     <main className="max-w-[840px] mx-auto px-4 py-8">
       <article className="blog-view">
@@ -76,7 +95,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
             </h2>
           </div>
 
-          <div className="flex items-center gap-3 py-4">
+          <div className="flex gap-3 py-4">
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10 ring-2 ring-secondary">
                 <AvatarImage
@@ -94,6 +113,24 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                   {formatDate(blog.created_at)}
                 </span>
               </div>
+            </div>
+            <div className="ml-auto">
+            {isAdmin && (
+    <DestructiveDialog
+      title="Delete this blog?"
+      description="This action cannot be undone. This will permanently delete the blog."
+      onConfirm={handleDelete}
+      triggerText="Delete"
+      TriggerIcon={Trash}
+    />
+  )}
+              {blog.user.id === user?.id && (
+                <Link href={`/edit/${blog.id}`}>
+                  <Button>
+                    <PenSquare /> Edit
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -185,54 +222,56 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         </h3>
 
         {/* Comment form */}
-        <div className="bg-muted/30 rounded-lg p-6">
-          <form onSubmit={handleComment} className="flex flex-col gap-4">
-            <div className="flex items-start gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={
-                    user?.profile_image
-                      ? serverAddress + user.profile_image
-                      : undefined
-                  }
-                  alt={user?.first_name || "User"}
-                />
-                <AvatarFallback>
-                  {user?.first_name?.charAt(0).toUpperCase() || "U"}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                {user ? (
-                  <Tiptap
-                    content={comment}
-                    onChange={(newContent) => setComment(newContent)}
-                    setEditor={setEditor}
-                  >
-                    <div className="flex justify-end">
-                      <Button
-                        type="submit"
-                        disabled={!user || !comment.trim() || isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>Posting...</>
-                        ) : (
-                          <>
-                            <SendIcon className="w-4 h-4 mr-2" />
-                            Post Comment
-                          </>
-                        )}
-                      </Button>
+        {!isAdmin && (
+          <div className="bg-muted/30 rounded-lg p-6">
+            <form onSubmit={handleComment} className="flex flex-col gap-4">
+              <div className="flex items-start gap-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage
+                    src={
+                      user?.profile_image
+                        ? serverAddress + user.profile_image
+                        : undefined
+                    }
+                    alt={user?.first_name || "User"}
+                  />
+                  <AvatarFallback>
+                    {user?.first_name?.charAt(0).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  {user ? (
+                    <Tiptap
+                      content={comment}
+                      onChange={(newContent) => setComment(newContent)}
+                      setEditor={setEditor}
+                    >
+                      <div className="flex justify-end">
+                        <Button
+                          type="submit"
+                          disabled={!user || !comment.trim() || isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>Posting...</>
+                          ) : (
+                            <>
+                              <SendIcon className="w-4 h-4 mr-2" />
+                              Post Comment
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </Tiptap>
+                  ) : (
+                    <div className="flex-1 px-4 py-3 border border-gray-700 rounded-md text-muted-foreground">
+                      Please sign in to comment
                     </div>
-                  </Tiptap>
-                ) : (
-                  <div className="flex-1 px-4 py-3 border border-gray-700 rounded-md text-muted-foreground">
-                    Please sign in to comment
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        )}
 
         {/* Comments list */}
         <div className="space-y-6">

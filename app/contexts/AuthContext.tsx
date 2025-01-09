@@ -9,6 +9,7 @@ import Loading from "../_ui/components/Loading";
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  isAdmin: boolean;
   loading: boolean;
   user: User | null;
   login: (email: string, password: string) => Promise<User>;

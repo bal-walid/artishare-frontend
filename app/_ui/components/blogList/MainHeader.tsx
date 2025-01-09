@@ -148,10 +148,14 @@ export default function Header({
 
           {!isAuthenticated && !isEditMode && (
             <>
-              <Button className="rounded-full font-normal shadow-none text-xs">
-                Sign Up
-              </Button>
-              <Button variant="mediumLike">Sign in</Button>
+              <Link href={`/signup`}>
+                <Button className="rounded-full font-normal shadow-none text-xs">
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href={`/login`}>
+                <Button variant="mediumLike">Sign in</Button>
+              </Link>
             </>
           )}
 

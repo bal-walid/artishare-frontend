@@ -9,6 +9,7 @@ import TagInput from "./TagInput";
 import { createBlog, updateBlog } from "@/app/_network/blogs";
 import { Blog, CreateBlog } from "@/app/_type/blogs";
 import { useRouter } from "next/navigation";
+import { set } from "react-hook-form";
 
 interface EditFormProps {
   htmlContent: string;
@@ -21,6 +22,7 @@ const inputStyleClasses =
 
 const EditForm = ({ htmlContent, blog }: EditFormProps) => {
   const router = useRouter();
+  const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const { user } = useAuthContext();
   const { title, description, images } = useMemo(
     () => parseArticleHtml(htmlContent),
@@ -39,6 +41,7 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
 
   const handlePublish = async () => {
     const articleData = { ...formData, body: formatArticle(htmlContent) };
+    setIsPublishing(true);
     if (blog) {
       await updateBlog(blog.id, articleData);
       router.push(`/blog/${blog.id}`);
@@ -129,9 +132,9 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
           <div className="pt-2 flex max-lg:flex-col max-lg:items-start max-lg:gap-3 justify-between items-center">
             <Button
               onClick={handlePublish}
-              className="max-lg:order-2 max-sm:mx-auto rounded-full px-6 py-2  bg-green-600 hover:bg-green-700 text-white transition-colors duration-200"
+              className={`max-lg:order-2 max-sm:mx-auto rounded-full px-6 py-2  bg-green-600 hover:bg-green-700 text-white transition-colors duration-200` + (isPublishing ? " opacity-50 cursor-not-allowed" : "")}
             >
-              Publish now
+              {isPublishing ? "Publishing..." : "Publish now"}
             </Button>
             <p className="text-sm text-gray-600 bg-hero-bg p-4 max-sm:py-2 rounded-lg flex gap-2 max-sm:w-full max-sm:flex-col">
               <span>Created By : </span>

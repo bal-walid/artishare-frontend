@@ -26,6 +26,7 @@ import { DestructiveDialog } from "../admin/DestructiveDialog";
 import { deleteBlog } from "@/app/_network/blogs";
 import { useRouter } from "next/navigation";
 import { CreateLike } from "@/app/_type/likes";
+import { Comt } from "@/app/_type/comments";
 
 interface BlogDisplayProps {
   blog: Blog;
@@ -39,8 +40,14 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
       : false
   );
   const [likesCount, setLikesCount] = useState(blog.likes.length);
-  const [editor, setEditor] = useState<Editor | null>(null);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<Comt[]>(
+    blog.comments.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+  );
+  const [editor, setEditor] = useState<Editor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const initials = blog.user.first_name.charAt(0).toUpperCase();
   const router = useRouter();
@@ -75,8 +82,10 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
         user_id: user?.id,
         blog_id: blog.id,
       };
-      await createComment(blog.id, newComment);
-      window.location.reload();
+
+      const Comment = await createComment(blog.id, newComment);
+      setComments([Comment.comment, ...comments]);
+      setComment("");
     } catch (error) {
       console.error("Failed to post comment:", error);
     } finally {
@@ -89,7 +98,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
     if (deleted) {
       router.push("/blogs");
     }
-  }
+  };
 
   return (
     <main className="max-w-[840px] mx-auto px-4 py-8">
@@ -124,15 +133,15 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
               </div>
             </div>
             <div className="ml-auto">
-            {isAdmin && (
-    <DestructiveDialog
-      title="Delete this blog?"
-      description="This action cannot be undone. This will permanently delete the blog."
-      onConfirm={handleDelete}
-      triggerText="Delete"
-      TriggerIcon={Trash}
-    />
-  )}
+              {isAdmin && (
+                <DestructiveDialog
+                  title="Delete this blog?"
+                  description="This action cannot be undone. This will permanently delete the blog."
+                  onConfirm={handleDelete}
+                  triggerText="Delete"
+                  TriggerIcon={Trash}
+                />
+              )}
               {blog.user.id === user?.id && (
                 <Link href={`/edit/${blog.id}`}>
                   <Button>
@@ -153,7 +162,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 <span>{blog.comments.length} comments</span>
               </button>
               <div className="flex items-center gap-2 text-medium-gray">
-              <HeartIcon
+                <HeartIcon
                   strokeWidth={1}
                   className={`h-5 w-5 ${
                     isLiked ? "fill-red-500 stroke-none" : ""
@@ -170,9 +179,9 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
           dangerouslySetInnerHTML={{ __html: blog.body }}
         ></div>
       </article>
-      <Separator className="my-8" />
+      {/* <Separator className="my-8" /> */}
 
-      {/* Enhanced Author section */}
+      {/*
       <div className="flex flex-col gap-6 p-8 bg-muted/30 rounded-lg">
         <div className="flex items-start gap-6">
           <Avatar className="h-20 w-20 ring-2 ring-secondary">
@@ -198,9 +207,9 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <Separator className="my-8" />
+      {/* <Separator className="my-8" /> */}
 
       {/* Interactive bottom bar */}
       <div className=" bg-background/80 backdrop-blur-xl border-y py-3 px-4 -mx-4 flex items-center justify-between z-10">
@@ -231,9 +240,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
 
       {/* Enhanced Comments section */}
       <div id="comments-section" className="space-y-8 pt-8">
-        <h3 className="text-2xl font-semibold">
-          Comments ({blog.comments.length})
-        </h3>
+        <h3 className="text-2xl font-semibold">Comments ({comments.length})</h3>
 
         {/* Comment form */}
         {!isAdmin && (
@@ -289,7 +296,7 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
 
         {/* Comments list */}
         <div className="space-y-6">
-          {blog.comments.map((comment: Comt) => (
+          {comments.map((comment: Comt) => (
             <div
               key={comment.id}
               className="flex gap-4 p-4 rounded-lg hover:bg-muted/30 transition-colors"

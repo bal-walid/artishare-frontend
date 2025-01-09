@@ -10,7 +10,7 @@ const loginFields: LoginFields[] = [
     id: "email",
     name: "email",
     type: "email",
-    placeholder: "Entre your email",
+    placeholder: "Enter your email",
   },
   {
     labelText: "Password",
@@ -18,7 +18,7 @@ const loginFields: LoginFields[] = [
     id: "password",
     name: "password",
     type: "password",
-    placeholder: "Entre your password",
+    placeholder: "Enter your password",
   },
 ];
 export default loginFields;

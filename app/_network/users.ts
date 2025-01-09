@@ -81,3 +81,10 @@ export const deleteUser = async (id: number): Promise<boolean> => {
   });
   return true;
 };
+
+// Lock or unlock a user
+export const lockUser = async (id: number): Promise<{ user: User }> => {
+  return (await fetchData<{ user: User }>(`/users/lock/${id}`, {
+    method: "POST",
+  })) as { user: User };
+};

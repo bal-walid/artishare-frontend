@@ -18,16 +18,8 @@ export default function Home() {
   // }
   return (
     <div className="h-full flex flex-col ">
-      <SubSection animationType="top-to-bottom">
-        <HomeHeader />
-      </SubSection>
-
-      <SubSection
-        animationType="bottom-to-top"
-        className="flex-1 flex flex-col"
-      >
-        <Hero />
-      </SubSection>
+      <HomeHeader />
+      <Hero />
     </div>
   );
 }

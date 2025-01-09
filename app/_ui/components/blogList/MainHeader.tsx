@@ -1,31 +1,14 @@
 "use client";
 
 import { useAuthContext } from "@/app/contexts/AuthContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import ProfileMenu from "./ProfileMenu";
 import { Input } from "@/components/ui/input";
-import {
-  HelpCircle,
-  LogOut,
-  PenSquare,
-  Search,
-  Settings,
-  User,
-} from "lucide-react";
+import { HelpCircle, PenSquare, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import Logo from "../Logo";
-import { serverAddress } from "@/app/_config/main";
 
 interface HeaderProps {
   blogsByQuery?: (query: string) => void;
@@ -170,77 +153,11 @@ export default function Header({
           )}
 
           {isAuthenticated && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full h-10 w-10 p-0.5 hover:bg-primary/5 transition-colors"
-                >
-                  <Avatar
-                    className={`h-full w-full border-2 ${
-                      isEditMode
-                        ? "border-secondary"
-                        : "border-border hover:border-main/50"
-                    } transition-colors`}
-                  >
-                    <AvatarImage
-                      src={serverAddress + user?.profile_image}
-                      alt={user?.first_name}
-                    />
-                    <AvatarFallback className="bg-primary/5 text-sm font-medium">
-                      UN
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-64 p-2"
-                align="end"
-                sideOffset={8}
-              >
-                <DropdownMenuLabel className="font-normal p-2">
-                  <div className="flex flex-col space-y-1.5">
-                    <p className="text-sm font-semibold">
-                      {user?.first_name}
-                      {user?.last_name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {user?.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="my-2" />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/profile"
-                      className="flex items-center cursor-pointer p-2 rounded-md"
-                    >
-                      <User className="mr-3 h-4 w-4" />
-                      <span>View profile</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/profile/settings"
-                      className="flex items-center cursor-pointer p-2 rounded-md"
-                    >
-                      <Settings className="mr-3 h-4 w-4" />
-                      <span>Settings</span>
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator className="my-2" />
-                <DropdownMenuItem
-                  onClick={handleLogOut}
-                  className="p-2 rounded-md text-red-500 focus:text-red-500"
-                >
-                  <LogOut className="mr-3 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ProfileMenu
+              user={user}
+              isEditMode={isEditMode}
+              handleLogOut={handleLogOut}
+            />
           )}
         </div>
       </div>

@@ -20,7 +20,7 @@ import { login } from "../_type/auth";
 import Input from "../_ui/components/Input";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { InternalServerError, UnauthorizedError } from "../_errors/main";
+import { InternalServerError, LockedError, UnauthorizedError } from "../_errors/main";
 
 const fields = loginFields;
 export default function LoginPage() {
@@ -45,6 +45,9 @@ export default function LoginPage() {
     } catch (error) {
       if (error instanceof UnauthorizedError) {
         setError("Credentials are invalid");
+      }
+      if (error instanceof LockedError) {
+        setError("This account is locked. Please contact support");
       }
       if (error instanceof InternalServerError) {
         setError("This email is not associated with an existing account");

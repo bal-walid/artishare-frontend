@@ -32,6 +32,11 @@ export class NotFoundError extends HttpError {}
 export class ConflictError extends HttpError {}
 
 /**
+ * Status Code: 423
+ */
+export class LockedError extends HttpError {}
+
+/**
  * Status Code : 500
  */
 export class InternalServerError extends HttpError {}

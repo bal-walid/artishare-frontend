@@ -5,6 +5,7 @@ import {
   UnauthorizedError,
   NotFoundError,
   InternalServerError,
+  LockedError
 } from "@/app/_errors/main";
 import { serverAddress } from "@/app/_config/main";
 
@@ -62,6 +63,8 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
           throw new ForbiddenError(errorMessage);
         case 404:
           throw new NotFoundError(errorMessage);
+        case 423:
+          throw new LockedError(errorMessage);
         case 500:
           throw new InternalServerError(errorMessage);
         default:

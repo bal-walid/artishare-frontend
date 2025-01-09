@@ -63,13 +63,6 @@ const BlogSideBar = ({
           })}
         </div>
       )}
-
-      <Link
-        className="mt-3 inline-block font-semibold text-sm text-black/50"
-        href={""}
-      >
-        See More Topics
-      </Link>
     </div>
   );
 };

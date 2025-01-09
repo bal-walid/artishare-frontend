@@ -87,7 +87,7 @@ export default function Blogs() {
       setLoadingTags(true);
       const tags = await fetchCategories();
       setLoadingTags(false);
-      setTags(tags);
+      setTags(tags.slice(0, 12));
     }
     fetchTags();
   }, []);

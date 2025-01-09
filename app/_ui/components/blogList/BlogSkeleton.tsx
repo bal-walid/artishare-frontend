@@ -9,7 +9,7 @@ interface BlogCardSkeletonProps {
 const BlogCardSkeleton = ({ref} : BlogCardSkeletonProps) => {
   return (
     <Card ref={ref} className="w-full border-0 border-b rounded-none shadow-none">
-      <CardHeader className="py-4 px-0">
+      <CardHeader className="pt-4 pb-1 px-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {/* Avatar Skeleton */}
@@ -19,7 +19,7 @@ const BlogCardSkeleton = ({ref} : BlogCardSkeletonProps) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-0 pb-6">
+      <CardContent className="p-4 pb-6">
         <div className="flex justify-between">
           <div className="space-y-2 flex-1">
             {/* Title Skeleton */}

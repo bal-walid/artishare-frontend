@@ -39,7 +39,7 @@ const BlogList = ({
   }, [hasMore, connect]);
 
   return (
-    <div className="max-w-[728px] w-full p-4">
+    <div className="max-w-[728px] w-full p-4 pt-8">
       {/* This is to avoid that no blogs message on first load,
       do NOT remove */}
       {blogs.length === 0 && !loadingBlogs &&!hasMore ? (

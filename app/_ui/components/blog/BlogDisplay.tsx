@@ -25,13 +25,20 @@ import Link from "next/link";
 import { DestructiveDialog } from "../admin/DestructiveDialog";
 import { deleteBlog } from "@/app/_network/blogs";
 import { useRouter } from "next/navigation";
+import { CreateLike } from "@/app/_type/likes";
 
 interface BlogDisplayProps {
   blog: Blog;
 }
 
 const BlogDisplay = ({ blog }: BlogDisplayProps) => {
-  const { user, isAdmin } = useAuthContext();
+  const { user, isAdmin, isAuthenticated } = useAuthContext();
+  const [isLiked, setIsLiked] = useState(
+    isAuthenticated
+      ? blog.likes.find((like) => like.user_id == user?.id)
+      : false
+  );
+  const [likesCount, setLikesCount] = useState(blog.likes.length);
   const [editor, setEditor] = useState<Editor | null>(null);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,11 +55,13 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
 
   const handleLike = async () => {
     if (!user) return;
-    await createLike(blog.id, {
+    setIsLiked(!isLiked);
+    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+    const newLike: CreateLike = {
       user_id: user.id,
       blog_id: blog.id,
-    });
-    window.location.reload();
+    };
+    await createLike(blog.id, newLike);
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -144,8 +153,13 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
                 <span>{blog.comments.length} comments</span>
               </button>
               <div className="flex items-center gap-2 text-medium-gray">
-                <HeartIcon strokeWidth={1} className="h-5 w-5" />
-                <span>{blog.likes.length} likes</span>
+              <HeartIcon
+                  strokeWidth={1}
+                  className={`h-5 w-5 ${
+                    isLiked ? "fill-red-500 stroke-none" : ""
+                  }`}
+                />
+                <span>{likesCount} likes</span>
               </div>
             </div>
           </div>
@@ -198,12 +212,12 @@ const BlogDisplay = ({ blog }: BlogDisplayProps) => {
             <HeartIcon
               strokeWidth={1}
               className={`h-5 w-5 transition-colors ${
-                blog.likes.find((like) => like.user_id === user?.id)
+                isLiked
                   ? "fill-red-500 stroke-none"
                   : "group-hover:fill-red-500 group-hover:stroke-none"
               }`}
             />
-            <span>{blog.likes.length} likes</span>
+            <span>{likesCount} likes</span>
           </button>
           <button
             onClick={scrollToComments}

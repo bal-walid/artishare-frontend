@@ -16,6 +16,7 @@ import { signUp } from "../_type/auth";
 import { UpdatePassword, UpdateUser, User } from "../_type/users";
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
@@ -25,6 +26,9 @@ export const useAuth = () => {
         if (Newuser) {
           setIsAuthenticated(true);
           setUser(Newuser);
+          if (Newuser.role === "admin") {
+            setIsAdmin(true);
+          }
         }
       } catch (error) {
         if (error instanceof UnauthorizedError) {
@@ -91,6 +95,7 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
+    isAdmin,
     loading,
     user,
     login,

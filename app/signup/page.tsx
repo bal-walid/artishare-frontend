@@ -95,6 +95,7 @@ export default function SignUpPage() {
                   name={field.name}
                   error={errors[field.name]?.message}
                   classNameContainer="space-y-2"
+                  classNameInput="border"
                 />
               ))}
             </div>
@@ -110,11 +111,12 @@ export default function SignUpPage() {
                 labelText={field.labelText}
                 register={register}
                 error={errors[field.name]?.message}
+                classNameInput="border"
               />
             ))}
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-main" disabled={isSubmitting}>
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

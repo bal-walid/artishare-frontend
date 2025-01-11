@@ -9,7 +9,7 @@ const signUpFields: SignUpFields[] = [
     id: "first_name",
     name: "first_name",
     type: "text",
-    placeholder: "Entre your First Name",
+    placeholder: "Enter your First Name",
   },
   {
     labelText: "Last Name",
@@ -17,7 +17,7 @@ const signUpFields: SignUpFields[] = [
     id: "last_name",
     name: "last_name",
     type: "text",
-    placeholder: "Entre your Last Name",
+    placeholder: "Enter your Last Name",
   },
   {
     labelText: "Email",
@@ -25,7 +25,7 @@ const signUpFields: SignUpFields[] = [
     id: "email",
     name: "email",
     type: "email",
-    placeholder: "Entre your email",
+    placeholder: "Enter your email",
   },
   {
     labelText: "Password",
@@ -33,7 +33,7 @@ const signUpFields: SignUpFields[] = [
     id: "password",
     name: "password",
     type: "password",
-    placeholder: "Entre your password",
+    placeholder: "Enter your password",
   },
   {
     labelText: "Password Confirmation",
@@ -41,7 +41,7 @@ const signUpFields: SignUpFields[] = [
     id: "password_confirmation",
     name: "password_confirmation",
     type: "password",
-    placeholder: "Entre your password",
+    placeholder: "Enter your password",
   },
   {
     labelText: "Profile Image",
@@ -49,7 +49,7 @@ const signUpFields: SignUpFields[] = [
     id: "profile_image",
     name: "profile_image",
     type: "file",
-    placeholder: "Entre your profile image",
+    placeholder: "Enter your profile image",
   }
 ];
 

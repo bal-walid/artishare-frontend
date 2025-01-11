@@ -81,11 +81,12 @@ export default function LoginPage() {
                 register={register}
                 labelText={field.labelText}
                 error={errors[field.name]?.message}
+                classNameInput="border"
               />
             ))}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-main" disabled={isSubmitting}>
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

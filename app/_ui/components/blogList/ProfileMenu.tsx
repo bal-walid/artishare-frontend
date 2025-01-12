@@ -45,7 +45,7 @@ const ProfileMenu = ({
               alt={user?.first_name}
             />
             <AvatarFallback className="bg-primary/5 text-sm font-medium">
-              UN
+            {user ? (user?.first_name.slice(0, 1).toUpperCase() + user?.last_name.slice(0, 1).toUpperCase()) : "AA"}
             </AvatarFallback>
           </Avatar>
         </Button>

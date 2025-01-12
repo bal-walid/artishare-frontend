@@ -6,7 +6,8 @@ import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogSkeleton";
 
 interface BlogListProps {
-  updateCurrentPage: () => void;
+  updateCurrentPage: (page: string) => void;
+  currentPage: string;
   blogs: Blog[];
   hasMore: boolean;
   loadingBlogs: boolean;
@@ -14,6 +15,7 @@ interface BlogListProps {
 
 const BlogList = ({
   updateCurrentPage,
+  currentPage,
   blogs,
   hasMore,
   loadingBlogs,
@@ -25,31 +27,21 @@ const BlogList = ({
     threshold: 0,
   });
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    if (isVisible && hasMore) {
-      updateCurrentPage();
+    if (currentPage === "0" || isVisible && hasMore) {
+      updateCurrentPage((+currentPage + 1).toString());
     }
-  }, [isVisible, hasMore, updateCurrentPage]);
+  }, [isVisible, hasMore]);
   useEffect(() => {
     connect();
   }, [hasMore, connect]);
-  if (loadingBlogs && blogs.length === 0) {
-    return (
-      <div className="max-w-[728px] w-full p-4 pt-8">
-        <BlogCardSkeleton />
-        <BlogCardSkeleton />
-        <BlogCardSkeleton />
-        <BlogCardSkeleton />
-        <BlogCardSkeleton />
-        <BlogCardSkeleton />
-      </div>
-    );
-  }
+  /* eslint-enable react-hooks/exhaustive-deps */
   return (
     <div className="max-w-[728px] w-full p-4 pt-8">
       {/* This is to avoid that no blogs message on first load,
       do NOT remove */}
-      {blogs.length === 0 && !loadingBlogs && !hasMore ? (
+      {blogs.length === 0 && !loadingBlogs &&!hasMore ? (
         <div className="text-center text-muted-foreground">
           No blogs available.
         </div>

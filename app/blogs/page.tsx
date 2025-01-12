@@ -9,7 +9,6 @@ import { Category } from "../_type/categories";
 import BlogList from "../_ui/components/blogList/BlogList";
 import BlogSideBar from "../_ui/components/blogList/BlogSidebar";
 import MainHeader from "../_ui/components/blogList/MainHeader";
-import { AuthGuard } from "../contexts/AuthContext";
 
 export default function Blogs() {
   const searchParams = useSearchParams();
@@ -21,7 +20,7 @@ export default function Blogs() {
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
   const [activeTags, setactiveTags] = useState<Category[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loadingBlogs, setLoadingBlogs] = useState<boolean>(false);
+  const [loadingBlogs, setLoadingBlogs] = useState<boolean>(true);
 
   const updatedAtaLocallly = useCallback(
     ({
@@ -59,20 +58,20 @@ export default function Blogs() {
     });
     setHasMore(true);
   };
-  const updateCurrentPage = useCallback(async () => {
+  const updateCurrentPage = async (page: string) => {
     setLoadingBlogs(true);
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
-      +currentPage + 1,
+      +page,
       activeTags.map((tag) => tag.name)
     );
     updatedAtaLocallly({
-      newCurrentPage: (+currentPage + 1).toString(),
+      newCurrentPage: page,
       newBlogs: [...blogs, ...newBlogs],
     });
     setHasMore(hasMoreBlogs);
     setLoadingBlogs(false);
-  }, [query, currentPage, activeTags, updatedAtaLocallly, blogs]);
+  };
   const updateActiveTags = async (tags: Category[]) => {
     updatedAtaLocallly({
       newTags: tags,
@@ -93,28 +92,27 @@ export default function Blogs() {
   }, []);
 
   return (
-    <AuthGuard requireAuth={false}>
-      <div className="h-full flex flex-col overflow-y-hidden">
-        <MainHeader
-          initialQuery={initialQuery}
-          blogsByQuery={updateQuery}
-          isSearchPage={true}
+    <div className="h-full flex flex-col">
+      <MainHeader
+        initialQuery={initialQuery}
+        blogsByQuery={updateQuery}
+        isSearchPage={true}
+      />
+      <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
+        <BlogList
+          updateCurrentPage={updateCurrentPage}
+          currentPage={currentPage}
+          blogs={blogs}
+          hasMore={hasMore}
+          loadingBlogs={loadingBlogs}
         />
-        <main className="flex-1 flex justify-evenly overflow-y-scroll">
-          <BlogList
-            updateCurrentPage={updateCurrentPage}
-            blogs={blogs}
-            hasMore={hasMore}
-            loadingBlogs={loadingBlogs}
-          />
-          <BlogSideBar
-            updateTags={updateActiveTags}
-            activeTags={activeTags}
-            loadingTags={loadingTags}
-            tags={tags}
-          />
-        </main>
-      </div>
-    </AuthGuard>
+        <BlogSideBar
+          updateTags={updateActiveTags}
+          activeTags={activeTags}
+          loadingTags={loadingTags}
+          tags={tags}
+        />
+      </main>
+    </div>
   );
 }

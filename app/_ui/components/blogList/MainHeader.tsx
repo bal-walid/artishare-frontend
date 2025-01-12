@@ -4,11 +4,20 @@ import { useAuthContext } from "@/app/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import ProfileMenu from "./ProfileMenu";
 import { Input } from "@/components/ui/input";
-import { HelpCircle, PenSquare, Search } from "lucide-react";
+import { HelpCircle, LogOut, PenSquare, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import Logo from "../Logo";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface HeaderProps {
   blogsByQuery?: (query: string) => void;
@@ -172,7 +181,6 @@ export default function Header({
               <Link href="/blogs">
                 <Button
                   variant={pathname === "/blogs" ? "default" : "outline"}
-                  className="ml-2"
                 >
                   All Blogs
                 </Button>
@@ -180,11 +188,56 @@ export default function Header({
               <Link href="/users">
                 <Button
                   variant={pathname === "/users" ? "default" : "outline"}
-                  className="ml-2"
+                  className="ml-3 mr-6"
                 >
                   All Users
                 </Button>
               </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full h-10 w-10 p-0.5 hover:bg-primary/5 transition-colors"
+                  >
+                    <Avatar
+                      className={`h-full w-full border-2 ${
+                        isEditMode
+                          ? "border-secondary"
+                          : "border-border hover:border-main/50"
+                      } transition-colors`}
+                    >
+                      <AvatarFallback className="bg-primary/5 text-sm font-medium">
+                        {user ? (user?.first_name.slice(0, 1).toUpperCase() + user?.last_name.slice(0, 1).toUpperCase()) : "AA"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-64 p-2"
+                  align="end"
+                  sideOffset={8}
+                >
+                  <DropdownMenuLabel className="font-normal p-2">
+                    <div className="flex flex-col space-y-1.5">
+                      <p className="text-sm font-semibold">
+                        {user?.first_name} {user?.last_name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="my-2" />
+                  <DropdownMenuItem
+                    onClick={handleLogOut}
+                    className="p-2 rounded-md text-red-500 focus:text-red-500"
+                  >
+                    <LogOut className="mr-3 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
         </div>

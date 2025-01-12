@@ -74,7 +74,7 @@ export default function Header({
           isEditMode ? "max-w-[1032px]" : "max-w-7xl"
         }`}
       >
-        <div className="flex items-center gap-6">
+        <div className={`flex items-center gap-6 ${isEditMode ? "max-sm:hidden" : ""}`}>
           <Link
             href="/"
             className={`flex items-center transition-transform hover:scale-105 ${!isEditMode ? "max-sm:hidden" : ""}`}
@@ -130,20 +130,19 @@ export default function Header({
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-3 ${isEditMode ? "max-sm:w-full" : ""}`}>
           {isEditMode ? (
-            <>
-              <Button
-                className="mr-3 p-0 rounded-full py-1 px-3 text-sm h-auto font-normal"
-                variant="success"
-                onClick={onPublish}
-              >
-                Publish
-              </Button>
-              <Button className="w-auto h-auto p-0 mr-1" variant="mediumLike">
+
+              <><Button
+              className="mr-3 max-sm:mr-auto p-0 rounded-full py-1 px-3 text-sm h-auto font-normal"
+              variant="success"
+              onClick={onPublish}
+            >
+              Publish
+            </Button><Button className="w-auto h-auto p-0 mr-1" variant="mediumLike">
                 <HelpCircle strokeWidth={2} className="!h-6 !w-6" />
-              </Button>
-            </>
+              </Button></>
+
           ) : (
             !isAdmin && (
               <Link href="/create" className="max-md:hidden">

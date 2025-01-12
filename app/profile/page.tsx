@@ -69,7 +69,7 @@ export default function ProfileView() {
         </div>
 
         {/* Enhanced profile content */}
-        <div className="relative z-10 px-4 -mt-40 space-y-12 max-w-[1200px] mx-auto">
+        <div className="relative z-10 px-4 -mt-40 space-y-4 max-w-[1200px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ export default function ProfileView() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="w-full backdrop-blur-sm bg-background/95 border-primary/10 shadow-xl shadow-primary/5">
+            <Card className="w-full backdrop-blur-sm bg-background/95 border-none shadow-xl shadow-primary/5">
               <CardContent className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <StatsCard
@@ -199,7 +199,7 @@ function StatsCard({
   return (
     <div className="group relative">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-xl blur opacity-30 group-hover:opacity-75 transition duration-1000"></div>
-      <div className="relative flex items-center gap-4 p-6 rounded-lg bg-background/40 backdrop-blur-sm border border-primary/10 transition-all duration-300 hover:scale-[1.02]">
+      <div className="relative flex items-center gap-4 p-6 rounded-lg bg-background/40 backdrop-blur-sm shadow-md border transition-all duration-300 hover:scale-[1.02]">
         <div className="p-4 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
           {icon}
         </div>
@@ -306,7 +306,7 @@ function BlogCard({
   const router = useRouter();
 
   return (
-    <Card className="group h-full overflow-hidden border-primary/10 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20">
+    <Card className="group h-full overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg hover:border-main/50">
       <CardHeader className="space-y-0">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-bold capitalize line-clamp-1 group-hover:text-primary transition-colors">
@@ -371,7 +371,7 @@ function BlogCard({
           <Button
             variant="ghost"
             size="sm"
-            className="hover:text-primary transition-colors"
+            className="hover:text-primary transition-colors border"
             onClick={() => router.push(`/blog/${blog.id}`)}
           >
             View Blog

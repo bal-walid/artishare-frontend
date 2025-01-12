@@ -56,7 +56,7 @@ export default function SignUpPage() {
   }
   if (!imageField) return null;
   return (
-    <AuthGuard requireClient={true} redirectTo="/blogs" requireAuth={false}>
+    <AuthGuard requireAuth={false}>
       <div className="h-full flex items-center justify-center bg-hero-bg overflow-y-auto">
         <Card className="w-fit max-[400px]:w-[90%] max-sm:w-3/4   bg-white flex flex-col">
           <CardHeader className=" pt-5">

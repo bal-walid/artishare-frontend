@@ -63,7 +63,7 @@ export default function Users() {
     router.push(`/users?query=${encodeURIComponent(search)}`);
   };
   return (
-    <AuthGuard requireAdmin={true}>
+    <AuthGuard requireAuth={true} requireAdmin={true}>
       <div className="h-full flex flex-col">
         <MainHeader isSearchPage={false} />
         <main className="flex-1 flex flex-col gap-3 overflow-y-auto overflow-x-hidden p-8">

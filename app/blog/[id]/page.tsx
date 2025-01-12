@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import "@/app/_ui/stylesheets/editor.scss";
 import BlogDisplay from "@/app/_ui/components/blog/BlogDisplay";
 import MainHeader from "@/app/_ui/components/blogList/MainHeader";
+import { AuthGuard } from "@/app/contexts/AuthContext";
 
 export default function BlogPage() {
   const { id } = useParams<{ id: string }>();
@@ -29,10 +30,10 @@ export default function BlogPage() {
   if (loading) return;
   if (blog) {
     return (
-      <>
-        <MainHeader isSearchPage={false} />
-        <BlogDisplay blog={blog} />
-      </>
+        <AuthGuard requireAuth={false}>
+          <MainHeader isSearchPage={false} />
+          <BlogDisplay blog={blog} />
+        </AuthGuard>
     );
   }
 }

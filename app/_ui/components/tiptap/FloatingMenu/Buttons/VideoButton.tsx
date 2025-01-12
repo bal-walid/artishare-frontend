@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
 import { Video } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ButtonItalicProps {
   editor: Editor;
@@ -13,6 +13,7 @@ interface ButtonItalicProps {
 const VideoButton = ({ editor, hideMenu }: ButtonItalicProps) => {
   const [showInput, setShowInput] = useState(false);
   const [src, setSrc] = useState("");
+  const inputRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     setShowInput(true);
@@ -24,7 +25,6 @@ const VideoButton = ({ editor, hideMenu }: ButtonItalicProps) => {
 
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("src", src);
     if (src) {
       editor
         .chain()
@@ -48,6 +48,32 @@ const VideoButton = ({ editor, hideMenu }: ButtonItalicProps) => {
     editor.on("update", handleUpdate);
   }, [editor]);
 
+  useEffect(() => {
+    const handleUpdate = () => {
+      if (!editor.isActive("link")) {
+        setShowInput(false);
+      }
+    };
+
+    editor.on("update", handleUpdate);
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowInput(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      editor.off("update", handleUpdate);
+    };
+  }, [editor]);
+
   return (
     <div className="relative flex justify-center items-center">
       <Button
@@ -61,7 +87,7 @@ const VideoButton = ({ editor, hideMenu }: ButtonItalicProps) => {
         <Video className="h-5 w-5" strokeWidth={1.5} />
       </Button>
       {showInput && (
-        <div className="absolute bottom-full right-full z-50">
+        <div className="absolute bottom-full right-full z-50" ref={inputRef}>
           <form
             onSubmit={handleInputSubmit}
             className="flex items-center gap-2   bubble-menu p-2 shadow-lg"

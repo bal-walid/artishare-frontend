@@ -51,7 +51,6 @@ export default function Blogs() {
   );
 
   const updateQuery = async (query: string) => {
-    console.log(query);
     updatedAtaLocallly({
       newQuery: query,
       newCurrentPage: "0",
@@ -91,9 +90,7 @@ export default function Blogs() {
     }
     fetchTags();
   }, []);
-  useEffect(() => {
-    console.log(currentPage);
-  }, [currentPage]);
+
   return (
     <div className="h-full flex flex-col">
       <MainHeader

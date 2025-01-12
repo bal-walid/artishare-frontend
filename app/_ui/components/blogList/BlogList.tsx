@@ -26,9 +26,7 @@ const BlogList = ({
     rootMargin: "-150px",
     threshold: 0,
   });
-  useEffect(() => {
-    console.log(currentPage);
-  }, [currentPage]);
+
   useEffect(() => {
     if (currentPage === "0" || isVisible && hasMore) {
       updateCurrentPage((+currentPage + 1).toString());

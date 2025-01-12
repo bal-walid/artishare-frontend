@@ -9,7 +9,6 @@ import TagInput from "./TagInput";
 import { createBlog, updateBlog } from "@/app/_network/blogs";
 import { Blog, CreateBlog } from "@/app/_type/blogs";
 import { useRouter } from "next/navigation";
-import { set } from "react-hook-form";
 
 interface EditFormProps {
   htmlContent: string;
@@ -28,7 +27,6 @@ const EditForm = ({ htmlContent, blog }: EditFormProps) => {
     () => parseArticleHtml(htmlContent),
     [htmlContent]
   );
-  console.log(images);
   const [formData, setFormData] = useState<CreateBlog>({
     title,
     description,

@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { ChainedCommands, Editor } from "@tiptap/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommandButton from "./CommandButton";
 
 interface ButtonItalicProps {
@@ -11,6 +11,7 @@ interface ButtonItalicProps {
 const LinkButton = ({ editor, children }: ButtonItalicProps) => {
   const [showInput, setShowInput] = useState(false);
   const [url, setUrl] = useState("");
+  const inputRef = useRef<HTMLDivElement>(null);
 
   const command = (chain: ChainedCommands) => {
     if (editor.isActive("link")) {
@@ -46,6 +47,22 @@ const LinkButton = ({ editor, children }: ButtonItalicProps) => {
     };
 
     editor.on("update", handleUpdate);
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowInput(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      editor.off("update", handleUpdate);
+    };
   }, [editor]);
 
   return (
@@ -58,17 +75,17 @@ const LinkButton = ({ editor, children }: ButtonItalicProps) => {
         {children}
       </CommandButton>
       {showInput && (
-        <div className="absolute bottom-full right-full z-50">
+        <div ref={inputRef} className="absolute bottom-full right-full z-50">
           <form
             onSubmit={handleInputSubmit}
-            className="flex items-center gap-2   bubble-menu p-2 shadow-lg"
+            className="flex items-center gap-2 bubble-menu p-2 shadow-lg"
           >
             <Input
               type="url"
               value={url}
               onChange={handleInputChange}
               placeholder="Paste or type a link"
-              className="min-w-[300px] text-primary ring-ring border-0 ring-1 "
+              className="min-w-[300px] text-primary ring-ring border-0 ring-1"
               autoFocus
             />
           </form>

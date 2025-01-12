@@ -58,20 +58,20 @@ export default function Blogs() {
     });
     setHasMore(true);
   };
-  const updateCurrentPage = async (page: string) => {
+  const updateCurrentPage = useCallback(async () => {
     setLoadingBlogs(true);
     const { blogs: newBlogs, hasMoreBlogs } = await fetchBlogs(
       query,
-      +page,
+      +currentPage + 1,
       activeTags.map((tag) => tag.name)
     );
     updatedAtaLocallly({
-      newCurrentPage: page,
+      newCurrentPage: (+currentPage + 1).toString(),
       newBlogs: [...blogs, ...newBlogs],
     });
     setHasMore(hasMoreBlogs);
     setLoadingBlogs(false);
-  };
+  }, [query, currentPage, activeTags, updatedAtaLocallly, blogs]);
   const updateActiveTags = async (tags: Category[]) => {
     updatedAtaLocallly({
       newTags: tags,
@@ -101,7 +101,6 @@ export default function Blogs() {
       <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
         <BlogList
           updateCurrentPage={updateCurrentPage}
-          currentPage={currentPage}
           blogs={blogs}
           hasMore={hasMore}
           loadingBlogs={loadingBlogs}

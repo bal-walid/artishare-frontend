@@ -18,7 +18,6 @@ import { User } from "@/app/_type/users";
 import { capitalize } from "@/lib/capitalize";
 import formatDate from "@/lib/formatDate";
 import { serverAddress } from "@/app/_config/main";
-import { lockUser } from "@/app/_network/users";
 
 interface UserTableProps {
   users: User[];

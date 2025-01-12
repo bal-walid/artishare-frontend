@@ -40,7 +40,7 @@ export default function Users() {
       );
       setLoading(false);
     }
-  }, [searchParams]);
+  }, [searchParams, users]);
   const toggleUserLock = async (userId: number) => {
     const updatedUser = await lockUser(userId);
     setUsers((prevUsers) =>

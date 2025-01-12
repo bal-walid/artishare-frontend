@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { Category } from "@/app/_type/categories";

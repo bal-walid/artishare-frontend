@@ -21,7 +21,7 @@ export default function Blogs() {
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
   const [activeTags, setactiveTags] = useState<Category[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loadingBlogs, setLoadingBlogs] = useState<boolean>(true);
+  const [loadingBlogs, setLoadingBlogs] = useState<boolean>(false);
 
   const updatedAtaLocallly = useCallback(
     ({
@@ -94,16 +94,16 @@ export default function Blogs() {
 
   return (
     <AuthGuard requireAuth={false}>
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col overflow-y-hidden">
         <MainHeader
           initialQuery={initialQuery}
           blogsByQuery={updateQuery}
           isSearchPage={true}
         />
-        <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
+        <main className="flex-1 flex justify-evenly overflow-y-scroll">
           <BlogList
             updateCurrentPage={updateCurrentPage}
-              blogs={blogs}
+            blogs={blogs}
             hasMore={hasMore}
             loadingBlogs={loadingBlogs}
           />

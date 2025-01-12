@@ -20,16 +20,14 @@ const BlogSideBar = ({
 }: BlogSideBarProps) => {
   const handleTagClick = (tag: Category) => {
     if (activeTags.some((activeTag) => activeTag.id === tag.id)) {
-      // Remove tag from activeTags
       updateTags(activeTags.filter((activeTag) => activeTag.id !== tag.id));
     } else {
-      // Add tag to activeTags
       updateTags([...activeTags, tag]);
     }
   };
 
   return (
-    <div className="sticky top-0 border-l p-4 max-w-[368px] min-w-[368px]">
+    <div className="sticky top-0 border-l p-4 max-w-[368px] min-w-[368px] overflow-hidden" >
       <h2 className="mb-3 font-bold">Recommended Topics</h2>
       {loadingTags ? (
         <div className="flex flex-wrap gap-x-2 gap-y-3">
@@ -42,7 +40,7 @@ const BlogSideBar = ({
           <Skeleton className="bg-muted h-9 rounded-full w-36" />
         </div>
       ) : (
-        <div className="flex flex-wrap gap-x-2 gap-y-3">
+        <div className="flex flex-wrap gap-x-2 gap-y-3 overflow-hidden">
           {tags.map((tag) => {
             const isActive = activeTags.some(
               (activeTag) => activeTag.id === tag.id

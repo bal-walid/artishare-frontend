@@ -248,7 +248,7 @@ interface BlogCarouselProps {
   user: User;
 }
 
-export function BlogCarousel({
+function BlogCarousel({
   blogs,
   showUpdateButton = false,
   type = "default",
@@ -297,7 +297,7 @@ interface BlogCardProps {
   userComment?: Comt;
 }
 
-export function BlogCard({
+function BlogCard({
   blog,
   showUpdateButton = false,
   type = "default",

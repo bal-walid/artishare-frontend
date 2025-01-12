@@ -16,7 +16,6 @@ export const fetchBlogs = async (
       method: "POST",
       body: JSON.stringify({ tags }),
     });
-    console.log(response);
     return response as {
       blogs: Blog[];
       currentPage: number;

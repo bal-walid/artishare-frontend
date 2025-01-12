@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, Home, Settings, User } from "lucide-react";
+import { ArrowLeft, Settings, User } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +24,7 @@ export default function ProfileLayout({
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <AuthGuard>
+    <AuthGuard requireAuth={true}>
       <SidebarProvider>
         <div className="flex min-h-screen w-full">
           <Sidebar className="border-r">
@@ -37,7 +37,7 @@ export default function ProfileLayout({
                   >
                     <div className="flex items-center justify-center gap-2 w-full">
                       <ArrowLeft className="h-4 w-4 text-main" />
-                      <Logo className="text-main text-2xl "/>
+                      <Logo className="text-main text-2xl " />
                     </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -35,7 +35,6 @@ export default function ProfileView() {
   const { user: ActiveUser } = useAuthContext();
   const [user, setUser] = useState<User | null>(null);
   const profile_image = user?.profile_image;
-  console.log(user);
   const commentedBlogs: Blog[] = useMemo(() => {
     return user ? user?.comments.map((comment) => comment.blog as Blog) : [];
   }, [user]);

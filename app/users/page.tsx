@@ -16,7 +16,6 @@ export default function Users() {
   const [input, setInput] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  console.log(searchParams);
   useEffect(() => {
     fetchUsers().then((users) => {
       setUsers(users.filter((user) => user.role !== "admin"));
@@ -25,25 +24,23 @@ export default function Users() {
     });
   }, []);
   useEffect(() => {
-    if (searchParams.has("query")) {
-
-        setFilteredUsers(
-          users.filter((user) => {
-            return (
-              user.first_name
-                .toLowerCase()
-                .includes(searchParams.get("query")) ||
-              user.last_name
-                .toLowerCase()
-                .includes(searchParams.get("query")) ||
-              user.email.toLowerCase().includes(searchParams.get("query"))
-            );
-          })
-        );
-        setLoading(false);
-      }
+    if (searchParams.has("query") || "") {
+      setFilteredUsers(
+        users.filter((user) => {
+          return (
+            user.first_name
+              .toLowerCase()
+              .includes(searchParams.get("query") || "") ||
+            user.last_name
+              .toLowerCase()
+              .includes(searchParams.get("query") || "") ||
+            user.email.toLowerCase().includes(searchParams.get("query") || "")
+          );
+        })
+      );
+      setLoading(false);
     }
-  , [searchParams]);
+  }, [searchParams]);
   const toggleUserLock = async (userId: number) => {
     const updatedUser = await lockUser(userId);
     setUsers((prevUsers) =>

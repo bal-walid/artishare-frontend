@@ -35,28 +35,46 @@ export function AuthGuard({
   requireAuth = true,
   requireAdmin = false,
   redirectTo = "/login",
+  requireClient = false,
 }: {
   children: React.ReactNode;
   requireAuth?: boolean;
   redirectTo?: string;
+  requireClient?: boolean;
   requireAdmin?: boolean;
 }) {
   const auth = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (!auth.loading && requireAuth && !auth.isAuthenticated) {
-      router.push(redirectTo);
-    }
-    if (!auth.loading && requireAdmin && !auth.isAdmin) {
-      router.push(redirectTo);
+    if (!auth.loading && requireAuth) {
+      if (!auth.isAuthenticated) {
+        router.push(redirectTo);
+      }
     }
   }, [auth.loading, auth.isAuthenticated, requireAuth, redirectTo, router]);
-
+  useEffect(() => {
+    if (!auth.loading && requireAdmin) {
+      if (!auth.isAdmin) {
+        router.push(redirectTo);
+      }
+    }
+  }, [auth.isAdmin, auth.loading, requireAdmin, redirectTo, router]);
+  useEffect(() => {
+    if (!auth.loading && requireClient) {
+      if (auth.isAuthenticated) {
+        router.push(redirectTo);
+      }
+    }
+  }, [auth.isAuthenticated, auth.loading, requireClient, redirectTo, router]);
   if (auth.loading) {
     return <Loading />;
   }
 
-  if ((requireAuth && !auth.isAuthenticated) || (requireAdmin && !auth.isAdmin)) {
+  if (
+    (requireAuth && !auth.isAuthenticated) ||
+    (requireAdmin && !auth.isAdmin) ||
+    (requireClient && auth.isAuthenticated)
+  ) {
     // Don't render anything while redirecting
     return null;
   }

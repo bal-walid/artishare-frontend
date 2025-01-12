@@ -91,7 +91,7 @@ const BlogContent = ({
       </div>
 
       <div className="flex items-center justify-between border-y mt-6 py-2 px-4">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 max-sm:w-full max-sm:justify-evenly">
           <button
             onClick={onScrollToComments}
             className="flex items-center gap-2 text-medium-gray hover:text-black"
@@ -100,14 +100,14 @@ const BlogContent = ({
               strokeWidth={1}
               className={`h-5 w-5 ${isLiked ? "fill-red-500" : ""}`}
             />
-            <span>{likesCount} likes</span>
+            <span>{likesCount} <span className="max-sm:hidden">likes</span></span>
           </button>
           <button
             onClick={onScrollToComments}
             className="flex items-center gap-2 text-medium-gray hover:text-black"
           >
             <MessageCircleIcon strokeWidth={1} className="h-5 w-5" />
-            <span>{commentsCount} comments</span>
+            <span>{commentsCount} <span className="max-sm:hidden">comments</span></span>
           </button>
         </div>
       </div>

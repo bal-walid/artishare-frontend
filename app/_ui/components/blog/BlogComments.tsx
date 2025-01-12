@@ -7,7 +7,7 @@ import "@/app/_ui/stylesheets/editor.scss";
 import { useAuthContext } from "@/app/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
+import { HeartIcon, Loader2, MessageCircleIcon, SendIcon } from "lucide-react";
 import Tiptap from "../comment/Editor";
 import { Editor } from "@tiptap/react";
 import { serverAddress } from "@/app/_config/main";
@@ -80,9 +80,12 @@ const BlogComments = ({
   };
 
   return (
-    <div id="comments-section" className="space-y-8 pt-8 w-[680px] mx-auto">
+    <div
+      id="comments-section"
+      className="space-y-8 pt-8 w-[680px] max-md:w-full max-md:px-8 mx-auto"
+    >
       <div className=" bg-background/80 backdrop-blur-xl border-y py-3 px-4 -mx-4 flex items-center justify-between z-10">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 max-md:w-full max-md:justify-evenly">
           <button
             onClick={handleLike}
             className="flex items-center gap-2 text-medium-gray hover:text-black transition-colors group"
@@ -95,22 +98,27 @@ const BlogComments = ({
                   : "group-hover:fill-red-500 group-hover:stroke-none"
               }`}
             />
-            <span>{likesCount} likes</span>
+            <span>
+              {likesCount} <span className="max-[450px]:hidden">likes</span>
+            </span>
           </button>
           <button
             onClick={scrollToComments}
             className="flex items-center gap-2 text-medium-gray hover:text-black transition-colors"
           >
             <MessageCircleIcon strokeWidth={1} className="h-5 w-5" />
-            <span>{blog.comments.length} comments</span>
+            <span>
+              {blog.comments.length}{" "}
+              <span className="max-[450px]:hidden">comments</span>
+            </span>
           </button>
         </div>
       </div>
       <h3 className="text-2xl font-semibold">Comments ({comments.length})</h3>
       {user && (
-        <form onSubmit={handleComment} className="bg-muted/30 rounded-lg p-6">
+        <form onSubmit={handleComment} className="bg-muted/30 rounded-lg p-6 max-sm:px-0">
           <div className="flex items-start gap-3">
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-10 w-10 max-md:hidden">
               <AvatarImage
                 src={serverAddress + user.profile_image}
                 alt={user.first_name}
@@ -124,12 +132,17 @@ const BlogComments = ({
               onChange={setComment}
               setEditor={setEditor}
             >
-              <Button type="submit" disabled={!comment.trim() || isSubmitting}>
+              <Button className="max-sm:p-2 max-sm:h-fit" type="submit" disabled={!comment.trim() || isSubmitting}>
                 {isSubmitting ? (
-                  "Posting..."
+                  <>
+                    {" "}
+                    <Loader2 />{" "}
+                    <span className="max-sm:hidden">Posting...</span>{" "}
+                  </>
                 ) : (
                   <>
-                    Post Comment <SendIcon />
+                    <span className="max-sm:hidden">Post Comment</span>{" "}
+                    <SendIcon />
                   </>
                 )}
               </Button>
@@ -168,6 +181,7 @@ const BlogComments = ({
             <div
               className="text-[15px] ml-5 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: comment.content }}
+              style={{overflowWrap: "anywhere"}}
             />
           </div>
         ))}

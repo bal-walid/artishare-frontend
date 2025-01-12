@@ -19,7 +19,7 @@ const Toolbar = ({ editor, children }: Props) => {
       className="px-4 py-3 rounded-tl-md rounded-tr-md flex justify-between items-start
     gap-5 w-full flex-wrap border border-foreground/20 bg-hero-bg"
     >
-      <div className="flex justify-start items-center gap-5 w-full  flex-wrap">
+      <div className="flex justify-start items-center gap-5 max-sm:gap-0 max-sm:justify-around w-full  flex-wrap">
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -27,11 +27,11 @@ const Toolbar = ({ editor, children }: Props) => {
           }}
           className={
             editor.isActive("bold")
-              ? "bg-[#B22C46] text-white p-2 rounded-lg"
-              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 rounded-lg transition-colors"
+              ? "bg-[#B22C46] text-white p-2 max-sm:p-1 rounded-lg"
+              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 max-sm:p-1 rounded-lg transition-colors"
           }
         >
-          <Bold className="w-5 h-5" />
+          <Bold className="w-5 h-5 max-sm:h-4 max-sm:w-4" />
         </button>
         <button
           onClick={(e) => {
@@ -40,11 +40,11 @@ const Toolbar = ({ editor, children }: Props) => {
           }}
           className={
             editor.isActive("italic")
-              ? "bg-[#B22C46] text-white p-2 rounded-lg"
-              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 rounded-lg transition-colors"
+              ? "bg-[#B22C46] text-white p-2 max-sm:p-1 rounded-lg"
+              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 max-sm:p-1 rounded-lg transition-colors"
           }
         >
-          <Italic className="w-5 h-5" />
+          <Italic className="w-5 h-5 max-sm:h-4 max-sm:w-4" />
         </button>
         <button
           onClick={(e) => {
@@ -53,11 +53,11 @@ const Toolbar = ({ editor, children }: Props) => {
           }}
           className={
             editor.isActive("underline")
-              ? "bg-[#B22C46] text-white p-2 rounded-lg"
-              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 rounded-lg transition-colors"
+              ? "bg-[#B22C46] text-white p-2 max-sm:p-1 rounded-lg"
+              : "text-[#B22C46] hover:bg-[#B22C46]/10 p-2 max-sm:p-1 rounded-lg transition-colors"
           }
         >
-          <Underline className="w-5 h-5" />
+          <Underline className="w-5 h-5 max-sm:h-4 max-sm:w-4" />
         </button>
 
         <button
@@ -65,20 +65,20 @@ const Toolbar = ({ editor, children }: Props) => {
             e.preventDefault();
             editor.chain().focus().undo().run();
           }}
-          className="text-[#B22C46] hover:bg-[#B22C46]/10 p-2 rounded-lg transition-colors"
+          className="text-[#B22C46] hover:bg-[#B22C46]/10 p-2 max-sm:p-1 rounded-lg transition-colors"
         >
-          <Undo className="w-5 h-5" />
+          <Undo className="w-5 h-5 max-sm:h-4 max-sm:w-4" />
         </button>
         <button
           onClick={(e) => {
             e.preventDefault();
             editor.chain().focus().redo().run();
           }}
-          className="text-[#B22C46] hover:bg-[#B22C46]/10 p-2 rounded-lg transition-colors"
+          className="text-[#B22C46] hover:bg-[#B22C46]/10 p-2 max-sm:p-1 rounded-lg transition-colors"
         >
-          <Redo className="w-5 h-5" />
+          <Redo className="w-5 h-5 max-sm:h-4 max-sm:w-4" />
         </button>
-        <div className="ml-auto">{children}</div>
+        <div className="ml-auto max-sm:ml-0">{children}</div>
       </div>
     </div>
   );

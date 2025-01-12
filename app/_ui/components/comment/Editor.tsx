@@ -36,7 +36,7 @@ const Tiptap = ({ onChange, content, children, setEditor }: Props) => {
   }, [editor, setEditor]);
 
   return (
-    <div className="w-full px-4">
+    <div className="w-full px-4 max-sm:px-0">
       <Toolbar editor={editor} content={content}>
         {children}
       </Toolbar>

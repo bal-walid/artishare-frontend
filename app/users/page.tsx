@@ -50,6 +50,13 @@ export default function Users() {
           : user
       )
     );
+    setFilteredUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId
+          ? { ...user, account_locked: updatedUser.user.account_locked }
+          : user
+      )
+    );
   };
   const handleSearch = () => {
     const search = input.toLowerCase();

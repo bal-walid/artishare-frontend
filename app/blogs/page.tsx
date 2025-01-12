@@ -9,6 +9,7 @@ import { Category } from "../_type/categories";
 import BlogList from "../_ui/components/blogList/BlogList";
 import BlogSideBar from "../_ui/components/blogList/BlogSidebar";
 import MainHeader from "../_ui/components/blogList/MainHeader";
+import { AuthGuard } from "../contexts/AuthContext";
 
 export default function Blogs() {
   const searchParams = useSearchParams();
@@ -92,26 +93,28 @@ export default function Blogs() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
-      <MainHeader
-        initialQuery={initialQuery}
-        blogsByQuery={updateQuery}
-        isSearchPage={true}
-      />
-      <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
-        <BlogList
-          updateCurrentPage={updateCurrentPage}
-          blogs={blogs}
-          hasMore={hasMore}
-          loadingBlogs={loadingBlogs}
+    <AuthGuard requireAuth={false}>
+      <div className="h-full flex flex-col">
+        <MainHeader
+          initialQuery={initialQuery}
+          blogsByQuery={updateQuery}
+          isSearchPage={true}
         />
-        <BlogSideBar
-          updateTags={updateActiveTags}
-          activeTags={activeTags}
-          loadingTags={loadingTags}
-          tags={tags}
-        />
-      </main>
-    </div>
+        <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
+          <BlogList
+            updateCurrentPage={updateCurrentPage}
+              blogs={blogs}
+            hasMore={hasMore}
+            loadingBlogs={loadingBlogs}
+          />
+          <BlogSideBar
+            updateTags={updateActiveTags}
+            activeTags={activeTags}
+            loadingTags={loadingTags}
+            tags={tags}
+          />
+        </main>
+      </div>
+    </AuthGuard>
   );
 }

@@ -27,7 +27,7 @@ const BlogSideBar = ({
   };
 
   return (
-    <div className="sticky top-0 border-l p-4 max-w-[368px] min-w-[368px] overflow-hidden" >
+    <div className="sticky top-0 border-l p-4 max-w-[368px] max-lg:max-w-[240px] max-md:order-1 max-md:max-w-none max-md:relative max-md:overflow-visible max-md:pb-0 overflow-hidden" >
       <h2 className="mb-3 font-bold">Recommended Topics</h2>
       {loadingTags ? (
         <div className="flex flex-wrap gap-x-2 gap-y-3">

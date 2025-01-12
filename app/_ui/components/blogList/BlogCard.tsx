@@ -45,12 +45,12 @@ const BlogCard = ({ blog, className }: { blog: Blog; className?: string }) => {
         </CardHeader>
 
         <CardContent className="p-4 pb-6 ">
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
-            <div className="space-y-3 flex-1">
-              <h2 className="text-2xl font-bold leading-tight tracking-tight group-hover:text-primary transition-colors">
+          <div className="flex flex-col items-center sm:flex-row gap-6 sm:gap-8">
+            <div className="space-y-3 flex-1 flex flex-col max-sm:items-center">
+              <h2 className="text-2xl max-sm:text-center font-bold leading-tight tracking-tight group-hover:text-primary transition-colors">
                 {blog.title}
               </h2>
-              <p className="text-medium-gray line-clamp-2">
+              <p className="text-medium-gray line-clamp-2 max-sm:text-center">
                 {blog.description}
               </p>
               <div className="flex items-center gap-4 pt-2">
@@ -67,7 +67,7 @@ const BlogCard = ({ blog, className }: { blog: Blog; className?: string }) => {
                 </div>
               </div>
               {/* Categories section */}
-              {blog.categories.length ?  <div className="flex flex-wrap gap-2 pt-2">
+              {blog.categories.length ?  <div className="flex flex-wrap max-sm:content-center gap-2 pt-2">
                 {blog.categories.map((category) => (
                   <span
                     key={category.id}
@@ -85,7 +85,7 @@ const BlogCard = ({ blog, className }: { blog: Blog; className?: string }) => {
                 alt=""
                 width={160}
                 height={107}
-                className="mr-4 border rounded-sm h-[107px] object-cover transition-transform duration-300 group-hover:scale-105"
+                className="mr-4 max-sm:m-0 border rounded-sm h-[107px] max-sm:h-[157px] max-sm:w-[240px] object-cover transition-transform duration-300 group-hover:scale-105"
               />
 
           </div>

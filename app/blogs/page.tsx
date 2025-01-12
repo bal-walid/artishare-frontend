@@ -100,7 +100,7 @@ export default function Blogs() {
           blogsByQuery={updateQuery}
           isSearchPage={true}
         />
-        <main className="flex-1 flex justify-evenly overflow-y-auto overflow-x-hidden">
+        <main className="flex-1 flex justify-evenly max-md:flex-col overflow-y-auto overflow-x-hidden">
           <BlogList
             updateCurrentPage={updateCurrentPage}
             currentPage={currentPage}

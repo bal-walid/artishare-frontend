@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User as UserIcon, Settings, LogOut } from "lucide-react";
+import { User as UserIcon, Settings, LogOut, PenSquareIcon } from "lucide-react";
 import Link from "next/link";
 import { serverAddress } from "@/app/_config/main";
 import { User } from "@/app/_type/users";
+import Logo from "../Logo";
 
 interface ProfileMenuProps {
   user: User | null;
@@ -52,6 +53,7 @@ const ProfileMenu = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64 p-2" align="end" sideOffset={8}>
         <DropdownMenuLabel className="font-normal p-2">
+          <Logo className="text-main text-lg mb-2 text-center"/>
           <div className="flex flex-col space-y-1.5">
             <p className="text-sm font-semibold">
               {user?.first_name} {user?.last_name}
@@ -59,6 +61,18 @@ const ProfileMenu = ({
             <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator className="my-2 md:hidden" />
+        <DropdownMenuGroup>
+        <DropdownMenuItem className="md:hidden" asChild>
+            <Link
+              href="/create"
+              className="flex items-center cursor-pointer p-2 rounded-md"
+            >
+              <PenSquareIcon className="mr-3 h-4 w-4" />
+              <span>Write</span>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator className="my-2" />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

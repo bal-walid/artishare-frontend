@@ -77,7 +77,7 @@ export default function Header({
         <div className="flex items-center gap-6">
           <Link
             href="/"
-            className="flex items-center transition-transform hover:scale-105"
+            className={`flex items-center transition-transform hover:scale-105 ${!isEditMode ? "max-sm:hidden" : ""}`}
           >
             <Logo
               className={`${
@@ -106,7 +106,7 @@ export default function Header({
                 <Input
                   type="search"
                   placeholder="Search articles..."
-                  className="w-[300px] pl-9 pr-4 h-10 bg-transparent rounded-full transition-all duration-200 focus-visible:bg-primary/5 placeholder:text-muted-foreground/70 [&::-webkit-search-cancel-button]:hidden"
+                  className="w-[300px] max-sm:w-[250px] max-[370px]:w-[220px] max-[370px]:text-sm pl-9 pr-4 h-10 bg-transparent rounded-full transition-all duration-200 focus-visible:bg-primary/5 placeholder:text-muted-foreground/70 [&::-webkit-search-cancel-button]:hidden"
                   value={query}
                   onChange={onChangefunction}
                   onFocus={() => setIsSearchFocused(true)}
@@ -121,7 +121,7 @@ export default function Header({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-[40px] px-5 absolute top-0 right-0 w-fit bg-main rounded-full hover:bg-main/50"
+                className="h-[40px] px-5 max-sm:px-3 max-[370px]:px-2 absolute top-0 right-0 w-fit bg-main rounded-full hover:bg-main/50"
                 onClick={() => handleSubmit()}
               >
                 <span className="text-white">Search</span>
@@ -146,7 +146,7 @@ export default function Header({
             </>
           ) : (
             !isAdmin && (
-              <Link href="/create">
+              <Link href="/create" className="max-md:hidden">
                 <Button variant="mediumLike" className="font-normal">
                   <PenSquare strokeWidth={1} className="!w-5 !h-5" />
                   <span className="ml-1">Write</span>

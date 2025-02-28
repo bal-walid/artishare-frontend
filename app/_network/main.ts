@@ -41,7 +41,7 @@ export async function fetchData<T>(input: RequestInfo, init?: RequestInit) {
   }
 
   try {
-    const response = await fetch(serverAddress + "/api" + input, init);
+    const response = await fetch(serverAddress + input, init);
 
     if (response.status === 204 && init.method === "DELETE") {
       return true;

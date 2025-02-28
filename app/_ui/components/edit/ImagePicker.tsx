@@ -1,8 +1,8 @@
 import { serverAddress } from "@/app/_config/main";
+import { imgAddress } from "@/app/_config/main";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
-
 interface ImagePickerProps {
   images: string[];
   selectedImage: string;
@@ -55,7 +55,7 @@ const ImagePicker = ({
                     : "hover:ring-2 hover:ring-green-400 hover:ring-offset-2"
                 }`}
               onClick={() => {
-                setSelectedImage(image.replace("http://localhost:8000", ""));
+                setSelectedImage(image.replace(imgAddress, ""));
               }}
             >
               <Image
@@ -73,7 +73,13 @@ const ImagePicker = ({
 
   return (
     <div className="w-full h-[200px] relative">
-      <Image width={400} height={200} alt="" className="border rounded-sm w-full h-full object-cover" src={serverAddress + selectedImage} />
+      <Image
+        width={400}
+        height={200}
+        alt=""
+        className="border rounded-sm w-full h-full object-cover"
+        src={serverAddress + selectedImage}
+      />
       <Button
         variant={"mediumLike"}
         onClick={onPickingImage}

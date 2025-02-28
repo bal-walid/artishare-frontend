@@ -16,7 +16,7 @@ function parseArticleHtml(html: string) {
 
   // Find all images and remove localhost:8000 part
   const images = Array.from(doc.querySelectorAll("img")).map((img) =>
-    img.src.replace("http://localhost:8000", "")
+    img.src.replace(imgAddress, "")
   );
 
   return {
